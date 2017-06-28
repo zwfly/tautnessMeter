@@ -9,9 +9,11 @@
 
 void Bright_InitHard(void) {
 
+#if 1
 	P3M1 &= ~SET_BIT1;
 	P3M2 |= SET_BIT1;
 
-	clr_P31;
+	set_P31;
+#endif
 
 }

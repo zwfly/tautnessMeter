@@ -15,51 +15,6 @@
 
 #include "bsp.h"
 
-
-
-/* 按键口对应的RCC时钟 */
-#if 1  //产品板子
-#define RCC_ALL_KEY 	(RCC_APB2Periph_GPIOD | RCC_APB2Periph_GPIOE)
-
-#define GPIO_PORT_K1    GPIOD
-#define GPIO_PIN_K1	    GPIO_Pin_12
-
-#define GPIO_PORT_K2    GPIOD
-#define GPIO_PIN_K2	    GPIO_Pin_13
-
-#define GPIO_PORT_K3    GPIOE
-#define GPIO_PIN_K3	    GPIO_Pin_4
-
-#define GPIO_PORT_K4    GPIOE
-#define GPIO_PIN_K4	    GPIO_Pin_5
-#else  //开发板
-#define RCC_ALL_KEY 	(RCC_APB2Periph_GPIOA | RCC_APB2Periph_GPIOC | RCC_APB2Periph_GPIOD | RCC_APB2Periph_GPIOG)
-
-#define GPIO_PORT_K1    GPIOC
-#define GPIO_PIN_K1	    GPIO_Pin_13
-
-#define GPIO_PORT_K2    GPIOA
-#define GPIO_PIN_K2	    GPIO_Pin_0
-
-#define GPIO_PORT_K3    GPIOG
-#define GPIO_PIN_K3	    GPIO_Pin_8
-
-#define GPIO_PORT_K4    GPIOG
-#define GPIO_PIN_K4	    GPIO_Pin_15
-#endif
-#if 0
-#define GPIO_PORT_K5    GPIOD
-#define GPIO_PIN_K5	    GPIO_Pin_3
-
-#define GPIO_PORT_K6    GPIOG
-#define GPIO_PIN_K6	    GPIO_Pin_14
-
-#define GPIO_PORT_K7    GPIOG
-#define GPIO_PIN_K7	    GPIO_Pin_13
-
-#define GPIO_PORT_K8    GPIOG
-#define GPIO_PIN_K8	    GPIO_Pin_7
-#endif
 static KEY_T s_tBtn[KEY_COUNT];
 static KEY_FIFO_T s_tKey; /* 按键FIFO变量,结构体 */
 
@@ -75,74 +30,26 @@ static void bsp_DetectKey(uint8_t i);
  *	返 回 值: 返回值1 表示按下，0表示未按下
  *********************************************************************************************************
  */
-/* 安富莱 STM32-V4 开发板 */
-#if 1	/* 为了区分3个事件:　K1单独按下, K2单独按下， K1和K2同时按下 */
 static uint8_t IsKeyDown1(void) {
-	
-		return 0;
+	return !P03;
 }
 static uint8_t IsKeyDown2(void) {
-	
-		return 0;
+	return !P04;
 }
 static uint8_t IsKeyDown3(void) {
-	
-		return 0;
+	return !P05;
 }
-static uint8_t IsKeyDown9(void) /* K1 K2组合键 */
-{
-	
-		return 0;
-}
-static uint8_t IsKeyDown10(void) /* K2 K3组合键 */
-{
-	
-		return 0;
-}
-
-#else
-static uint8_t IsKeyDown1(void) {if ((GPIO_PORT_K1->IDR & GPIO_PIN_K1) == 0) return 1; else return 0;}
-static uint8_t IsKeyDown2(void) {if ((GPIO_PORT_K2->IDR & GPIO_PIN_K2) == 0) return 1; else return 0;}
-static uint8_t IsKeyDown3(void) {if ((GPIO_PORT_K3->IDR & GPIO_PIN_K3) == 0) return 1; else return 0;}
-static uint8_t IsKeyDown4(void) {if ((GPIO_PORT_K4->IDR & GPIO_PIN_K4) == 0) return 1; else return 0;}
-
-//static uint8_t IsKeyDown9(void) {if (IsKeyDown1() && IsKeyDown2()) return 1; else return 0;} /* K1 K2组合键 */
-//static uint8_t IsKeyDown10(void) {if (IsKeyDown2() && IsKeyDown3()) return 1; else return 0;} /* K2 K3组合键 */
-#endif
-
-/* 5方向摇杆 */
-#if (BSP_KEY_PRODUCT==0)
 static uint8_t IsKeyDown4(void) {
-	if ((GPIO_PORT_K4->IDR & GPIO_PIN_K4) == 0)
-	return 1;
-	else
-	return 0;
+	return !P06;
 }
-static uint8_t IsKeyDown5(void) {
-	if ((GPIO_PORT_K5->IDR & GPIO_PIN_K5) == 0)
-	return 1;
-	else
-	return 0;
+/* S1 S3组合键 */
+static uint8_t IsKeyDown_1and3(void) {
+	if ((P03 == 0) && (P05 == 0)) {
+		return 1;
+	} else {
+		return 0;
+	}
 }
-static uint8_t IsKeyDown6(void) {
-	if ((GPIO_PORT_K6->IDR & GPIO_PIN_K6) == 0)
-	return 1;
-	else
-	return 0;
-}
-static uint8_t IsKeyDown7(void) {
-	if ((GPIO_PORT_K7->IDR & GPIO_PIN_K7) == 0)
-	return 1;
-	else
-	return 0;
-}
-static uint8_t IsKeyDown8(void) {
-	if ((GPIO_PORT_K8->IDR & GPIO_PIN_K8) == 0)
-	return 1;
-	else
-	return 0;
-}
-#endif
 /*
  *********************************************************************************************************
  *	函 数 名: bsp_InitKey
@@ -267,7 +174,19 @@ void bsp_ClearKey(void) {
  *********************************************************************************************************
  */
 static void bsp_InitKeyHard(void) {
-	
+
+	set_P0M1_3;
+	clr_P0M2_3;
+
+	set_P0M1_4;
+	clr_P0M2_4;
+
+	set_P0M1_5;
+	clr_P0M2_5;
+
+	set_P0M1_6;
+	clr_P0M2_6;
+
 }
 
 /*
@@ -298,35 +217,13 @@ static void bsp_InitKeyVar(void) {
 		s_tBtn[i].RepeatCount = 0; /* 连发计数器 */
 	}
 
-	/* 如果需要单独更改某个按键的参数，可以在此单独重新赋值 */
-	/* 比如，我们希望按键1按下超过1秒后，自动重发相同键值 */
-#if (BSP_KEY_PRODUCT==0)
-	s_tBtn[KID_JOY_U].LongTime = 100;
-	s_tBtn[KID_JOY_U].RepeatSpeed = 5; /* 每隔50ms自动发送键值 */
-
-	s_tBtn[KID_JOY_D].LongTime = 100;
-	s_tBtn[KID_JOY_D].RepeatSpeed = 5; /* 每隔50ms自动发送键值 */
-
-	s_tBtn[KID_JOY_L].LongTime = 100;
-	s_tBtn[KID_JOY_L].RepeatSpeed = 5; /* 每隔50ms自动发送键值 */
-
-	s_tBtn[KID_JOY_R].LongTime = 100;
-	s_tBtn[KID_JOY_R].RepeatSpeed = 5; /* 每隔50ms自动发送键值 */
-#endif
 	/* 判断按键按下的函数 */
 	s_tBtn[0].IsKeyDownFunc = IsKeyDown1;
 	s_tBtn[1].IsKeyDownFunc = IsKeyDown2;
 	s_tBtn[2].IsKeyDownFunc = IsKeyDown3;
-//	s_tBtn[3].IsKeyDownFunc = IsKeyDown4;
-#if (BSP_KEY_PRODUCT==0)
-	s_tBtn[4].IsKeyDownFunc = IsKeyDown5;
-	s_tBtn[5].IsKeyDownFunc = IsKeyDown6;
-	s_tBtn[6].IsKeyDownFunc = IsKeyDown7;
-	s_tBtn[7].IsKeyDownFunc = IsKeyDown8;
-#endif
-	/* 组合键 */
-//	s_tBtn[8].IsKeyDownFunc = IsKeyDown9;
-//	s_tBtn[9].IsKeyDownFunc = IsKeyDown10;
+	s_tBtn[3].IsKeyDownFunc = IsKeyDown4;
+	s_tBtn[4].IsKeyDownFunc = IsKeyDown_1and3;
+
 }
 
 /*
@@ -337,17 +234,8 @@ static void bsp_InitKeyVar(void) {
  *	返 回 值: 无
  *********************************************************************************************************
  */
+KEY_T *pBtn;
 static void bsp_DetectKey(uint8_t i) {
-	KEY_T *pBtn;
-
-	/*
-	 如果没有初始化按键函数，则报错
-	 if (s_tBtn[i].IsKeyDownFunc == 0)
-	 {
-	 printf("Fault : DetectButton(), s_tBtn[i].IsKeyDownFunc undefine");
-	 }
-	 */
-
 	pBtn = &s_tBtn[i];
 	if (pBtn->IsKeyDownFunc()) {
 		if (pBtn->Count < KEY_FILTER_TIME) {

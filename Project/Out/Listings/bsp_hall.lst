@@ -1,9 +1,9 @@
-C51 COMPILER V9.56.0.0   BSP_HALL                                                          06/27/2017 21:45:45 PAGE 1   
+C51 COMPILER V9.56.0.0   BSP_HALL                                                          06/28/2017 23:18:36 PAGE 1   
 
 
 C51 COMPILER V9.56.0.0, COMPILATION OF MODULE BSP_HALL
 OBJECT MODULE PLACED IN .\Out\Objects\bsp_hall.obj
-COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE ..\Bsp\src\bsp_hall.c LARGE OPTIMIZE(4,SPEED) BROWSE INCDIR(..\Common\in
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE ..\Bsp\src\bsp_hall.c LARGE OPTIMIZE(8,SPEED) BROWSE INCDIR(..\Common\in
                     -c;..\App\inc;..\Bsp\inc;..\Startup;..\Bsp) DEFINE(FOSC_110592) DEBUG OBJECTEXTEND PRINT(.\Out\Listings\bsp_hall.lst) OBJ
                     -ECT(.\Out\Objects\bsp_hall.obj)
 

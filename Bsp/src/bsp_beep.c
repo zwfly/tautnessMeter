@@ -14,11 +14,40 @@ static BEEP_T g_tBeep; /* 定义蜂鸣器全局结构体变量 */
  *********************************************************************************************************
  */
 void BEEP_InitHard(void) {
-
+#if 0
 	P3M1 &= ~SET_BIT0;
 	P3M2 |= SET_BIT0;
 
 	clr_P30;
+#endif
+
+	/*  PWM period = (R2AH + R2AL) * Pre-scale / Fsys, Fsys = 11.0592MHz (HIRC)
+	 If R2AH = R2AL, PWM output 50% duty cycle
+	 Min frequency is about 20Hz, while Pre-scale = 1/1024 and R2AH = R2AL = 255
+	 Max frequency is around 5.5MHz, while Pre-scale = 1/1 and R2AH = R2AL = 1   */
+
+	/* Determine Timer 2D pre-scalar */
+	clr_T2DPS2;
+	set_T2DPS1;
+	set_T2DPS0;
+
+	/* Determine Timer 2D Reload Low Byte */
+	R2DL = 124;
+	/* Determine Timer 2D Reload High Byte */
+	R2DH = 124;
+
+	/* Set T2D as PWM mode */
+	set_T2DM;
+
+	/* Enable Timer2D interrupt */
+//	set_ET2D;
+//	set_EA;
+	/* set T2AO1(P1.5)/T2AO2(P1.6) pin to toggling output */
+	set_T2DOE1;
+//	set_T2DOE2;
+
+	/* start Timer2D */
+	set_TR2D;
 
 }
 

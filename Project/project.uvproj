@@ -388,6 +388,41 @@
               <FileType>1</FileType>
               <FilePath>..\Bsp\src\bsp_key.c</FilePath>
             </File>
+            <File>
+              <FileName>bsp_bright.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Bsp\src\bsp_bright.c</FilePath>
+            </File>
+            <File>
+              <FileName>bsp_bt.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Bsp\src\bsp_bt.c</FilePath>
+            </File>
+            <File>
+              <FileName>bsp_display.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Bsp\src\bsp_display.c</FilePath>
+            </File>
+            <File>
+              <FileName>bsp_hall.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Bsp\src\bsp_hall.c</FilePath>
+            </File>
+            <File>
+              <FileName>bsp_uart.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Bsp\src\bsp_uart.c</FilePath>
+            </File>
+            <File>
+              <FileName>bsp_timer0.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Bsp\src\bsp_timer0.c</FilePath>
+            </File>
+            <File>
+              <FileName>bsp_timer1.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Bsp\src\bsp_timer1.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

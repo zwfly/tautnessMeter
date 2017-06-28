@@ -457,7 +457,6 @@ char putchar(char c) {
 	while (!TI_1)
 		;
 	clr_TI_1;
-	return (SBUF_1 = c);
-	;
+	return (SBUF_1 = c);;
 #endif
 }

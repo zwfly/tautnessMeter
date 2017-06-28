@@ -7,6 +7,8 @@
 ".\Out\Objects\bsp_display.obj",
 ".\Out\Objects\bsp_hall.obj",
 ".\Out\Objects\bsp_uart.obj",
+".\Out\Objects\bsp_timer0.obj",
+".\Out\Objects\bsp_timer1.obj",
 ".\Out\Objects\Common.obj",
 ".\Out\Objects\Delay.obj",
 ".\Out\Objects\Display.obj",

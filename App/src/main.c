@@ -12,20 +12,19 @@ void main(void) {
 
 	System_Clock_Select(E_HIRCEN);
 
+#if  0
+	CKDIV = 1;                        //Fsys = Fosc / (2* CLKDIV) = Fcpu
+#endif
+
 	bsp_Init();
 
-	InitialUART1_Timer3(9600);
-	
+	Show_FW_Version_Number_To_PC();
 
-
-	set_P30;
-	set_P31;
 	while (1) {
 //	Send_Data_To_UART1(0x55);
 		printf("test\n");
 
-Tmp_Delay(10000);
-	
+		Tmp_Delay(50000);
 
 #if 0
 		BEEP_Pro();
