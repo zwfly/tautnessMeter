@@ -1,0 +1,460 @@
+C51 COMPILER V9.56.0.0   BSP_KEY                                                           06/27/2017 21:45:45 PAGE 1   
+
+
+C51 COMPILER V9.56.0.0, COMPILATION OF MODULE BSP_KEY
+OBJECT MODULE PLACED IN .\Out\Objects\bsp_key.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE ..\Bsp\src\bsp_key.c LARGE OPTIMIZE(4,SPEED) BROWSE INCDIR(..\Common\inc
+                    -;..\App\inc;..\Bsp\inc;..\Startup;..\Bsp) DEFINE(FOSC_110592) DEBUG OBJECTEXTEND PRINT(.\Out\Listings\bsp_key.lst) OBJEC
+                    -T(.\Out\Objects\bsp_key.obj)
+
+line level    source
+
+   1          /*
+   2           *********************************************************************************************************
+   3           *
+   4           *      Ä£¿éÃû³Æ : ¶ÀÁ¢°´¼üÇý¶¯Ä£¿é
+   5           *      ÎÄ¼þÃû³Æ : bsp_key.c
+   6           *      °æ    ±¾ : V1.0
+   7           *      Ëµ    Ã÷ : É¨Ãè¶ÀÁ¢°´¼ü£¬¾ßÓÐÈí¼þÂË²¨»úÖÆ£¬¾ßÓÐ°´¼üFIFO¡£¿ÉÒÔ¼ì²âÈçÏÂÊÂ¼þ£º
+   8           *                              (1) °´¼ü°´ÏÂ
+   9           *                              (2) °´¼üµ¯Æð
+  10           *                              (3) ³¤°´¼ü
+  11           *                              (4) ³¤°´Ê±×Ô¶¯Á¬·¢
+  12           *
+  13           *********************************************************************************************************
+  14           */
+  15          
+  16          #include "bsp.h"
+  17          
+  18          
+  19          
+  20          /* °´¼ü¿Ú¶ÔÓ¦µÄRCCÊ±ÖÓ */
+  21          #if 1  //²úÆ·°å×Ó
+  22          #define RCC_ALL_KEY     (RCC_APB2Periph_GPIOD | RCC_APB2Periph_GPIOE)
+  23          
+  24          #define GPIO_PORT_K1    GPIOD
+  25          #define GPIO_PIN_K1         GPIO_Pin_12
+  26          
+  27          #define GPIO_PORT_K2    GPIOD
+  28          #define GPIO_PIN_K2         GPIO_Pin_13
+  29          
+  30          #define GPIO_PORT_K3    GPIOE
+  31          #define GPIO_PIN_K3         GPIO_Pin_4
+  32          
+  33          #define GPIO_PORT_K4    GPIOE
+  34          #define GPIO_PIN_K4         GPIO_Pin_5
+  35          #else  //¿ª·¢°å
+              #define RCC_ALL_KEY     (RCC_APB2Periph_GPIOA | RCC_APB2Periph_GPIOC | RCC_APB2Periph_GPIOD | RCC_APB2Periph_
+             -GPIOG)
+              
+              #define GPIO_PORT_K1    GPIOC
+              #define GPIO_PIN_K1         GPIO_Pin_13
+              
+              #define GPIO_PORT_K2    GPIOA
+              #define GPIO_PIN_K2         GPIO_Pin_0
+              
+              #define GPIO_PORT_K3    GPIOG
+              #define GPIO_PIN_K3         GPIO_Pin_8
+              
+              #define GPIO_PORT_K4    GPIOG
+              #define GPIO_PIN_K4         GPIO_Pin_15
+              #endif
+  50          #if 0
+              #define GPIO_PORT_K5    GPIOD
+              #define GPIO_PIN_K5         GPIO_Pin_3
+C51 COMPILER V9.56.0.0   BSP_KEY                                                           06/27/2017 21:45:45 PAGE 2   
+
+              
+              #define GPIO_PORT_K6    GPIOG
+              #define GPIO_PIN_K6         GPIO_Pin_14
+              
+              #define GPIO_PORT_K7    GPIOG
+              #define GPIO_PIN_K7         GPIO_Pin_13
+              
+              #define GPIO_PORT_K8    GPIOG
+              #define GPIO_PIN_K8         GPIO_Pin_7
+              #endif
+  63          static KEY_T s_tBtn[KEY_COUNT];
+  64          static KEY_FIFO_T s_tKey; /* °´¼üFIFO±äÁ¿,½á¹¹Ìå */
+  65          
+  66          static void bsp_InitKeyVar(void);
+  67          static void bsp_InitKeyHard(void);
+  68          static void bsp_DetectKey(uint8_t i);
+  69          
+  70          /*
+  71           *********************************************************************************************************
+  72           *      º¯ Êý Ãû: IsKeyDownX
+  73           *      ¹¦ÄÜËµÃ÷: ÅÐ¶Ï°´¼üÊÇ·ñ°´ÏÂ
+  74           *      ÐÎ    ²Î: ÎÞ
+  75           *      ·µ »Ø Öµ: ·µ»ØÖµ1 ±íÊ¾°´ÏÂ£¬0±íÊ¾Î´°´ÏÂ
+  76           *********************************************************************************************************
+  77           */
+  78          /* °²¸»À³ STM32-V4 ¿ª·¢°å */
+  79          #if 1   /* ÎªÁËÇø·Ö3¸öÊÂ¼þ:¡¡K1µ¥¶À°´ÏÂ, K2µ¥¶À°´ÏÂ£¬ K1ºÍK2Í¬Ê±°´ÏÂ */
+  80          static uint8_t IsKeyDown1(void) {
+  81   1              
+  82   1                      return 0;
+  83   1      }
+  84          static uint8_t IsKeyDown2(void) {
+  85   1              
+  86   1                      return 0;
+  87   1      }
+  88          static uint8_t IsKeyDown3(void) {
+  89   1              
+  90   1                      return 0;
+  91   1      }
+  92          static uint8_t IsKeyDown9(void) /* K1 K2×éºÏ¼ü */
+  93          {
+  94   1              
+  95   1                      return 0;
+  96   1      }
+  97          static uint8_t IsKeyDown10(void) /* K2 K3×éºÏ¼ü */
+  98          {
+  99   1              
+ 100   1                      return 0;
+ 101   1      }
+ 102          
+ 103          #else
+              static uint8_t IsKeyDown1(void) {if ((GPIO_PORT_K1->IDR & GPIO_PIN_K1) == 0) return 1; else return 0;}
+              static uint8_t IsKeyDown2(void) {if ((GPIO_PORT_K2->IDR & GPIO_PIN_K2) == 0) return 1; else return 0;}
+              static uint8_t IsKeyDown3(void) {if ((GPIO_PORT_K3->IDR & GPIO_PIN_K3) == 0) return 1; else return 0;}
+              static uint8_t IsKeyDown4(void) {if ((GPIO_PORT_K4->IDR & GPIO_PIN_K4) == 0) return 1; else return 0;}
+              
+              //static uint8_t IsKeyDown9(void) {if (IsKeyDown1() && IsKeyDown2()) return 1; else return 0;} /* K1 K2×éº
+             -Ï¼ü */
+              //static uint8_t IsKeyDown10(void) {if (IsKeyDown2() && IsKeyDown3()) return 1; else return 0;} /* K2 K3×é
+             -ºÏ¼ü */
+              #endif
+ 112          
+C51 COMPILER V9.56.0.0   BSP_KEY                                                           06/27/2017 21:45:45 PAGE 3   
+
+ 113          /* 5·½ÏòÒ¡¸Ë */
+ 114          #if (BSP_KEY_PRODUCT==0)
+              static uint8_t IsKeyDown4(void) {
+                      if ((GPIO_PORT_K4->IDR & GPIO_PIN_K4) == 0)
+                      return 1;
+                      else
+                      return 0;
+              }
+              static uint8_t IsKeyDown5(void) {
+                      if ((GPIO_PORT_K5->IDR & GPIO_PIN_K5) == 0)
+                      return 1;
+                      else
+                      return 0;
+              }
+              static uint8_t IsKeyDown6(void) {
+                      if ((GPIO_PORT_K6->IDR & GPIO_PIN_K6) == 0)
+                      return 1;
+                      else
+                      return 0;
+              }
+              static uint8_t IsKeyDown7(void) {
+                      if ((GPIO_PORT_K7->IDR & GPIO_PIN_K7) == 0)
+                      return 1;
+                      else
+                      return 0;
+              }
+              static uint8_t IsKeyDown8(void) {
+                      if ((GPIO_PORT_K8->IDR & GPIO_PIN_K8) == 0)
+                      return 1;
+                      else
+                      return 0;
+              }
+              #endif
+ 146          /*
+ 147           *********************************************************************************************************
+ 148           *      º¯ Êý Ãû: bsp_InitKey
+ 149           *      ¹¦ÄÜËµÃ÷: ³õÊ¼»¯°´¼ü. ¸Ãº¯Êý±» bsp_Init() µ÷ÓÃ¡£
+ 150           *      ÐÎ    ²Î:  ÎÞ
+ 151           *      ·µ »Ø Öµ: ÎÞ
+ 152           *********************************************************************************************************
+ 153           */
+ 154          void bsp_InitKey(void) {
+ 155   1              bsp_InitKeyVar(); /* ³õÊ¼»¯°´¼ü±äÁ¿ */
+ 156   1              bsp_InitKeyHard(); /* ³õÊ¼»¯°´¼üÓ²¼þ */
+ 157   1      }
+ 158          
+ 159          /*
+ 160           *********************************************************************************************************
+ 161           *      º¯ Êý Ãû: bsp_PutKey
+ 162           *      ¹¦ÄÜËµÃ÷: ½«1¸ö¼üÖµÑ¹Èë°´¼üFIFO»º³åÇø¡£¿ÉÓÃÓÚÄ£ÄâÒ»¸ö°´¼ü¡£
+ 163           *      ÐÎ    ²Î:  _KeyCode : °´¼ü´úÂë
+ 164           *      ·µ »Ø Öµ: ÎÞ
+ 165           *********************************************************************************************************
+ 166           */
+ 167          void bsp_PutKey(uint8_t _KeyCode) {
+ 168   1              s_tKey.Buf[s_tKey.Write] = _KeyCode;
+ 169   1      
+ 170   1              if (++s_tKey.Write >= KEY_FIFO_SIZE) {
+ 171   2                      s_tKey.Write = 0;
+ 172   2              }
+ 173   1      }
+ 174          
+C51 COMPILER V9.56.0.0   BSP_KEY                                                           06/27/2017 21:45:45 PAGE 4   
+
+ 175          /*
+ 176           *********************************************************************************************************
+ 177           *      º¯ Êý Ãû: bsp_GetKey
+ 178           *      ¹¦ÄÜËµÃ÷: ´Ó°´¼üFIFO»º³åÇø¶ÁÈ¡Ò»¸ö¼üÖµ¡£
+ 179           *      ÐÎ    ²Î:  ÎÞ
+ 180           *      ·µ »Ø Öµ: °´¼ü´úÂë
+ 181           *********************************************************************************************************
+ 182           */
+ 183          uint8_t bsp_GetKey(void) {
+ 184   1              uint8_t ret;
+ 185   1      
+ 186   1              if (s_tKey.Read == s_tKey.Write) {
+ 187   2                      return KEY_NONE;
+ 188   2              } else {
+ 189   2                      ret = s_tKey.Buf[s_tKey.Read];
+ 190   2      
+ 191   2                      if (++s_tKey.Read >= KEY_FIFO_SIZE) {
+ 192   3                              s_tKey.Read = 0;
+ 193   3                      }
+ 194   2                      return ret;
+ 195   2              }
+ 196   1      }
+ 197          
+ 198          /*
+ 199           *********************************************************************************************************
+ 200           *      º¯ Êý Ãû: bsp_GetKey2
+ 201           *      ¹¦ÄÜËµÃ÷: ´Ó°´¼üFIFO»º³åÇø¶ÁÈ¡Ò»¸ö¼üÖµ¡£¶ÀÁ¢µÄ¶ÁÖ¸Õë¡£
+ 202           *      ÐÎ    ²Î:  ÎÞ
+ 203           *      ·µ »Ø Öµ: °´¼ü´úÂë
+ 204           *********************************************************************************************************
+ 205           */
+ 206          uint8_t bsp_GetKey2(void) {
+ 207   1              uint8_t ret;
+ 208   1      
+ 209   1              if (s_tKey.Read2 == s_tKey.Write) {
+ 210   2                      return KEY_NONE;
+ 211   2              } else {
+ 212   2                      ret = s_tKey.Buf[s_tKey.Read2];
+ 213   2      
+ 214   2                      if (++s_tKey.Read2 >= KEY_FIFO_SIZE) {
+ 215   3                              s_tKey.Read2 = 0;
+ 216   3                      }
+ 217   2                      return ret;
+ 218   2              }
+ 219   1      }
+ 220          
+ 221          /*
+ 222           *********************************************************************************************************
+ 223           *      º¯ Êý Ãû: bsp_GetKeyState
+ 224           *      ¹¦ÄÜËµÃ÷: ¶ÁÈ¡°´¼üµÄ×´Ì¬
+ 225           *      ÐÎ    ²Î:  _ucKeyID : °´¼üID£¬´Ó0¿ªÊ¼
+ 226           *      ·µ »Ø Öµ: 1 ±íÊ¾°´ÏÂ£¬ 0 ±íÊ¾Î´°´ÏÂ
+ 227           *********************************************************************************************************
+ 228           */
+ 229          uint8_t bsp_GetKeyState(KEY_ID_E _ucKeyID) {
+ 230   1              return s_tBtn[_ucKeyID].State;
+ 231   1      }
+ 232          
+ 233          /*
+ 234           *********************************************************************************************************
+ 235           *      º¯ Êý Ãû: bsp_SetKeyParam
+ 236           *      ¹¦ÄÜËµÃ÷: ÉèÖÃ°´¼ü²ÎÊý
+C51 COMPILER V9.56.0.0   BSP_KEY                                                           06/27/2017 21:45:45 PAGE 5   
+
+ 237           *      ÐÎ    ²Î£º_ucKeyID : °´¼üID£¬´Ó0¿ªÊ¼
+ 238           *                      _LongTime : ³¤°´ÊÂ¼þÊ±¼ä
+ 239           *                       _RepeatSpeed : Á¬·¢ËÙ¶È
+ 240           *      ·µ »Ø Öµ: ÎÞ
+ 241           *********************************************************************************************************
+ 242           */
+ 243          void bsp_SetKeyParam(uint8_t _ucKeyID, uint16_t _LongTime, uint8_t _RepeatSpeed) {
+ 244   1              s_tBtn[_ucKeyID].LongTime = _LongTime; /* ³¤°´Ê±¼ä 0 ±íÊ¾²»¼ì²â³¤°´¼üÊÂ¼þ */
+ 245   1              s_tBtn[_ucKeyID].RepeatSpeed = _RepeatSpeed; /* °´¼üÁ¬·¢µÄËÙ¶È£¬0±íÊ¾²»Ö§³ÖÁ¬·¢ */
+ 246   1              s_tBtn[_ucKeyID].RepeatCount = 0; /* Á¬·¢¼ÆÊýÆ÷ */
+ 247   1      }
+ 248          
+ 249          /*
+ 250           *********************************************************************************************************
+ 251           *      º¯ Êý Ãû: bsp_ClearKey
+ 252           *      ¹¦ÄÜËµÃ÷: Çå¿Õ°´¼üFIFO»º³åÇø
+ 253           *      ÐÎ    ²Î£ºÎÞ
+ 254           *      ·µ »Ø Öµ: °´¼ü´úÂë
+ 255           *********************************************************************************************************
+ 256           */
+ 257          void bsp_ClearKey(void) {
+ 258   1              s_tKey.Read = s_tKey.Write;
+ 259   1      }
+ 260          
+ 261          /*
+ 262           *********************************************************************************************************
+ 263           *      º¯ Êý Ãû: bsp_InitKeyHard
+ 264           *      ¹¦ÄÜËµÃ÷: ÅäÖÃ°´¼ü¶ÔÓ¦µÄGPIO
+ 265           *      ÐÎ    ²Î:  ÎÞ
+ 266           *      ·µ »Ø Öµ: ÎÞ
+ 267           *********************************************************************************************************
+ 268           */
+ 269          static void bsp_InitKeyHard(void) {
+ 270   1              
+ 271   1      }
+ 272          
+ 273          /*
+ 274           *********************************************************************************************************
+ 275           *      º¯ Êý Ãû: bsp_InitKeyVar
+ 276           *      ¹¦ÄÜËµÃ÷: ³õÊ¼»¯°´¼ü±äÁ¿
+ 277           *      ÐÎ    ²Î:  ÎÞ
+ 278           *      ·µ »Ø Öµ: ÎÞ
+ 279           *********************************************************************************************************
+ 280           */
+ 281          static void bsp_InitKeyVar(void) {
+ 282   1              uint8_t i;
+ 283   1      
+ 284   1              /* ¶Ô°´¼üFIFO¶ÁÐ´Ö¸ÕëÇåÁã */
+ 285   1              s_tKey.Read = 0;
+ 286   1              s_tKey.Write = 0;
+ 287   1              s_tKey.Read2 = 0;
+ 288   1      
+ 289   1              /* ¸øÃ¿¸ö°´¼ü½á¹¹Ìå³ÉÔ±±äÁ¿¸³Ò»×éÈ±Ê¡Öµ */
+ 290   1              for (i = 0; i < KEY_COUNT; i++) {
+ 291   2                      s_tBtn[i].LongTime = KEY_LONG_TIME; /* ³¤°´Ê±¼ä 0 ±íÊ¾²»¼ì²â³¤°´¼üÊÂ¼þ */
+ 292   2                      s_tBtn[i].Count = KEY_FILTER_TIME / 2; /* ¼ÆÊýÆ÷ÉèÖÃÎªÂË²¨Ê±¼äµÄÒ»°ë */
+ 293   2                      s_tBtn[i].State = 0; /* °´¼üÈ±Ê¡×´Ì¬£¬0ÎªÎ´°´ÏÂ */
+ 294   2                      //s_tBtn[i].KeyCodeDown = 3 * i + 1;                            /* °´¼ü°´ÏÂµÄ¼üÖµ´úÂë */
+ 295   2                      //s_tBtn[i].KeyCodeUp   = 3 * i + 2;                            /* °´¼üµ¯ÆðµÄ¼üÖµ´úÂë */
+ 296   2                      //s_tBtn[i].KeyCodeLong = 3 * i + 3;                            /* °´¼ü±»³ÖÐø°´ÏÂµÄ¼üÖµ´úÂë */
+ 297   2                      s_tBtn[i].RepeatSpeed = 0; /* °´¼üÁ¬·¢µÄËÙ¶È£¬0±íÊ¾²»Ö§³ÖÁ¬·¢ */
+ 298   2                      s_tBtn[i].RepeatCount = 0; /* Á¬·¢¼ÆÊýÆ÷ */
+C51 COMPILER V9.56.0.0   BSP_KEY                                                           06/27/2017 21:45:45 PAGE 6   
+
+ 299   2              }
+ 300   1      
+ 301   1              /* Èç¹ûÐèÒªµ¥¶À¸ü¸ÄÄ³¸ö°´¼üµÄ²ÎÊý£¬¿ÉÒÔÔÚ´Ëµ¥¶ÀÖØÐÂ¸³Öµ */
+ 302   1              /* ±ÈÈç£¬ÎÒÃÇÏ£Íû°´¼ü1°´ÏÂ³¬¹ý1Ãëºó£¬×Ô¶¯ÖØ·¢ÏàÍ¬¼üÖµ */
+ 303   1      #if (BSP_KEY_PRODUCT==0)
+                      s_tBtn[KID_JOY_U].LongTime = 100;
+                      s_tBtn[KID_JOY_U].RepeatSpeed = 5; /* Ã¿¸ô50ms×Ô¶¯·¢ËÍ¼üÖµ */
+              
+                      s_tBtn[KID_JOY_D].LongTime = 100;
+                      s_tBtn[KID_JOY_D].RepeatSpeed = 5; /* Ã¿¸ô50ms×Ô¶¯·¢ËÍ¼üÖµ */
+              
+                      s_tBtn[KID_JOY_L].LongTime = 100;
+                      s_tBtn[KID_JOY_L].RepeatSpeed = 5; /* Ã¿¸ô50ms×Ô¶¯·¢ËÍ¼üÖµ */
+              
+                      s_tBtn[KID_JOY_R].LongTime = 100;
+                      s_tBtn[KID_JOY_R].RepeatSpeed = 5; /* Ã¿¸ô50ms×Ô¶¯·¢ËÍ¼üÖµ */
+              #endif
+ 316   1              /* ÅÐ¶Ï°´¼ü°´ÏÂµÄº¯Êý */
+ 317   1              s_tBtn[0].IsKeyDownFunc = IsKeyDown1;
+ 318   1              s_tBtn[1].IsKeyDownFunc = IsKeyDown2;
+ 319   1              s_tBtn[2].IsKeyDownFunc = IsKeyDown3;
+ 320   1      //      s_tBtn[3].IsKeyDownFunc = IsKeyDown4;
+ 321   1      #if (BSP_KEY_PRODUCT==0)
+                      s_tBtn[4].IsKeyDownFunc = IsKeyDown5;
+                      s_tBtn[5].IsKeyDownFunc = IsKeyDown6;
+                      s_tBtn[6].IsKeyDownFunc = IsKeyDown7;
+                      s_tBtn[7].IsKeyDownFunc = IsKeyDown8;
+              #endif
+ 327   1              /* ×éºÏ¼ü */
+ 328   1      //      s_tBtn[8].IsKeyDownFunc = IsKeyDown9;
+ 329   1      //      s_tBtn[9].IsKeyDownFunc = IsKeyDown10;
+ 330   1      }
+ 331          
+ 332          /*
+ 333           *********************************************************************************************************
+ 334           *      º¯ Êý Ãû: bsp_DetectKey
+ 335           *      ¹¦ÄÜËµÃ÷: ¼ì²âÒ»¸ö°´¼ü¡£·Ç×èÈû×´Ì¬£¬±ØÐë±»ÖÜÆÚÐÔµÄµ÷ÓÃ¡£
+ 336           *      ÐÎ    ²Î:  °´¼ü½á¹¹±äÁ¿Ö¸Õë
+ 337           *      ·µ »Ø Öµ: ÎÞ
+ 338           *********************************************************************************************************
+ 339           */
+ 340          static void bsp_DetectKey(uint8_t i) {
+ 341   1              KEY_T *pBtn;
+ 342   1      
+ 343   1              /*
+ 344   1               Èç¹ûÃ»ÓÐ³õÊ¼»¯°´¼üº¯Êý£¬Ôò±¨´í
+ 345   1               if (s_tBtn[i].IsKeyDownFunc == 0)
+ 346   1               {
+ 347   1               printf("Fault : DetectButton(), s_tBtn[i].IsKeyDownFunc undefine");
+ 348   1               }
+ 349   1               */
+ 350   1      
+ 351   1              pBtn = &s_tBtn[i];
+ 352   1              if (pBtn->IsKeyDownFunc()) {
+ 353   2                      if (pBtn->Count < KEY_FILTER_TIME) {
+ 354   3                              pBtn->Count = KEY_FILTER_TIME;
+ 355   3                      } else if (pBtn->Count < 2 * KEY_FILTER_TIME) {
+ 356   3                              pBtn->Count++;
+ 357   3                      } else {
+ 358   3                              if (pBtn->State == 0) {
+ 359   4                                      pBtn->State = 1;
+ 360   4      
+C51 COMPILER V9.56.0.0   BSP_KEY                                                           06/27/2017 21:45:45 PAGE 7   
+
+ 361   4                                      /* ·¢ËÍ°´Å¥°´ÏÂµÄÏûÏ¢ */
+ 362   4                                      bsp_PutKey((uint8_t) (3 * i + 1));
+ 363   4                              }
+ 364   3      
+ 365   3                              if (pBtn->LongTime > 0) {
+ 366   4                                      if (pBtn->LongCount < pBtn->LongTime) {
+ 367   5                                              /* ·¢ËÍ°´Å¥³ÖÐø°´ÏÂµÄÏûÏ¢ */
+ 368   5                                              if (++pBtn->LongCount == pBtn->LongTime) {
+ 369   6                                                      /* ¼üÖµ·ÅÈë°´¼üFIFO */
+ 370   6                                                      bsp_PutKey((uint8_t) (3 * i + 3));
+ 371   6                                              }
+ 372   5                                      } else {
+ 373   5                                              if (pBtn->RepeatSpeed > 0) {
+ 374   6                                                      if (++pBtn->RepeatCount >= pBtn->RepeatSpeed) {
+ 375   7                                                              pBtn->RepeatCount = 0;
+ 376   7                                                              /* ³£°´¼üºó£¬Ã¿¸ô10ms·¢ËÍ1¸ö°´¼ü */
+ 377   7                                                              bsp_PutKey((uint8_t) (3 * i + 1));
+ 378   7                                                      }
+ 379   6                                              }
+ 380   5                                      }
+ 381   4                              }
+ 382   3                      }
+ 383   2              } else {
+ 384   2                      if (pBtn->Count > KEY_FILTER_TIME) {
+ 385   3                              pBtn->Count = KEY_FILTER_TIME;
+ 386   3                      } else if (pBtn->Count != 0) {
+ 387   3                              pBtn->Count--;
+ 388   3                      } else {
+ 389   3                              if (pBtn->State == 1) {
+ 390   4                                      pBtn->State = 0;
+ 391   4      
+ 392   4                                      /* ·¢ËÍ°´Å¥µ¯ÆðµÄÏûÏ¢ */
+ 393   4                                      bsp_PutKey((uint8_t) (3 * i + 2));
+ 394   4                              }
+ 395   3                      }
+ 396   2      
+ 397   2                      pBtn->LongCount = 0;
+ 398   2                      pBtn->RepeatCount = 0;
+ 399   2              }
+ 400   1      }
+ 401          
+ 402          /*
+ 403           *********************************************************************************************************
+ 404           *      º¯ Êý Ãû: bsp_KeyScan
+ 405           *      ¹¦ÄÜËµÃ÷: É¨ÃèËùÓÐ°´¼ü¡£·Ç×èÈû£¬±»systickÖÐ¶ÏÖÜÆÚÐÔµÄµ÷ÓÃ
+ 406           *      ÐÎ    ²Î:  ÎÞ
+ 407           *      ·µ »Ø Öµ: ÎÞ
+ 408           *********************************************************************************************************
+ 409           */
+ 410          void bsp_KeyScan(void) {
+ 411   1              uint8_t i;
+ 412   1      
+ 413   1              for (i = 0; i < KEY_COUNT; i++) {
+ 414   2                      bsp_DetectKey(i);
+ 415   2              }
+ 416   1      }
+ 417          
+ 418          /***************************** (END OF FILE) *********************************/
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    958    ----
+C51 COMPILER V9.56.0.0   BSP_KEY                                                           06/27/2017 21:45:45 PAGE 8   
+
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =     57       5
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

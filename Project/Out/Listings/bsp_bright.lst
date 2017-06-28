@@ -1,0 +1,42 @@
+C51 COMPILER V9.56.0.0   BSP_BRIGHT                                                        06/27/2017 21:45:45 PAGE 1   
+
+
+C51 COMPILER V9.56.0.0, COMPILATION OF MODULE BSP_BRIGHT
+OBJECT MODULE PLACED IN .\Out\Objects\bsp_bright.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE ..\Bsp\src\bsp_bright.c LARGE OPTIMIZE(4,SPEED) BROWSE INCDIR(..\Common\
+                    -inc;..\App\inc;..\Bsp\inc;..\Startup;..\Bsp) DEFINE(FOSC_110592) DEBUG OBJECTEXTEND PRINT(.\Out\Listings\bsp_bright.lst)
+                    - OBJECT(.\Out\Objects\bsp_bright.obj)
+
+line level    source
+
+   1          /*
+   2           * bsp_bright.c
+   3           *
+   4           *  Created on: 2017Äê6ÔÂ26ÈÕ
+   5           *      Author: fly
+   6           */
+   7          
+   8          #include "bsp.h"
+   9          
+  10          void Bright_InitHard(void) {
+  11   1      
+  12   1              P3M1 &= ~SET_BIT1;
+  13   1              P3M2 |= SET_BIT1;
+  14   1      
+  15   1              clr_P31;
+  16   1      
+  17   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =      9    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
