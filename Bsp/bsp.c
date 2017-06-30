@@ -9,6 +9,7 @@ void bsp_Init(void) {
 
 
 
+
 //	bsp_InitKey();
 
 	Bright_InitHard();
