@@ -46,6 +46,13 @@
 							</tool>
 						</toolChain>
 					</folderInfo>
+					<fileInfo id="cdt.managedbuild.config.gnu.cross.exe.debug.158598457.1223504683" name="Display.c" rcbsApplicability="disable" resourcePath="Common/src/Display.c" toolsToInvoke="cdt.managedbuild.tool.gnu.cross.c.compiler.1019776599.1205017242">
+						<tool id="cdt.managedbuild.tool.gnu.cross.c.compiler.1019776599.1205017242" name="Cross GCC Compiler" superClass="cdt.managedbuild.tool.gnu.cross.c.compiler.1019776599"/>
+					</fileInfo>
+					<fileInfo id="cdt.managedbuild.config.gnu.cross.exe.debug.158598457.1302033821" name="Display.h" rcbsApplicability="disable" resourcePath="Common/inc/Display.h" toolsToInvoke=""/>
+					<sourceEntries>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+					</sourceEntries>
 				</configuration>
 			</storageModule>
 			<storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
@@ -116,4 +123,5 @@
 			<resource resourceType="PROJECT" workspacePath="/meter"/>
 		</configuration>
 	</storageModule>
+	<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets"/>
 </cproject>

@@ -1,7 +1,7 @@
 #include "bsp.h"
 
-#define BEEP_ENABLE()	
-#define BEEP_DISABLE()	
+//#define BEEP_ENABLE()	set_T2DOE1
+//#define BEEP_DISABLE()	clr_T2DOE1
 
 static BEEP_T g_tBeep; /* 定义蜂鸣器全局结构体变量 */
 
@@ -14,7 +14,7 @@ static BEEP_T g_tBeep; /* 定义蜂鸣器全局结构体变量 */
  *********************************************************************************************************
  */
 void BEEP_InitHard(void) {
-#if 0
+#if 1
 	P3M1 &= ~SET_BIT0;
 	P3M2 |= SET_BIT0;
 
@@ -32,9 +32,9 @@ void BEEP_InitHard(void) {
 	set_T2DPS0;
 
 	/* Determine Timer 2D Reload Low Byte */
-	R2DL = 124;
+	R2DL = 128;
 	/* Determine Timer 2D Reload High Byte */
-	R2DH = 124;
+	R2DH = 128;
 
 	/* Set T2D as PWM mode */
 	set_T2DM;
@@ -43,14 +43,24 @@ void BEEP_InitHard(void) {
 //	set_ET2D;
 //	set_EA;
 	/* set T2AO1(P1.5)/T2AO2(P1.6) pin to toggling output */
-	set_T2DOE1;
+//	set_T2DOE1;
 //	set_T2DOE2;
-
 	/* start Timer2D */
 	set_TR2D;
 
 }
 
+void BEEP_ENABLE() {
+	set_T2DOE1;
+	set_P30;
+}
+
+void BEEP_DISABLE() {
+	clr_T2DOE1;
+
+	clr_P30;
+
+}
 /*
  *********************************************************************************************************
  *	函 数 名: BEEP_Start
@@ -74,8 +84,7 @@ void BEEP_Start(uint16_t _usBeepTime, uint16_t _usStopTime, uint16_t _usCycle) {
 	g_tBeep.ucState = 0;
 	g_tBeep.ucEnalbe = 1; /* 设置完全局参数后再使能发声标志 */
 
-	BEEP_ENABLE()
-	; /* 开始发声 */
+	BEEP_ENABLE(); /* 开始发声 */
 }
 
 /*
@@ -89,8 +98,7 @@ void BEEP_Start(uint16_t _usBeepTime, uint16_t _usStopTime, uint16_t _usCycle) {
 void BEEP_Stop(void) {
 	g_tBeep.ucEnalbe = 0;
 
-	BEEP_DISABLE()
-	; /* 必须在清控制标志后再停止发声，避免停止后在中断中又开启 */
+	BEEP_DISABLE(); /* 必须在清控制标志后再停止发声，避免停止后在中断中又开启 */
 }
 
 /*
@@ -122,8 +130,7 @@ void BEEP_Pro(void) {
 		if (g_tBeep.usStopTime > 0) /* 间断发声 */
 		{
 			if (++g_tBeep.usCount >= g_tBeep.usBeepTime) {
-				BEEP_DISABLE()
-				; /* 停止发声 */
+				BEEP_DISABLE(); /* 停止发声 */
 				g_tBeep.usCount = 0;
 				g_tBeep.ucState = 1;
 			}
@@ -148,8 +155,7 @@ void BEEP_Pro(void) {
 			g_tBeep.usCount = 0;
 			g_tBeep.ucState = 0;
 
-			BEEP_ENABLE()
-			; /* 开始发声 */
+			BEEP_ENABLE(); /* 开始发声 */
 		}
 	}
 }

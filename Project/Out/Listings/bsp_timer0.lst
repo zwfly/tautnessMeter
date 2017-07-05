@@ -1,4 +1,4 @@
-C51 COMPILER V9.56.0.0   BSP_TIMER0                                                        06/28/2017 23:18:36 PAGE 1   
+C51 COMPILER V9.56.0.0   BSP_TIMER0                                                        07/05/2017 22:28:33 PAGE 1   
 
 
 C51 COMPILER V9.56.0.0, COMPILATION OF MODULE BSP_TIMER0
@@ -18,29 +18,77 @@ line level    source
    7          
    8          #include "bsp.h"
    9          
-  10          void Timer0_InitHard(void) {
-  11   1      
-  12   1              TMOD = 0x22;                  //Timer 0 and Timer 1 mode configuration
-  13   1      
-  14   1              TH0 = (256 - 50);            //initial counter values
-  15   1              TL0 = (256 - 50);
-  16   1              TH1 = (256 - 250);
-  17   1              TL1 = (256 - 250);
-  18   1      
-  19   1              set_ET0;                                    //enable Timer0 interrupt
-  20   1              set_ET1;                                    //enable Timer1 interrupt
-  21   1              set_EA;                                     //enable interrupts
-  22   1              set_TR0;                                    //Timer0 run
-  23   1              set_TR1;                                    //Timer1 run
-  24   1      
-  25   1      }
-  26          
+  10          #define TH0_INIT        922
+  11          #define TL0_INIT        922
+  12          
+  13          static uint8_t u8TH0_tmp = 0, u8TL0_tmp = 0;
+  14          
+  15          _Task_time Task_time;
+  16          
+  17          static void timer0_ParamInit(void);
+  18          void Timer0_InitHard(void) {
+  19   1      
+  20   1              timer0_ParamInit();
+  21   1      
+  22   1              clr_GATE_T0;
+  23   1              clr_CT_T0;
+  24   1              clr_M1_T0;
+  25   1              set_M0_T0;
+  26   1      
+  27   1              u8TH0_tmp = (65536 - TH0_INIT) / 256;
+  28   1              u8TL0_tmp = (65536 - TL0_INIT) % 256;
+  29   1      
+  30   1              TH0 = u8TH0_tmp;            //initial counter values
+  31   1              TL0 = u8TL0_tmp;
+  32   1      
+  33   1              set_ET0;                                    //enable Timer0 interrupt
+  34   1              set_TR0;                                    //Timer0 run
+  35   1      
+  36   1      }
+  37          
+  38          static void timer0_ParamInit(void) {
+  39   1      
+  40   1              Task_time.cnt_10ms = 0;
+  41   1              Task_time.cnt_100ms = 0;
+  42   1              Task_time.cnt_1s = 0;
+  43   1      
+  44   1              Task_time.flag_10ms = 0;
+  45   1              Task_time.flag_100ms = 0;
+  46   1              Task_time.flag_1s = 0;
+  47   1      
+  48   1      }
+  49          
+  50          void Timer0_ISR(void)
+  51          interrupt 1              //interrupt address is 0x000B
+  52          {
+  53   1              TH0 = u8TH0_tmp;
+C51 COMPILER V9.56.0.0   BSP_TIMER0                                                        07/05/2017 22:28:33 PAGE 2   
+
+  54   1              TL0 = u8TL0_tmp;
+  55   1      
+  56   1              if (++Task_time.cnt_10ms >= 10) {
+  57   2                      Task_time.cnt_10ms = 0;
+  58   2                      Task_time.flag_10ms = 1;
+  59   2      
+  60   2              }
+  61   1              if (++Task_time.cnt_100ms >= 100) {
+  62   2                      Task_time.cnt_100ms = 0;
+  63   2                      Task_time.flag_100ms = 1;
+  64   2              }
+  65   1              if (++Task_time.cnt_1s >= 1000) {
+  66   2                      Task_time.cnt_1s = 0;
+  67   2                      Task_time.flag_1s = 1;
+  68   2      
+  69   2              }
+  70   1      
+  71   1      }
+  72          
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =     26    ----
+   CODE SIZE        =    168    ----
    CONSTANT SIZE    =   ----    ----
-   XDATA SIZE       =   ----    ----
+   XDATA SIZE       =      9    ----
    PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----    ----
    IDATA SIZE       =   ----    ----
