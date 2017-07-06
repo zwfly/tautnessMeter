@@ -1,4 +1,4 @@
-C51 COMPILER V9.56.0.0   BSP_KEY                                                           07/05/2017 22:28:33 PAGE 1   
+C51 COMPILER V9.56.0.0   BSP_KEY                                                           07/06/2017 22:09:56 PAGE 1   
 
 
 C51 COMPILER V9.56.0.0, COMPILATION OF MODULE BSP_KEY
@@ -62,7 +62,7 @@ line level    source
   51   2                      return 1;
   52   2              }
   53   1      }
-C51 COMPILER V9.56.0.0   BSP_KEY                                                           07/05/2017 22:28:33 PAGE 2   
+C51 COMPILER V9.56.0.0   BSP_KEY                                                           07/06/2017 22:09:56 PAGE 2   
 
   54          static uint8_t IsKeyDown2(void) {
   55   1              if (P04) {
@@ -126,7 +126,7 @@ line level    source
  113   1      }
  114          
  115          /*
-C51 COMPILER V9.56.0.0   BSP_KEY                                                           07/05/2017 22:28:33 PAGE 3   
+C51 COMPILER V9.56.0.0   BSP_KEY                                                           07/06/2017 22:09:56 PAGE 3   
 
  116           *********************************************************************************************************
  117           *      函 数 名: bsp_GetKey
@@ -190,7 +190,7 @@ line level    source
  175           *      函 数 名: bsp_SetKeyParam
  176           *      功能说明: 设置按键参数
  177           *      形    参：_ucKeyID : 按键ID，从0开始
-C51 COMPILER V9.56.0.0   BSP_KEY                                                           07/05/2017 22:28:33 PAGE 4   
+C51 COMPILER V9.56.0.0   BSP_KEY                                                           07/06/2017 22:09:56 PAGE 4   
 
  178           *                      _LongTime : 长按事件时间
  179           *                       _RepeatSpeed : 连发速度
@@ -254,7 +254,7 @@ line level    source
  237   1              s_tKey.Read = 0;
  238   1              s_tKey.Write = 0;
  239   1              s_tKey.Read2 = 0;
-C51 COMPILER V9.56.0.0   BSP_KEY                                                           07/05/2017 22:28:33 PAGE 5   
+C51 COMPILER V9.56.0.0   BSP_KEY                                                           07/06/2017 22:09:56 PAGE 5   
 
  240   1      
  241   1              /* 给每个按键结构体成员变量赋一组缺省值 */
@@ -318,7 +318,7 @@ line level    source
  299   7                                                      }
  300   6                                              }
  301   5                                      }
-C51 COMPILER V9.56.0.0   BSP_KEY                                                           07/05/2017 22:28:33 PAGE 6   
+C51 COMPILER V9.56.0.0   BSP_KEY                                                           07/06/2017 22:09:56 PAGE 6   
 
  302   4                              }
  303   3                      }

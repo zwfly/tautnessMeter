@@ -57,26 +57,53 @@ void main(void) {
 
 		}
 		if (Task_time.flag_1s) {
-			static bit bb = 0;
+			static uint8_t tmp = 0;
+			static uint8_t cnt = 0;
 			Task_time.flag_1s = 0;
 			//////////////////
 			app_work_1s_pro();
-			//printf("test\n");
-			if (bb) {
-				bb = 0;
-				LCD_Clear_Bluetooth_ICO();
 
-			} else {
-				bb = 1;
-				LCD_Display_Bluetooth_ICO();
+
+			cnt++;
+			if (cnt > 9) {
+				cnt = 10;
+
+				tmp++;
+				LCD_Display_REP_Num(tmp % 99);
+				LCD_Display_Pulls_Num(tmp);
+				LCD_Display_CAL_Num(tmp);
 			}
 
+//			if (bb) {
+//				bb = 0;
+//				LCD_Display_Battery_ICO();
+//				LCD_Display_REP_ICO();
+//				LCD_Display_ABCD('A');
+//				LCD_Display_QS_ICO();
+//				LCD_Display_COACH_ICO();
+//				LCD_Display_Heart_ICO();
+//				LCD_Display_CAL_ICO();
+//
+//			} else {
+//				bb = 1;
+//				LCD_Clear_Battery_ICO();
+//				LCD_Clear_REP_ICO();
+//				LCD_Clear_ABCD();
+//				LCD_Clear_QS_ICO();
+//				LCD_Clear_COACH_ICO();
+//				LCD_Clear_Heart_ICO();
+//				LCD_Clear_CAL_ICO();
+//
+//
+//
+//
+//			}
 		}
 #if 1
 
 		ucKeyCode = bsp_GetKey();
 		if (ucKeyCode != KEY_NONE) {
-//			BEEP_KeyTone();
+			BEEP_KeyTone();
 			switch (ucKeyCode) {
 			case KEY_UP_K1:
 

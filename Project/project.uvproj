@@ -148,7 +148,7 @@
             <RestoreSysVw>1</RestoreSysVw>
           </Target>
           <RunDebugAfterBuild>0</RunDebugAfterBuild>
-          <TargetSelection>-1</TargetSelection>
+          <TargetSelection>10</TargetSelection>
           <SimDlls>
             <CpuDll></CpuDll>
             <CpuDllArguments></CpuDllArguments>
@@ -367,6 +367,21 @@
               <FileName>main.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\App\src\main.c</FilePath>
+            </File>
+            <File>
+              <FileName>app_repeat_exe.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\App\src\app_repeat_exe.c</FilePath>
+            </File>
+            <File>
+              <FileName>app_work.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\App\src\app_work.c</FilePath>
+            </File>
+            <File>
+              <FileName>app.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\App\inc\app.h</FilePath>
             </File>
           </Files>
         </Group>

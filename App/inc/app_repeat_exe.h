@@ -30,8 +30,8 @@ void Repeat_Stop(void);
 
 void Repeat_Start_exe(void);
 void Repeat_Stop_exe(void);
-void Repeat_SetStart( (*fun)(void));
-void Repeat_SetStop( (*fun)(void));
+void Repeat_SetStart(void (*fun)(void));
+void Repeat_SetStop(void (*fun)(void));
 
 void Repeat_Pro(void);
 

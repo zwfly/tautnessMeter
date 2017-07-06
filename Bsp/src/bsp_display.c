@@ -12,11 +12,21 @@
 #define COM2    0x04
 #define COM3    0x08
 
-static void LCD_Try_Run(void);
-
 void LCD_display_InitHard(void) {
+	uint8_t j = 0;
+#if 0
 
-	LCDCON = 0x00;      //;VLCD = 0.9VDD (VDD = 3.3V, VLCD = 3.0V)
+	P1M1 = 0x00;
+	P1M2 = 0xFF;
+
+	P2M1 = 0x00;
+	P2M2 = 0xFF;
+
+	P4M1 = 0x00;
+	P4M2 = 0xFF;
+#endif
+
+	LCDCON = 0x40;      //;VLCD = 0.9VDD (VDD = 3.3V, VLCD = 3.0V)
 						//;1/4 duty, 1/3 bias, 150kO resistor ladder
 
 	LCDCLK = 0x04;      //
@@ -28,8 +38,7 @@ void LCD_display_InitHard(void) {
 
 	LCDCON |= SET_BIT7;  //LCDEN = 1
 
-//	LCD_Try_Run();
-
+	LCD_Clear_All();
 }
 
 void LCD_Clear_All(void) {
@@ -43,7 +52,7 @@ void LCD_Clear_All(void) {
 void LCD_Clear_Bluetooth_ICO(void) {
 	clr_SEG10EN;
 	LCDPTR = 10;
-	LCDDAT = COM0;
+	LCDDAT = 0;
 }
 void LCD_Display_Bluetooth_ICO(void) {
 	set_SEG10EN;
@@ -54,7 +63,7 @@ void LCD_Display_Bluetooth_ICO(void) {
 void LCD_Clear_Bluetooth_Fill_ICO(void) {
 	clr_SEG12EN;
 	LCDPTR = 12;
-	LCDDAT = COM0;
+	LCDDAT = 0;
 }
 void LCD_Display_Bluetooth_Fill_ICO(void) {
 	set_SEG12EN;
@@ -65,7 +74,7 @@ void LCD_Display_Bluetooth_Fill_ICO(void) {
 void LCD_Clear_Line_up(void) {
 	clr_SEG8EN;
 	LCDPTR = 8;
-	LCDDAT = COM0;
+	LCDDAT = 0;
 }
 void LCD_Display_Line_up(void) {
 	set_SEG8EN;
@@ -75,7 +84,7 @@ void LCD_Display_Line_up(void) {
 void LCD_Clear_Battery_ICO(void) {
 	clr_SEG14EN;
 	LCDPTR = 14;
-	LCDDAT = COM0;
+	LCDDAT = 0;
 }
 void LCD_Display_Battery_ICO(void) {
 	set_SEG14EN;
@@ -85,7 +94,7 @@ void LCD_Display_Battery_ICO(void) {
 void LCD_Clear_REP_ICO(void) {
 	clr_SEG16EN;
 	LCDPTR = 16;
-	LCDDAT = COM0;
+	LCDDAT = 0;
 }
 void LCD_Display_REP_ICO(void) {
 	set_SEG16EN;
@@ -1022,14 +1031,5 @@ void LCD_Display_CAL_ICO(void) {
 	set_SEG6EN;
 	LCDPTR = 6;
 	LCDDAT = COM0;
-}
-
-void LCD_Try_Run(void) {
-
-	LCD_Clear_Bluetooth_ICO();
-	Timer1_Delay1ms(500);
-	LCD_Display_Bluetooth_ICO();
-
-	Timer1_Delay1ms(500);
 }
 

@@ -24,11 +24,11 @@ void Repeat_Init(void) {
 
 }
 
-void Repeat_SetStart( (*fun)(void)) {
+void Repeat_SetStart(void (*fun)(void)) {
 	g_tRepeat.Start = fun;
 }
 
-void Repeat_SetStop( (*fun)(void)) {
+void Repeat_SetStop(void (*fun)(void)) {
 	g_tRepeat.Stop = fun;
 }
 

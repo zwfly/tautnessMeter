@@ -1,4 +1,6 @@
 ".\Out\Objects\main.obj",
+".\Out\Objects\app_repeat_exe.obj",
+".\Out\Objects\app_work.obj",
 ".\Out\Objects\bsp.obj",
 ".\Out\Objects\bsp_beep.obj",
 ".\Out\Objects\bsp_key.obj",
