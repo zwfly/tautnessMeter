@@ -1,4 +1,4 @@
-#include "bsp.h"
+#include "app.h"
 
 void Tmp_Delay(uint32_t xdata u32CNT)
 {
@@ -18,6 +18,10 @@ void main(void) {
 
 	bsp_Init();
 
+	/****************/
+
+	Repeat_Init();
+	/****************/
 	Show_FW_Version_Number_To_PC();
 
 	while (1) {
@@ -35,6 +39,9 @@ void main(void) {
 		if (Task_time.flag_100ms) {
 			Task_time.flag_100ms = 0;
 			//////////////////
+
+			Repeat_Pro();
+
 			/*if (P03 == 0) {
 			 printf("P03\n");
 			 }
@@ -53,6 +60,7 @@ void main(void) {
 			static bit bb = 0;
 			Task_time.flag_1s = 0;
 			//////////////////
+			app_work_1s_pro();
 			//printf("test\n");
 			if (bb) {
 				bb = 0;
@@ -68,31 +76,55 @@ void main(void) {
 
 		ucKeyCode = bsp_GetKey();
 		if (ucKeyCode != KEY_NONE) {
-
+//			BEEP_KeyTone();
 			switch (ucKeyCode) {
+			case KEY_UP_K1:
+
+				break;
 			case KEY_DOWN_K1:
-				BEEP_KeyTone();
-				printf("K1 = %d\n", KEY_DOWN_K1);
+
+				break;
+			case KEY_LONG_K1:
+
+				break;
+			case KEY_UP_K2:
+
 				break;
 			case KEY_DOWN_K2:
-				BEEP_KeyTone();
-				printf("K2\n");
+
+				break;
+			case KEY_LONG_K2:
+
+				break;
+			case KEY_UP_K3:
+
 				break;
 			case KEY_DOWN_K3:
-				BEEP_KeyTone();
-				printf("K3\n");
+
+				break;
+			case KEY_LONG_K3:
+
+				break;
+			case KEY_UP_K4:
+
 				break;
 			case KEY_DOWN_K4:
-				BEEP_KeyTone();
-				printf("K4\n");
+
+				break;
+			case KEY_LONG_K4:
+
+				break;
+			case KEY_UP_K1K3:
 
 				break;
 			case KEY_DOWN_K1K3:
-				BEEP_KeyTone();
-				printf("K13\n");
+
+				break;
+			case KEY_LONG_K1K3:
+
 				break;
 			default:
-
+				BEEP_KeyTone();
 				break;
 
 			}

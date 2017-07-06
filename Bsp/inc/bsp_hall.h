@@ -8,6 +8,9 @@
 #ifndef BSP_INC_BSP_HALL_H_
 #define BSP_INC_BSP_HALL_H_
 
-
+void Hall_InitHard(void);
+void hall_1_interrupt(void);
+void hall_2_interrupt(void);
+void hall_3_interrupt(void);
 
 #endif /* BSP_INC_BSP_HALL_H_ */
