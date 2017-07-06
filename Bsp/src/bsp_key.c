@@ -30,6 +30,7 @@ static void bsp_DetectKey(uint8_t i);
  *	返 回 值: 返回值1 表示按下，0表示未按下
  *********************************************************************************************************
  */
+#if 0
 static uint8_t IsKeyDown1(void) {
 	return !P03;
 }
@@ -42,6 +43,38 @@ static uint8_t IsKeyDown3(void) {
 static uint8_t IsKeyDown4(void) {
 	return !P06;
 }
+#else
+static uint8_t IsKeyDown1(void) {
+	if (P03) {
+		return 0;
+	} else {
+		return 1;
+	}
+}
+static uint8_t IsKeyDown2(void) {
+	if (P04) {
+		return 0;
+	} else {
+		return 1;
+	}
+}
+static uint8_t IsKeyDown3(void) {
+	if (P05) {
+		return 0;
+	} else {
+		return 1;
+	}
+}
+static uint8_t IsKeyDown4(void) {
+	if (P06) {
+		return 0;
+	} else {
+		return 1;
+	}
+}
+
+#endif
+
 /* S1 S3组合键 */
 static uint8_t IsKeyDown_1and3(void) {
 	if ((P03 == 0) && (P05 == 0)) {
@@ -281,7 +314,6 @@ static void bsp_DetectKey(uint8_t i) {
 				bsp_PutKey((uint8_t) (3 * i + 2));
 			}
 		}
-
 		pBtn->LongCount = 0;
 		pBtn->RepeatCount = 0;
 	}

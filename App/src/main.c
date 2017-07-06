@@ -22,29 +22,76 @@ void main(void) {
 
 	while (1) {
 //	Send_Data_To_UART1(0x55);
-		printf("test\n");
+//		printf("test\n");
 
-		Tmp_Delay(50000);
+//		Tmp_Delay(50000);
 
-#if 0
-		BEEP_Pro();
-		bsp_KeyScan();
+		if (Task_time.flag_10ms) {
+			Task_time.flag_10ms = 0;
+			//////////////////
+			BEEP_Pro();
+			bsp_KeyScan();
+		}
+		if (Task_time.flag_100ms) {
+			Task_time.flag_100ms = 0;
+			//////////////////
+			/*if (P03 == 0) {
+			 printf("P03\n");
+			 }
+			 if (P04 == 0) {
+			 printf("P04\n");
+			 }
+			 if (P05 == 0) {
+			 printf("P05\n");
+			 }
+			 if (P06 == 0) {
+			 printf("P06\n");
+			 }*/
+
+		}
+		if (Task_time.flag_1s) {
+			static bit bb = 0;
+			Task_time.flag_1s = 0;
+			//////////////////
+			//printf("test\n");
+			if (bb) {
+				bb = 0;
+				LCD_Clear_Bluetooth_ICO();
+
+			} else {
+				bb = 1;
+				LCD_Display_Bluetooth_ICO();
+			}
+
+		}
+#if 1
 
 		ucKeyCode = bsp_GetKey();
-
 		if (ucKeyCode != KEY_NONE) {
+
 			switch (ucKeyCode) {
-				case KEY_DOWN_K1: /* K1键按下 打印任务执行情况 */
+			case KEY_DOWN_K1:
+				BEEP_KeyTone();
+				printf("K1 = %d\n", KEY_DOWN_K1);
+				break;
+			case KEY_DOWN_K2:
+				BEEP_KeyTone();
+				printf("K2\n");
+				break;
+			case KEY_DOWN_K3:
+				BEEP_KeyTone();
+				printf("K3\n");
+				break;
+			case KEY_DOWN_K4:
+				BEEP_KeyTone();
+				printf("K4\n");
 
 				break;
-
-				case KEY_DOWN_K2: /* K2键按下 通过函数OSTaskQPost，给任务AppTaskMsgPro发数据 */
-
+			case KEY_DOWN_K1K3:
+				BEEP_KeyTone();
+				printf("K13\n");
 				break;
-				case KEY_DOWN_K3:
-
-				break;
-				default: /* 其他的键值不处理 */
+			default:
 
 				break;
 

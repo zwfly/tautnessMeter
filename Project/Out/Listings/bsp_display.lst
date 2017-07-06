@@ -1,4 +1,4 @@
-C51 COMPILER V9.56.0.0   BSP_DISPLAY                                                       06/28/2017 23:18:36 PAGE 1   
+C51 COMPILER V9.56.0.0   BSP_DISPLAY                                                       07/05/2017 22:28:33 PAGE 1   
 
 
 C51 COMPILER V9.56.0.0, COMPILATION OF MODULE BSP_DISPLAY
@@ -18,13 +18,159 @@ line level    source
    7          
    8          #include "bsp.h"
    9          
-  10          
+  10          #define COM0    0x01
+  11          #define COM1    0x02
+  12          #define COM2    0x04
+  13          #define COM3    0x08
+  14          
+  15          static void LCD_Try_Run(void);
+  16          
+  17          void LCD_display_InitHard(void) {
+  18   1      
+  19   1              LCDCON = 0x00;      //;VLCD = 0.9VDD (VDD = 3.3V, VLCD = 3.0V)
+  20   1                                                      //;1/4 duty, 1/3 bias, 150kO resistor ladder
+  21   1      
+  22   1              LCDCLK = 0x04;      //
+  23   1      
+  24   1              //enable seg pin
+  25   1              LCDSEG0 = 0xFF;
+  26   1              LCDSEG1 = 0xFF;
+  27   1              LCDSEG2 = 0x07;
+  28   1      
+  29   1              LCDCON |= SET_BIT7;  //LCDEN = 1
+  30   1      
+  31   1      //      LCD_Try_Run();
+  32   1      
+  33   1      }
+  34          
+  35           void LCD_Clear_All(void) {
+  36   1              uint8_t i;
+  37   1              for (i = 0; i < 19; i++) {
+  38   2                      LCDPTR = i;
+  39   2                      LCDDAT = 0;
+  40   2              }
+  41   1      }
+  42          
+  43           void LCD_Clear_Bluetooth_ICO(void) {
+  44   1              clr_SEG10EN;
+  45   1              LCDPTR = 10;
+  46   1              LCDDAT = COM0;
+  47   1      }
+  48           void LCD_Display_Bluetooth_ICO(void) {
+  49   1              set_SEG10EN;
+  50   1              LCDPTR = 10;
+  51   1              LCDDAT = COM0;
+  52   1      }
+  53          
+C51 COMPILER V9.56.0.0   BSP_DISPLAY                                                       07/05/2017 22:28:33 PAGE 2   
+
+  54           void LCD_Clear_Bluetooth_Fill_ICO(void) {
+  55   1              clr_SEG12EN;
+  56   1              LCDPTR = 12;                            //MCU's SEG0 -- LCD's SEG1
+  57   1              LCDDAT = COM0;                //LCD's COM1/2
+  58   1      
+  59   1      }
+  60           void LCD_Display_Bluetooth_Fill_ICO(void) {
+  61   1              set_SEG12EN;                   //MCU's SEG0 enable
+  62   1              LCDPTR = 12;                            //MCU's SEG0 -- LCD's SEG1
+  63   1              LCDDAT = COM0;                //LCD's COM1/2
+  64   1      
+  65   1      }
+  66          
+  67          static void LCD_Clear_Line_up(void) {
+  68   1      
+  69   1      }
+  70          static void LCD_Display_Line_up(void) {
+  71   1      
+  72   1      }
+  73          static void LCD_Clear_Battery_ICO(void) {
+  74   1      
+  75   1      }
+  76          static void LCD_Display_Battery_ICO(void) {
+  77   1      
+  78   1      }
+  79          static void LCD_Clear_REP_ICO(void) {
+  80   1      
+  81   1      }
+  82          static void LCD_Display_REP_ICO(void) {
+  83   1      
+  84   1      }
+  85          static void LCD_Clear_REP_Num(void) {
+  86   1      
+  87   1      }
+  88          static void LCD_Display_REP_Num(uint8_t num) {
+  89   1      
+  90   1      }
+*** WARNING C280 IN LINE 88 OF ..\Bsp\src\bsp_display.c: 'num': unreferenced local variable
+  91          static void LCD_Clear_ABCD(void) {
+  92   1      
+  93   1      }
+  94          static void LCD_Display_ABCD(char c) {
+  95   1      
+  96   1      }
+*** WARNING C280 IN LINE 94 OF ..\Bsp\src\bsp_display.c: 'c': unreferenced local variable
+  97          static void LCD_Clear_Pulls_Num(void) {
+  98   1      
+  99   1      }
+ 100          static void LCD_Display_Pulls_Num(uint16_t num) {
+ 101   1      
+ 102   1      }
+*** WARNING C280 IN LINE 100 OF ..\Bsp\src\bsp_display.c: 'num': unreferenced local variable
+ 103          static void LCD_Clear_QS_ICO(void) {
+ 104   1      
+ 105   1      }
+ 106          static void LCD_Display_QS_ICO(void) {
+ 107   1      
+ 108   1      }
+ 109          static void LCD_Clear_COACH_ICO(void) {
+ 110   1      
+ 111   1      }
+ 112          static void LCD_Display_COACH_ICO(void) {
+C51 COMPILER V9.56.0.0   BSP_DISPLAY                                                       07/05/2017 22:28:33 PAGE 3   
+
+ 113   1      
+ 114   1      }
+ 115          static void LCD_Clear_Line_down(void) {
+ 116   1      
+ 117   1      }
+ 118          static void LCD_Display_Line_down(void) {
+ 119   1      
+ 120   1      }
+ 121          static void LCD_Clear_Heart_ICO(void) {
+ 122   1      
+ 123   1      }
+ 124          static void LCD_Display_Heart_ICO(void) {
+ 125   1      
+ 126   1      }
+ 127          static void LCD_Clear_CAL_Num(void) {
+ 128   1      
+ 129   1      }
+ 130          static void LCD_Display_CAL_Num(uint16_t num) {
+ 131   1      
+ 132   1      }
+*** WARNING C280 IN LINE 130 OF ..\Bsp\src\bsp_display.c: 'num': unreferenced local variable
+ 133          static void LCD_Clear_CAL_ICO(void) {
+ 134   1      
+ 135   1      }
+ 136          static void LCD_Display_CAL_ICO(void) {
+ 137   1      
+ 138   1      }
+ 139          
+ 140          static void LCD_Try_Run(void) {
+ 141   1      
+ 142   1              LCD_Clear_Bluetooth_ICO();
+ 143   1              Timer1_Delay1ms(500);
+ 144   1              LCD_Display_Bluetooth_ICO();
+ 145   1      
+ 146   1              Timer1_Delay1ms(500);
+ 147   1      }
+ 148          
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =   ----    ----
+   CODE SIZE        =    150    ----
    CONSTANT SIZE    =   ----    ----
-   XDATA SIZE       =   ----    ----
+   XDATA SIZE       =   ----       6
    PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----    ----
    IDATA SIZE       =   ----    ----
@@ -32,4 +178,4 @@ MODULE INFORMATION:   STATIC OVERLAYABLE
 END OF MODULE INFORMATION.
 
 
-C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
+C51 COMPILATION COMPLETE.  4 WARNING(S),  0 ERROR(S)

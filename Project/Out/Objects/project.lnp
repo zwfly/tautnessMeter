@@ -11,7 +11,6 @@
 ".\Out\Objects\bsp_timer1.obj",
 ".\Out\Objects\Common.obj",
 ".\Out\Objects\Delay.obj",
-".\Out\Objects\Display.obj",
 ".\Out\Objects\Version.obj",
 ".\Out\Objects\STARTUP.obj" 
 TO ".\Out\Objects\project" 
