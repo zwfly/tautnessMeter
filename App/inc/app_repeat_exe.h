@@ -28,8 +28,8 @@ void Repeat_Start(uint16_t _usStartTime, uint16_t _usStopTime,
 		uint16_t _usCycle);
 void Repeat_Stop(void);
 
-void Repeat_Start_exe(void);
-void Repeat_Stop_exe(void);
+//void Repeat_Start_exe(void);
+//void Repeat_Stop_exe(void);
 void Repeat_SetStart(void (*fun)(void));
 void Repeat_SetStop(void (*fun)(void));
 

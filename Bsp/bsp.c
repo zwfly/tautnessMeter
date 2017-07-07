@@ -1,6 +1,6 @@
 #include "bsp.h"
 
-bit BIT_TMP;  //WTF
+BIT BIT_TMP;  //WTF
 
 void bsp_Init(void) {
 
@@ -17,7 +17,7 @@ void bsp_Init(void) {
 
 	Uart_InitHard();
 
-	set_EA;                                     //enable interrupts
+	set_EA;         //enable interrupts
 
 }
 

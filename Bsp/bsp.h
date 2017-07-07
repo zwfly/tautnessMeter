@@ -20,6 +20,8 @@
 #include "bsp_uart.h"
 #include "bsp_timer0.h"
 #include "bsp_timer1.h"
+#include "bsp_adc.h"
+
 
 #ifndef TRUE
 #define TRUE  1
@@ -29,9 +31,8 @@
 #define FALSE 0
 #endif
 
-/* 提供给其他C文件调用的函数 */
 void bsp_Init(void);
-void bsp_Idle(void);
+
 
 #endif
 

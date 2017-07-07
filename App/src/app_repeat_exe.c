@@ -32,13 +32,13 @@ void Repeat_SetStop(void (*fun)(void)) {
 	g_tRepeat.Stop = fun;
 }
 
-void Repeat_Start_exe(void) {
+static void Repeat_Start_exe(void) {
 	if (g_tRepeat.Start != 0) {
 		g_tRepeat.Start();
 	}
 }
 
-void Repeat_Stop_exe(void) {
+static void Repeat_Stop_exe(void) {
 	if (g_tRepeat.Stop != 0) {
 		g_tRepeat.Stop();
 	}
@@ -81,7 +81,8 @@ void Repeat_Start(uint16_t _usStartTime, uint16_t _usStopTime,
  */
 void Repeat_Stop(void) {
 	g_tRepeat.ucEnalbe = 0;
-
+	Repeat_SetStart(0);
+	Repeat_SetStop(0);
 	Repeat_Stop_exe(); /* 必须在清控制标志后再停止发声，避免停止后在中断中又开启 */
 }
 
