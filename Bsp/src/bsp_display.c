@@ -54,7 +54,7 @@ void LCD_Clear_Bluetooth_ICO(void) {
 	LCDPTR = 10;
 	LCDDAT = 0;
 }
-void LCD_Display_Bluetooth_ICO(void) {
+void LCD_Show_Bluetooth_ICO(void) {
 	set_SEG10EN;
 	LCDPTR = 10;
 	LCDDAT = COM0;
@@ -65,7 +65,7 @@ void LCD_Clear_Bluetooth_Fill_ICO(void) {
 	LCDPTR = 12;
 	LCDDAT = 0;
 }
-void LCD_Display_Bluetooth_Fill_ICO(void) {
+void LCD_Show_Bluetooth_Fill_ICO(void) {
 	set_SEG12EN;
 	LCDPTR = 12;
 	LCDDAT = COM0;
@@ -76,7 +76,7 @@ void LCD_Clear_Line_up(void) {
 	LCDPTR = 8;
 	LCDDAT = 0;
 }
-void LCD_Display_Line_up(void) {
+void LCD_Show_Line_up(void) {
 	set_SEG8EN;
 	LCDPTR = 8;
 	LCDDAT = COM0;
@@ -86,7 +86,7 @@ void LCD_Clear_Battery_ICO(void) {
 	LCDPTR = 14;
 	LCDDAT = 0;
 }
-void LCD_Display_Battery_ICO(void) {
+void LCD_Show_Battery_ICO(void) {
 	set_SEG14EN;
 	LCDPTR = 14;
 	LCDDAT = COM0;
@@ -96,7 +96,7 @@ void LCD_Clear_REP_ICO(void) {
 	LCDPTR = 16;
 	LCDDAT = 0;
 }
-void LCD_Display_REP_ICO(void) {
+void LCD_Show_REP_ICO(void) {
 	set_SEG16EN;
 	LCDPTR = 16;
 	LCDDAT = COM0;
@@ -119,7 +119,7 @@ void LCD_Clear_REP_Num(void) {
 	LCDPTR = 21;
 	LCDDAT = COM0 + COM1 + COM2 + COM3;
 }
-void LCD_Display_REP_Num(uint8_t num) {
+void LCD_Show_REP_Num(uint8_t num) {
 
 	uint8_t ge;
 	uint8_t shi;
@@ -295,7 +295,7 @@ void LCD_Clear_ABCD(void) {
 	LCDPTR = 18;
 	LCDDAT = 0;
 }
-void LCD_Display_ABCD(char c) {
+void LCD_Show_ABCD(char c) {
 	set_SEG18EN;
 	switch (c) {
 	case 'A':
@@ -346,7 +346,7 @@ void LCD_Clear_Pulls_Num(void) {
 	LCDPTR = 13;
 	LCDDAT = COM0 + COM1 + COM2 + COM3;
 }
-void LCD_Display_Pulls_Num(uint16_t num) {
+void LCD_Show_Pulls_Num(uint16_t num) {
 	uint8_t ge;
 	uint8_t shi;
 	uint8_t bai;
@@ -608,7 +608,7 @@ void LCD_Clear_QS_ICO(void) {
 	LCDPTR = 2;
 	LCDDAT = COM0;
 }
-void LCD_Display_QS_ICO(void) {
+void LCD_Show_QS_ICO(void) {
 	set_SEG2EN;
 	LCDPTR = 2;
 	LCDDAT = COM0;
@@ -618,7 +618,7 @@ void LCD_Clear_COACH_ICO(void) {
 	LCDPTR = 4;
 	LCDDAT = COM0;
 }
-void LCD_Display_COACH_ICO(void) {
+void LCD_Show_COACH_ICO(void) {
 	set_SEG4EN;
 	LCDPTR = 4;
 	LCDDAT = COM0;
@@ -628,7 +628,7 @@ void LCD_Clear_Line_down(void) {
 	LCDPTR = 8;
 	LCDDAT = COM0;
 }
-void LCD_Display_Line_down(void) {
+void LCD_Show_Line_down(void) {
 	set_SEG8EN;
 	LCDPTR = 8;
 	LCDDAT = COM0;
@@ -638,7 +638,7 @@ void LCD_Clear_Heart_ICO(void) {
 	LCDPTR = 0;
 	LCDDAT = COM0;
 }
-void LCD_Display_Heart_ICO(void) {
+void LCD_Show_Heart_ICO(void) {
 	set_SEG0EN;
 	LCDPTR = 0;
 	LCDDAT = COM0;
@@ -677,7 +677,7 @@ void LCD_Clear_CAL_Num(void) {
 	LCDPTR = 7;
 	LCDDAT = COM0 + COM1 + COM2 + COM3;
 }
-void LCD_Display_CAL_Num(uint16_t num) {
+void LCD_Show_CAL_Num(uint16_t num) {
 	uint8_t ge;
 	uint8_t shi;
 	uint8_t bai;
@@ -1027,7 +1027,7 @@ void LCD_Clear_CAL_ICO(void) {
 	LCDPTR = 6;
 	LCDDAT = COM0;
 }
-void LCD_Display_CAL_ICO(void) {
+void LCD_Show_CAL_ICO(void) {
 	set_SEG6EN;
 	LCDPTR = 6;
 	LCDDAT = COM0;

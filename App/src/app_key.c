@@ -17,43 +17,43 @@ void app_key_init(void) {
 static void app_UI_init(void) {
 	switch (g_tWork.mode) {
 	case E_Simple_metering_mode:
-		LCD_Display_Line_up();
-		LCD_Display_CAL_ICO();
+		LCD_Show_Line_up();
+		LCD_Show_CAL_ICO();
 		break;
 	case E_Quick_start_mode:
 
-		LCD_Display_REP_ICO();
-		LCD_Display_Line_up();
+		LCD_Show_REP_ICO();
+		LCD_Show_Line_up();
 
-		LCD_Display_ABCD('A');
-		LCD_Display_ABCD('B');
-		LCD_Display_ABCD('C');
-		LCD_Display_ABCD('D');
+		LCD_Show_ABCD('A');
+		LCD_Show_ABCD('B');
+		LCD_Show_ABCD('C');
+		LCD_Show_ABCD('D');
 
-		LCD_Display_CAL_ICO();
+		LCD_Show_CAL_ICO();
 
 		LCD_Clear_COACH_ICO();
 
 		Repeat_Stop();
-		Repeat_SetStart(LCD_Display_QS_ICO);
+		Repeat_SetStart(LCD_Show_QS_ICO);
 		Repeat_SetStop(LCD_Clear_QS_ICO);
 		Repeat_Start(8, 8, 0);
 		break;
 	case E_Coach_mode:
-		LCD_Display_REP_ICO();
-		LCD_Display_Line_up();
+		LCD_Show_REP_ICO();
+		LCD_Show_Line_up();
 
-		LCD_Display_ABCD('A');
-		LCD_Display_ABCD('B');
-		LCD_Display_ABCD('C');
-		LCD_Display_ABCD('D');
+		LCD_Show_ABCD('A');
+		LCD_Show_ABCD('B');
+		LCD_Show_ABCD('C');
+		LCD_Show_ABCD('D');
 
-		LCD_Display_CAL_ICO();
+		LCD_Show_CAL_ICO();
 
 		LCD_Clear_QS_ICO();
 
 		Repeat_Stop();
-		Repeat_SetStart(LCD_Display_COACH_ICO);
+		Repeat_SetStart(LCD_Show_COACH_ICO);
 		Repeat_SetStop(LCD_Clear_COACH_ICO);
 		Repeat_Start(8, 8, 0);
 		break;
@@ -65,9 +65,9 @@ void app_key_power_or_return(void) {
 	case E_Simple_metering_mode:
 		g_tWork.sum = 0;
 		g_tWork.cal_num = 0;
-		LCD_Display_Pulls_Num(g_tWork.sum);
+		LCD_Show_Pulls_Num(g_tWork.sum);
 
-		LCD_Display_CAL_Num(g_tWork.cal_num);
+		LCD_Show_CAL_Num(g_tWork.cal_num);
 		break;
 	case E_Quick_start_mode:
 
@@ -78,17 +78,26 @@ void app_key_power_or_return(void) {
 	}
 }
 void app_key_set(void) {
-	switch (g_tWork.mode) {
-	case E_Simple_metering_mode:
-		g_tWork.mode = E_Quick_start_mode;
-		break;
-	case E_Quick_start_mode:
-		g_tWork.mode = E_Coach_mode;
-		break;
-	case E_Coach_mode:
-		g_tWork.mode = E_Simple_metering_mode;
-		break;
+	static BIT power_on_mode_flag = 0;
+
+	if (power_on_mode_flag) {
+		switch (g_tWork.mode) {
+		case E_Simple_metering_mode:
+			g_tWork.mode = E_Quick_start_mode;
+			break;
+		case E_Quick_start_mode:
+			g_tWork.mode = E_Coach_mode;
+			break;
+		case E_Coach_mode:
+			g_tWork.mode = E_Simple_metering_mode;
+			break;
+		}
+	} else {
+		power_on_mode_flag = 1;
+
+
 	}
+
 	app_UI_init();
 }
 void app_key_add(void) {

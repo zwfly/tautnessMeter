@@ -9,7 +9,10 @@
 #define APP_INC_APP_WORK_H_
 
 typedef enum {
-	E_Simple_metering_mode, E_Quick_start_mode, E_Coach_mode,
+	E_TRAINING_PLACE = 0,
+	E_Simple_metering_mode,
+	E_Quick_start_mode,
+	E_Coach_mode,
 } E_TRAINING_MODE;
 
 typedef struct _WORK_T {

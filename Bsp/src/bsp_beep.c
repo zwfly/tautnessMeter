@@ -1,8 +1,5 @@
 #include "bsp.h"
 
-//#define BEEP_ENABLE()	set_T2DOE1
-//#define BEEP_DISABLE()	clr_T2DOE1
-
 static BEEP_T g_tBeep; /* 定义蜂鸣器全局结构体变量 */
 
 /*
@@ -48,6 +45,7 @@ void BEEP_InitHard(void) {
 	/* start Timer2D */
 	set_TR2D;
 
+	g_tBeep.ucEnalbe = 0;
 }
 
 void BEEP_ENABLE() {
@@ -65,17 +63,19 @@ void BEEP_DISABLE() {
  *********************************************************************************************************
  *	函 数 名: BEEP_Start
  *	功能说明: 启动蜂鸣音。
- *	形    参：_usBeepTime : 蜂鸣时间，单位10ms; 0 表示不鸣叫
- *			  _usStopTime : 停止时间，单位10ms; 0 表示持续鸣叫
- *			 _usCycle : 鸣叫次数， 0 表示持续鸣叫
+ *	形    参：  _usInitTime : 延时时间，单位10ms; beep响之前延时的时间; 0表示不延时
+ *		  _usBeepTime : 蜂鸣时间，单位10ms; 0 表示不鸣叫
+ *		  _usStopTime : 停止时间，单位10ms; 0 表示持续鸣叫
+ *		  _usCycle : 鸣叫次数， 0 表示持续鸣叫
  *	返 回 值: 无
  *********************************************************************************************************
  */
-void BEEP_Start(uint16_t _usBeepTime, uint16_t _usStopTime, uint16_t _usCycle) {
+void BEEP_Start(uint16_t _usInitTime, uint16_t _usBeepTime,
+		uint16_t _usStopTime, uint16_t _usCycle) {
 	if (_usBeepTime == 0) {
 		return;
 	}
-
+	g_tBeep.usDelayTime = _usInitTime;
 	g_tBeep.usBeepTime = _usBeepTime;
 	g_tBeep.usStopTime = _usStopTime;
 	g_tBeep.usCycle = _usCycle;
@@ -110,7 +110,7 @@ void BEEP_Stop(void) {
  *********************************************************************************************************
  */
 void BEEP_KeyTone(void) {
-	BEEP_Start(5, 1, 1); /* 鸣叫50ms，停10ms， 1次 */
+	BEEP_Start(0, 5, 1, 1); /* 鸣叫50ms，停10ms， 1次 */
 }
 
 /*
@@ -123,6 +123,10 @@ void BEEP_KeyTone(void) {
  */
 void BEEP_Pro(void) {
 	if ((g_tBeep.ucEnalbe == 0) || (g_tBeep.usStopTime == 0)) {
+		return;
+	}
+	if (g_tBeep.usDelayTime) {
+		g_tBeep.usDelayTime--;
 		return;
 	}
 
