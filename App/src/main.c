@@ -12,7 +12,7 @@ void main(void) {
 	bsp_Init();
 
 	/****************/
-	Repeat_Init();
+	app_key_init();
 	work_Init();
 
 	/****************/
@@ -41,13 +41,13 @@ void main(void) {
 			app_work_1s_pro();
 
 			cnt++;
-			if (cnt > 9) {
+			if (cnt > 3) {
 				cnt = 10;
 
 				tmp++;
-				LCD_Display_REP_Num(tmp % 99);
-				LCD_Display_Pulls_Num(tmp);
-				LCD_Display_CAL_Num(tmp);
+//				LCD_Show_REP_Num(tmp % 99);
+//				LCD_Show_Pulls_Num(tmp);
+//				LCD_Show_CAL_Num(tmp);
 			}
 
 //			if (bb) {

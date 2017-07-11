@@ -14,7 +14,7 @@ typedef struct _HALL_T {
 	uint8_t lastPos;
 } HALL_T;
 
-void Hall_InitHard(void);
+void Hall_Init(void);
 void hall_1_interrupt(void);
 void hall_2_interrupt(void);
 void hall_3_interrupt(void);

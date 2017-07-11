@@ -6,6 +6,8 @@
  */
 
 #include "bsp.h"
+#include "app_work.h"
+
 
 #define HALL_NUM  3
 #define HALL_CNT_UP  100

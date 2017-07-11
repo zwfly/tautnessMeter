@@ -18,7 +18,7 @@ typedef struct _REPEAT_T {
 } REPEAT_T;
 
 /* 供外部调用的函数声明 */
-void Repeat_Init(void);
+
 void Repeat_Start(uint16_t _usDelayTime, uint16_t _usRepeatTime,
 		void (*_fun)(void));
 void Repeat_Stop(void);

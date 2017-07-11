@@ -8,7 +8,7 @@ void bsp_Init(void) {
 	Set_All_GPIO_Input_Mode();
 
 	bsp_InitKey();
-	Hall_InitHard();
+	Hall_Init();
 	Bright_InitHard();
 	BEEP_InitHard();
 	LCD_display_InitHard();

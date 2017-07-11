@@ -63,9 +63,9 @@ static void app_work_pro(void) {
 	case E_Simple_metering_mode:
 
 		if (g_tWork.sum % 10 == 0) {
-			BEEP_Start(BEEP_LONG_TIME, 1, 1);
+			BEEP_Start(0, BEEP_LONG_TIME, 1, 1);
 		} else {
-			BEEP_Start(BEEP_SHORT_TIME, 1, 1);
+			BEEP_Start(0, BEEP_SHORT_TIME, 1, 1);
 		}
 		reps_num_appear_flag = 0;
 		g_tWork.pulls_num = g_tWork.sum;
@@ -74,7 +74,7 @@ static void app_work_pro(void) {
 	case E_Quick_start_mode:
 
 		if (finish_flag) {
-			BEEP_Start(BEEP_SHORT_TIME, 1, 1);
+			BEEP_Start(0, BEEP_SHORT_TIME, 1, 1);
 			g_tWork.sum = Rep_Pull_num[g_tWork.reps_mode - 'A'][0]
 					* Rep_Pull_num[g_tWork.reps_mode - 'A'][1];
 		} else {
@@ -82,13 +82,13 @@ static void app_work_pro(void) {
 					== Rep_Pull_num[g_tWork.reps_mode - 'A'][0]
 							* Rep_Pull_num[g_tWork.reps_mode - 'A'][1]) {
 				finish_flag = 1;
-				BEEP_Start(3 * BEEP_SHORT_TIME, 1, 1);
+				BEEP_Start(0, 3 * BEEP_SHORT_TIME, 1, 1);
 			} else {
 				if (g_tWork.sum % Rep_Pull_num[g_tWork.reps_mode - 'A'][1]
 						== 0) {
-					BEEP_Start(BEEP_SHORT_TIME, BEEP_SHORT_TIME, 3);
+					BEEP_Start(0, BEEP_SHORT_TIME, BEEP_SHORT_TIME, 3);
 				} else {
-					BEEP_Start(BEEP_SHORT_TIME, 1, 1);
+					BEEP_Start(0, BEEP_SHORT_TIME, 1, 1);
 				}
 			}
 			reps_num_appear_flag = 1;

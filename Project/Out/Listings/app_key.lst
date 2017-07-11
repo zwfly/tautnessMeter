@@ -1,0 +1,204 @@
+C51 COMPILER V9.56.0.0   APP_KEY                                                           07/11/2017 22:20:47 PAGE 1   
+
+
+C51 COMPILER V9.56.0.0, COMPILATION OF MODULE APP_KEY
+OBJECT MODULE PLACED IN .\Out\Objects\app_key.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE ..\App\src\app_key.c LARGE OPTIMIZE(8,SPEED) BROWSE INCDIR(..\Common\inc
+                    -;..\App\inc;..\Bsp\inc;..\Startup;..\Bsp) DEFINE(FOSC_110592) DEBUG OBJECTEXTEND PRINT(.\Out\Listings\app_key.lst) OBJEC
+                    -T(.\Out\Objects\app_key.obj)
+
+line level    source
+
+   1          /*
+   2           * app_key.c
+   3           *
+   4           *  Created on: 2017Äê7ÔÂ7ÈÕ
+   5           *      Author: admin
+   6           */
+   7          
+   8          #include "app.h"
+   9          
+  10          static void app_UI_init(void);
+  11          
+  12          void app_key_init(void) {
+  13   1      
+  14   1              app_UI_init();
+  15   1      }
+  16          
+  17          static void app_UI_init(void) {
+  18   1              switch (g_tWork.mode) {
+  19   2              case E_Simple_metering_mode:
+  20   2                      LCD_Show_Line_up();
+  21   2                      LCD_Show_CAL_ICO();
+  22   2                      break;
+  23   2              case E_Quick_start_mode:
+  24   2      
+  25   2                      LCD_Show_REP_ICO();
+  26   2                      LCD_Show_Line_up();
+  27   2      
+  28   2                      LCD_Show_ABCD('A');
+  29   2                      LCD_Show_ABCD('B');
+  30   2                      LCD_Show_ABCD('C');
+  31   2                      LCD_Show_ABCD('D');
+  32   2      
+  33   2                      LCD_Show_CAL_ICO();
+  34   2      
+  35   2                      LCD_Clear_COACH_ICO();
+  36   2      
+  37   2                      Repeat_Stop();
+  38   2      //              Repeat_Start(LCD_Show_QS_ICO);
+  39   2      //              Repeat_Stop(LCD_Clear_QS_ICO);
+  40   2                      Repeat_Start(8, 8, 0);
+  41   2                      break;
+  42   2              case E_Coach_mode:
+  43   2                      LCD_Show_REP_ICO();
+  44   2                      LCD_Show_Line_up();
+  45   2      
+  46   2                      LCD_Show_ABCD('A');
+  47   2                      LCD_Show_ABCD('B');
+  48   2                      LCD_Show_ABCD('C');
+  49   2                      LCD_Show_ABCD('D');
+  50   2      
+  51   2                      LCD_Show_CAL_ICO();
+  52   2      
+  53   2                      LCD_Clear_QS_ICO();
+C51 COMPILER V9.56.0.0   APP_KEY                                                           07/11/2017 22:20:47 PAGE 2   
+
+  54   2      
+  55   2                      Repeat_Stop();
+  56   2      //              Repeat_Start(LCD_Show_COACH_ICO);
+  57   2      //              Repeat_Stop(LCD_Clear_COACH_ICO);
+  58   2                      break;
+  59   2              }
+  60   1      }
+  61          
+  62          void app_key_power_or_return(void) {
+  63   1              switch (g_tWork.mode) {
+  64   2              case E_Simple_metering_mode:
+  65   2                      g_tWork.sum = 0;
+  66   2                      g_tWork.cal_num = 0;
+  67   2                      LCD_Show_Pulls_Num(g_tWork.sum);
+  68   2      
+  69   2                      LCD_Show_CAL_Num(g_tWork.cal_num);
+  70   2                      break;
+  71   2              case E_Quick_start_mode:
+  72   2      
+  73   2                      break;
+  74   2              case E_Coach_mode:
+  75   2      
+  76   2                      break;
+  77   2              }
+  78   1      }
+  79          void app_key_set(void) {
+  80   1              static BIT power_on_mode_flag = 0;
+  81   1      
+  82   1              if (power_on_mode_flag) {
+  83   2                      switch (g_tWork.mode) {
+  84   3                      case E_Simple_metering_mode:
+  85   3                              g_tWork.mode = E_Quick_start_mode;
+  86   3                              break;
+  87   3                      case E_Quick_start_mode:
+  88   3                              g_tWork.mode = E_Coach_mode;
+  89   3                              break;
+  90   3                      case E_Coach_mode:
+  91   3                              g_tWork.mode = E_Simple_metering_mode;
+  92   3                              break;
+  93   3                      }
+  94   2              } else {
+  95   2                      power_on_mode_flag = 1;
+  96   2      
+  97   2      
+  98   2              }
+  99   1      
+ 100   1              app_UI_init();
+ 101   1      }
+ 102          void app_key_add(void) {
+ 103   1              switch (g_tWork.mode) {
+ 104   2              case E_Simple_metering_mode:
+ 105   2      
+ 106   2                      break;
+ 107   2              case E_Quick_start_mode:
+ 108   2      
+ 109   2                      break;
+ 110   2              case E_Coach_mode:
+ 111   2      
+ 112   2                      break;
+ 113   2              }
+ 114   1      }
+ 115          void app_key_ok(void) {
+C51 COMPILER V9.56.0.0   APP_KEY                                                           07/11/2017 22:20:47 PAGE 3   
+
+ 116   1      
+ 117   1      }
+ 118          void app_key_pro(uint8_t keyCode) {
+ 119   1      
+ 120   1              BEEP_KeyTone();
+ 121   1      
+ 122   1              switch (keyCode) {
+ 123   2              case KEY_UP_K1:
+ 124   2      
+ 125   2                      break;
+ 126   2              case KEY_DOWN_K1:
+ 127   2                      app_key_power_or_return();
+ 128   2                      break;
+ 129   2              case KEY_LONG_K1:
+ 130   2      
+ 131   2                      break;
+ 132   2              case KEY_UP_K2:
+ 133   2      
+ 134   2                      break;
+ 135   2              case KEY_DOWN_K2:
+ 136   2                      app_key_set();
+ 137   2                      break;
+ 138   2              case KEY_LONG_K2:
+ 139   2      
+ 140   2                      break;
+ 141   2              case KEY_UP_K3:
+ 142   2      
+ 143   2                      break;
+ 144   2              case KEY_DOWN_K3:
+ 145   2                      app_key_add();
+ 146   2                      break;
+ 147   2              case KEY_LONG_K3:
+ 148   2      
+ 149   2                      break;
+ 150   2              case KEY_UP_K4:
+ 151   2      
+ 152   2                      break;
+ 153   2              case KEY_DOWN_K4:
+ 154   2                      app_key_ok();
+ 155   2                      break;
+ 156   2              case KEY_LONG_K4:
+ 157   2      
+ 158   2                      break;
+ 159   2              case KEY_UP_K1K3:
+ 160   2      
+ 161   2                      break;
+ 162   2              case KEY_DOWN_K1K3:
+ 163   2      
+ 164   2                      break;
+ 165   2              case KEY_LONG_K1K3:
+ 166   2      
+ 167   2                      break;
+ 168   2              default:
+ 169   2      //              BEEP_KeyTone();
+ 170   2                      break;
+ 171   2      
+ 172   2              }
+ 173   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    245    ----
+C51 COMPILER V9.56.0.0   APP_KEY                                                           07/11/2017 22:20:47 PAGE 4   
+
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----       1
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      1    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

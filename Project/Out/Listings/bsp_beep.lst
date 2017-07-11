@@ -1,4 +1,4 @@
-C51 COMPILER V9.56.0.0   BSP_BEEP                                                          07/06/2017 22:09:56 PAGE 1   
+C51 COMPILER V9.56.0.0   BSP_BEEP                                                          07/11/2017 22:20:47 PAGE 1   
 
 
 C51 COMPILER V9.56.0.0, COMPILATION OF MODULE BSP_BEEP
@@ -11,84 +11,84 @@ line level    source
 
    1          #include "bsp.h"
    2          
-   3          //#define BEEP_ENABLE() set_T2DOE1
-   4          //#define BEEP_DISABLE()        clr_T2DOE1
-   5          
-   6          static BEEP_T g_tBeep; /* 定义蜂鸣器全局结构体变量 */
-   7          
-   8          /*
-   9           *********************************************************************************************************
-  10           *      函 数 名: BEEP_InitHard
-  11           *      功能说明: 初始化蜂鸣器硬件
-  12           *      形    参：无
-  13           *      返 回 值: 无
-  14           *********************************************************************************************************
-  15           */
-  16          void BEEP_InitHard(void) {
-  17   1      #if 1
-  18   1              P3M1 &= ~SET_BIT0;
-  19   1              P3M2 |= SET_BIT0;
+   3          static BEEP_T g_tBeep; /* 定义蜂鸣器全局结构体变量 */
+   4          
+   5          /*
+   6           *********************************************************************************************************
+   7           *      函 数 名: BEEP_InitHard
+   8           *      功能说明: 初始化蜂鸣器硬件
+   9           *      形    参：无
+  10           *      返 回 值: 无
+  11           *********************************************************************************************************
+  12           */
+  13          void BEEP_InitHard(void) {
+  14   1      #if 1
+  15   1              P3M1 &= ~SET_BIT0;
+  16   1              P3M2 |= SET_BIT0;
+  17   1      
+  18   1              clr_P30;
+  19   1      #endif
   20   1      
-  21   1              clr_P30;
-  22   1      #endif
-  23   1      
-  24   1              /*  PWM period = (R2AH + R2AL) * Pre-scale / Fsys, Fsys = 11.0592MHz (HIRC)
-  25   1               If R2AH = R2AL, PWM output 50% duty cycle
-  26   1               Min frequency is about 20Hz, while Pre-scale = 1/1024 and R2AH = R2AL = 255
-  27   1               Max frequency is around 5.5MHz, while Pre-scale = 1/1 and R2AH = R2AL = 1   */
-  28   1      
-  29   1              /* Determine Timer 2D pre-scalar */
-  30   1              clr_T2DPS2;
-  31   1              set_T2DPS1;
-  32   1              set_T2DPS0;
-  33   1      
-  34   1              /* Determine Timer 2D Reload Low Byte */
-  35   1              R2DL = 128;
-  36   1              /* Determine Timer 2D Reload High Byte */
-  37   1              R2DH = 128;
+  21   1              /*  PWM period = (R2AH + R2AL) * Pre-scale / Fsys, Fsys = 11.0592MHz (HIRC)
+  22   1               If R2AH = R2AL, PWM output 50% duty cycle
+  23   1               Min frequency is about 20Hz, while Pre-scale = 1/1024 and R2AH = R2AL = 255
+  24   1               Max frequency is around 5.5MHz, while Pre-scale = 1/1 and R2AH = R2AL = 1   */
+  25   1      
+  26   1              /* Determine Timer 2D pre-scalar */
+  27   1              clr_T2DPS2;
+  28   1              set_T2DPS1;
+  29   1              set_T2DPS0;
+  30   1      
+  31   1              /* Determine Timer 2D Reload Low Byte */
+  32   1              R2DL = 128;
+  33   1              /* Determine Timer 2D Reload High Byte */
+  34   1              R2DH = 128;
+  35   1      
+  36   1              /* Set T2D as PWM mode */
+  37   1              set_T2DM;
   38   1      
-  39   1              /* Set T2D as PWM mode */
-  40   1              set_T2DM;
-  41   1      
-  42   1              /* Enable Timer2D interrupt */
-  43   1      //      set_ET2D;
-  44   1      //      set_EA;
-  45   1              /* set T2AO1(P1.5)/T2AO2(P1.6) pin to toggling output */
-  46   1      //      set_T2DOE1;
-  47   1      //      set_T2DOE2;
-  48   1              /* start Timer2D */
-  49   1              set_TR2D;
-  50   1      
-  51   1      }
-  52          
-  53          void BEEP_ENABLE() {
-C51 COMPILER V9.56.0.0   BSP_BEEP                                                          07/06/2017 22:09:56 PAGE 2   
+  39   1              /* Enable Timer2D interrupt */
+  40   1      //      set_ET2D;
+  41   1      //      set_EA;
+  42   1              /* set T2AO1(P1.5)/T2AO2(P1.6) pin to toggling output */
+  43   1      //      set_T2DOE1;
+  44   1      //      set_T2DOE2;
+  45   1              /* start Timer2D */
+  46   1              set_TR2D;
+  47   1      
+  48   1              g_tBeep.ucEnalbe = 0;
+  49   1      }
+  50          
+  51          void BEEP_ENABLE() {
+  52   1              set_T2DOE1;
+  53   1              set_P30;
+C51 COMPILER V9.56.0.0   BSP_BEEP                                                          07/11/2017 22:20:47 PAGE 2   
 
-  54   1              set_T2DOE1;
-  55   1              set_P30;
-  56   1      }
-  57          
-  58          void BEEP_DISABLE() {
-  59   1              clr_T2DOE1;
+  54   1      }
+  55          
+  56          void BEEP_DISABLE() {
+  57   1              clr_T2DOE1;
+  58   1      
+  59   1              clr_P30;
   60   1      
-  61   1              clr_P30;
-  62   1      
-  63   1      }
-  64          /*
-  65           *********************************************************************************************************
-  66           *      函 数 名: BEEP_Start
-  67           *      功能说明: 启动蜂鸣音。
-  68           *      形    参：_usBeepTime : 蜂鸣时间，单位10ms; 0 表示不鸣叫
-  69           *                        _usStopTime : 停止时间，单位10ms; 0 表示持续鸣叫
-  70           *                       _usCycle : 鸣叫次数， 0 表示持续鸣叫
-  71           *      返 回 值: 无
-  72           *********************************************************************************************************
-  73           */
-  74          void BEEP_Start(uint16_t _usBeepTime, uint16_t _usStopTime, uint16_t _usCycle) {
+  61   1      }
+  62          /*
+  63           *********************************************************************************************************
+  64           *      函 数 名: BEEP_Start
+  65           *      功能说明: 启动蜂鸣音。
+  66           *      形    参：  _usInitTime : 延时时间，单位10ms; beep响之前延时的时间; 0表示不延时
+  67           *                _usBeepTime : 蜂鸣时间，单位10ms; 0 表示不鸣叫
+  68           *                _usStopTime : 停止时间，单位10ms; 0 表示持续鸣叫
+  69           *                _usCycle : 鸣叫次数， 0 表示持续鸣叫
+  70           *      返 回 值: 无
+  71           *********************************************************************************************************
+  72           */
+  73          void BEEP_Start(uint16_t _usInitTime, uint16_t _usBeepTime,
+  74                          uint16_t _usStopTime, uint16_t _usCycle) {
   75   1              if (_usBeepTime == 0) {
   76   2                      return;
   77   2              }
-  78   1      
+  78   1              g_tBeep.usDelayTime = _usInitTime;
   79   1              g_tBeep.usBeepTime = _usBeepTime;
   80   1              g_tBeep.usStopTime = _usStopTime;
   81   1              g_tBeep.usCycle = _usCycle;
@@ -123,10 +123,10 @@ line level    source
  110           *********************************************************************************************************
  111           */
  112          void BEEP_KeyTone(void) {
- 113   1              BEEP_Start(5, 1, 1); /* 鸣叫50ms，停10ms， 1次 */
+ 113   1              BEEP_Start(0, 5, 1, 1); /* 鸣叫50ms，停10ms， 1次 */
  114   1      }
  115          
-C51 COMPILER V9.56.0.0   BSP_BEEP                                                          07/06/2017 22:09:56 PAGE 3   
+C51 COMPILER V9.56.0.0   BSP_BEEP                                                          07/11/2017 22:20:47 PAGE 3   
 
  116          /*
  117           *********************************************************************************************************
@@ -140,52 +140,58 @@ line level    source
  125   1              if ((g_tBeep.ucEnalbe == 0) || (g_tBeep.usStopTime == 0)) {
  126   2                      return;
  127   2              }
- 128   1      
- 129   1              if (g_tBeep.ucState == 0) {
- 130   2                      if (g_tBeep.usStopTime > 0) /* 间断发声 */
- 131   2                      {
- 132   3                              if (++g_tBeep.usCount >= g_tBeep.usBeepTime) {
- 133   4                                      BEEP_DISABLE(); /* 停止发声 */
- 134   4                                      g_tBeep.usCount = 0;
- 135   4                                      g_tBeep.ucState = 1;
- 136   4                              }
- 137   3                      } else {
- 138   3                              ; /* 不做任何处理，连续发声 */
- 139   3                      }
- 140   2              } else if (g_tBeep.ucState == 1) {
- 141   2                      if (++g_tBeep.usCount >= g_tBeep.usStopTime) {
- 142   3                              /* 连续发声时，直到调用stop停止为止 */
- 143   3                              if (g_tBeep.usCycle > 0) {
- 144   4                                      if (++g_tBeep.usCycleCount >= g_tBeep.usCycle) {
- 145   5                                              /* 循环次数到，停止发声 */
- 146   5                                              g_tBeep.ucEnalbe = 0;
- 147   5                                      }
- 148   4      
- 149   4                                      if (g_tBeep.ucEnalbe == 0) {
- 150   5                                              g_tBeep.usStopTime = 0;
- 151   5                                              return;
- 152   5                                      }
- 153   4                              }
- 154   3      
- 155   3                              g_tBeep.usCount = 0;
- 156   3                              g_tBeep.ucState = 0;
- 157   3      
- 158   3                              BEEP_ENABLE(); /* 开始发声 */
- 159   3                      }
- 160   2              }
- 161   1      }
- 162          
+ 128   1              if (g_tBeep.usDelayTime) {
+ 129   2                      g_tBeep.usDelayTime--;
+ 130   2                      return;
+ 131   2              }
+ 132   1      
+ 133   1              if (g_tBeep.ucState == 0) {
+ 134   2                      if (g_tBeep.usStopTime > 0) /* 间断发声 */
+ 135   2                      {
+ 136   3                              if (++g_tBeep.usCount >= g_tBeep.usBeepTime) {
+ 137   4                                      BEEP_DISABLE(); /* 停止发声 */
+ 138   4                                      g_tBeep.usCount = 0;
+ 139   4                                      g_tBeep.ucState = 1;
+ 140   4                              }
+ 141   3                      } else {
+ 142   3                              ; /* 不做任何处理，连续发声 */
+ 143   3                      }
+ 144   2              } else if (g_tBeep.ucState == 1) {
+ 145   2                      if (++g_tBeep.usCount >= g_tBeep.usStopTime) {
+ 146   3                              /* 连续发声时，直到调用stop停止为止 */
+ 147   3                              if (g_tBeep.usCycle > 0) {
+ 148   4                                      if (++g_tBeep.usCycleCount >= g_tBeep.usCycle) {
+ 149   5                                              /* 循环次数到，停止发声 */
+ 150   5                                              g_tBeep.ucEnalbe = 0;
+ 151   5                                      }
+ 152   4      
+ 153   4                                      if (g_tBeep.ucEnalbe == 0) {
+ 154   5                                              g_tBeep.usStopTime = 0;
+ 155   5                                              return;
+ 156   5                                      }
+ 157   4                              }
+ 158   3      
+ 159   3                              g_tBeep.usCount = 0;
+ 160   3                              g_tBeep.ucState = 0;
+ 161   3      
+ 162   3                              BEEP_ENABLE(); /* 开始发声 */
+ 163   3                      }
+ 164   2              }
+ 165   1      }
+ 166          
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    293    ----
+   CODE SIZE        =    344    ----
    CONSTANT SIZE    =   ----    ----
-   XDATA SIZE       =     12    ----
+   XDATA SIZE       =     14       8
    PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----    ----
    IDATA SIZE       =   ----    ----
    BIT SIZE         =   ----    ----
 END OF MODULE INFORMATION.
+
+C51 COMPILER V9.56.0.0   BSP_BEEP                                                          07/11/2017 22:20:47 PAGE 4   
 
 
 C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

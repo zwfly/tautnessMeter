@@ -1,4 +1,4 @@
-C51 COMPILER V9.56.0.0   MAIN                                                              07/06/2017 22:09:55 PAGE 1   
+C51 COMPILER V9.56.0.0   MAIN                                                              07/11/2017 22:20:47 PAGE 1   
 
 
 C51 COMPILER V9.56.0.0, COMPILATION OF MODULE MAIN
@@ -11,175 +11,98 @@ line level    source
 
    1          #include "app.h"
    2          
-   3          void Tmp_Delay(uint32_t xdata u32CNT)
-   4          {
-   5   1              UINT32 xdata i,j;
-   6   1              for (i=0;i<u32CNT;i++)
-   7   1              j ++;
-   8   1      }
-   9          
-  10          uint8_t ucKeyCode;
-  11          void main(void) {
-  12   1      
-  13   1              System_Clock_Select(E_HIRCEN);
-  14   1      
-  15   1      #if  0
+   3          void main(void) {
+   4   1              uint8_t ucKeyCode;
+   5   1              System_Clock_Select(E_HIRCEN);
+   6   1      
+   7   1      #if  0
                       CKDIV = 1;                        //Fsys = Fosc / (2* CLKDIV) = Fcpu
               #endif
-  18   1      
-  19   1              bsp_Init();
+  10   1      
+  11   1              /****************/
+  12   1              bsp_Init();
+  13   1      
+  14   1              /****************/
+  15   1              app_key_init();
+  16   1              work_Init();
+  17   1      
+  18   1              /****************/
+  19   1              Show_FW_Version_Number_To_PC();
   20   1      
-  21   1              /****************/
-  22   1      
-  23   1              Repeat_Init();
-  24   1              /****************/
-  25   1              Show_FW_Version_Number_To_PC();
-  26   1      
-  27   1              while (1) {
-  28   2      //      Send_Data_To_UART1(0x55);
-  29   2      //              printf("test\n");
-  30   2      
-  31   2      //              Tmp_Delay(50000);
-  32   2      
-  33   2                      if (Task_time.flag_10ms) {
-  34   3                              Task_time.flag_10ms = 0;
-  35   3                              //////////////////
-  36   3                              BEEP_Pro();
-  37   3                              bsp_KeyScan();
-  38   3                      }
-  39   2                      if (Task_time.flag_100ms) {
-  40   3                              Task_time.flag_100ms = 0;
-  41   3                              //////////////////
+  21   1              while (1) {
+  22   2      
+  23   2                      if (Task_time.flag_10ms) {
+  24   3                              Task_time.flag_10ms = 0;
+  25   3                              //////////////////
+  26   3                              BEEP_Pro();
+  27   3                              bsp_KeyScan();
+  28   3                      }
+  29   2                      if (Task_time.flag_100ms) {
+  30   3                              Task_time.flag_100ms = 0;
+  31   3                              //////////////////
+  32   3                              app_work_100ms_pro();
+  33   3                              Repeat_Pro();
+  34   3      
+  35   3                      }
+  36   2                      if (Task_time.flag_1s) {
+  37   3                              static uint8_t tmp = 0;
+  38   3                              static uint8_t cnt = 0;
+  39   3                              Task_time.flag_1s = 0;
+  40   3                              //////////////////
+  41   3                              app_work_1s_pro();
   42   3      
-  43   3                              Repeat_Pro();
-  44   3      
-  45   3                              /*if (P03 == 0) {
-  46   3                               printf("P03\n");
-  47   3                               }
-  48   3                               if (P04 == 0) {
-  49   3                               printf("P04\n");
-  50   3                               }
-  51   3                               if (P05 == 0) {
-  52   3                               printf("P05\n");
-  53   3                               }
-C51 COMPILER V9.56.0.0   MAIN                                                              07/06/2017 22:09:55 PAGE 2   
+  43   3                              cnt++;
+  44   3                              if (cnt > 3) {
+  45   4                                      cnt = 10;
+  46   4      
+  47   4                                      tmp++;
+  48   4      //                              LCD_Show_REP_Num(tmp % 99);
+  49   4      //                              LCD_Show_Pulls_Num(tmp);
+  50   4      //                              LCD_Show_CAL_Num(tmp);
+  51   4                              }
+  52   3      
+  53   3      //                      if (bb) {
+C51 COMPILER V9.56.0.0   MAIN                                                              07/11/2017 22:20:47 PAGE 2   
 
-  54   3                               if (P06 == 0) {
-  55   3                               printf("P06\n");
-  56   3                               }*/
-  57   3      
-  58   3                      }
-  59   2                      if (Task_time.flag_1s) {
-  60   3                              static uint8_t tmp = 0;
-  61   3                              static uint8_t cnt = 0;
-  62   3                              Task_time.flag_1s = 0;
-  63   3                              //////////////////
-  64   3                              app_work_1s_pro();
-  65   3      
-  66   3      
-  67   3                              cnt++;
-  68   3                              if (cnt > 9) {
-  69   4                                      cnt = 10;
-  70   4      
-  71   4                                      tmp++;
-  72   4                                      LCD_Display_REP_Num(tmp % 99);
-  73   4                                      LCD_Display_Pulls_Num(tmp);
-  74   4                                      LCD_Display_CAL_Num(tmp);
-  75   4                              }
-  76   3      
-  77   3      //                      if (bb) {
-  78   3      //                              bb = 0;
-  79   3      //                              LCD_Display_Battery_ICO();
-  80   3      //                              LCD_Display_REP_ICO();
-  81   3      //                              LCD_Display_ABCD('A');
-  82   3      //                              LCD_Display_QS_ICO();
-  83   3      //                              LCD_Display_COACH_ICO();
-  84   3      //                              LCD_Display_Heart_ICO();
-  85   3      //                              LCD_Display_CAL_ICO();
-  86   3      //
-  87   3      //                      } else {
-  88   3      //                              bb = 1;
-  89   3      //                              LCD_Clear_Battery_ICO();
-  90   3      //                              LCD_Clear_REP_ICO();
-  91   3      //                              LCD_Clear_ABCD();
-  92   3      //                              LCD_Clear_QS_ICO();
-  93   3      //                              LCD_Clear_COACH_ICO();
-  94   3      //                              LCD_Clear_Heart_ICO();
-  95   3      //                              LCD_Clear_CAL_ICO();
-  96   3      //
-  97   3      //
-  98   3      //
-  99   3      //
- 100   3      //                      }
- 101   3                      }
- 102   2      #if 1
- 103   2      
- 104   2                      ucKeyCode = bsp_GetKey();
- 105   2                      if (ucKeyCode != KEY_NONE) {
- 106   3                              BEEP_KeyTone();
- 107   3                              switch (ucKeyCode) {
- 108   4                              case KEY_UP_K1:
- 109   4      
- 110   4                                      break;
- 111   4                              case KEY_DOWN_K1:
- 112   4      
- 113   4                                      break;
- 114   4                              case KEY_LONG_K1:
- 115   4      
-C51 COMPILER V9.56.0.0   MAIN                                                              07/06/2017 22:09:55 PAGE 3   
-
- 116   4                                      break;
- 117   4                              case KEY_UP_K2:
- 118   4      
- 119   4                                      break;
- 120   4                              case KEY_DOWN_K2:
- 121   4      
- 122   4                                      break;
- 123   4                              case KEY_LONG_K2:
- 124   4      
- 125   4                                      break;
- 126   4                              case KEY_UP_K3:
- 127   4      
- 128   4                                      break;
- 129   4                              case KEY_DOWN_K3:
- 130   4      
- 131   4                                      break;
- 132   4                              case KEY_LONG_K3:
- 133   4      
- 134   4                                      break;
- 135   4                              case KEY_UP_K4:
- 136   4      
- 137   4                                      break;
- 138   4                              case KEY_DOWN_K4:
- 139   4      
- 140   4                                      break;
- 141   4                              case KEY_LONG_K4:
- 142   4      
- 143   4                                      break;
- 144   4                              case KEY_UP_K1K3:
- 145   4      
- 146   4                                      break;
- 147   4                              case KEY_DOWN_K1K3:
- 148   4      
- 149   4                                      break;
- 150   4                              case KEY_LONG_K1K3:
- 151   4      
- 152   4                                      break;
- 153   4                              default:
- 154   4                                      BEEP_KeyTone();
- 155   4                                      break;
- 156   4      
- 157   4                              }
- 158   3                      }
- 159   2      #endif
- 160   2              }
- 161   1      }
+  54   3      //                              bb = 0;
+  55   3      //                              LCD_Display_Battery_ICO();
+  56   3      //                              LCD_Display_REP_ICO();
+  57   3      //                              LCD_Display_ABCD('A');
+  58   3      //                              LCD_Display_QS_ICO();
+  59   3      //                              LCD_Display_COACH_ICO();
+  60   3      //                              LCD_Display_Heart_ICO();
+  61   3      //                              LCD_Display_CAL_ICO();
+  62   3      //
+  63   3      //                      } else {
+  64   3      //                              bb = 1;
+  65   3      //                              LCD_Clear_Battery_ICO();
+  66   3      //                              LCD_Clear_REP_ICO();
+  67   3      //                              LCD_Clear_ABCD();
+  68   3      //                              LCD_Clear_QS_ICO();
+  69   3      //                              LCD_Clear_COACH_ICO();
+  70   3      //                              LCD_Clear_Heart_ICO();
+  71   3      //                              LCD_Clear_CAL_ICO();
+  72   3      //
+  73   3      //
+  74   3      //
+  75   3      //
+  76   3      //                      }
+  77   3                      }
+  78   2      #if 1
+  79   2      
+  80   2                      ucKeyCode = bsp_GetKey();
+  81   2                      if (ucKeyCode != KEY_NONE) {
+  82   3                              app_key_pro(ucKeyCode);
+  83   3                      }
+  84   2      #endif
+  85   2              }
+  86   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    243    ----
+   CODE SIZE        =     94    ----
    CONSTANT SIZE    =   ----    ----
-   XDATA SIZE       =      3      12
+   XDATA SIZE       =      2       1
    PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----    ----
    IDATA SIZE       =   ----    ----

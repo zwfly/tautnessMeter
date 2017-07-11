@@ -1,4 +1,4 @@
-C51 COMPILER V9.56.0.0   BSP                                                               07/06/2017 22:09:56 PAGE 1   
+C51 COMPILER V9.56.0.0   BSP                                                               07/11/2017 22:20:47 PAGE 1   
 
 
 C51 COMPILER V9.56.0.0, COMPILATION OF MODULE BSP
@@ -11,7 +11,7 @@ line level    source
 
    1          #include "bsp.h"
    2          
-   3          bit BIT_TMP;  //WTF
+   3          BIT BIT_TMP;  //WTF
    4          
    5          void bsp_Init(void) {
    6   1      
@@ -19,7 +19,7 @@ line level    source
    8   1              Set_All_GPIO_Input_Mode();
    9   1      
   10   1              bsp_InitKey();
-  11   1              Hall_InitHard();
+  11   1              Hall_Init();
   12   1              Bright_InitHard();
   13   1              BEEP_InitHard();
   14   1              LCD_display_InitHard();
@@ -28,7 +28,7 @@ line level    source
   17   1      
   18   1              Uart_InitHard();
   19   1      
-  20   1              set_EA;                                     //enable interrupts
+  20   1              set_EA;         //enable interrupts
   21   1      
   22   1      }
   23          

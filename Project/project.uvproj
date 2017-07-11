@@ -369,14 +369,19 @@
               <FilePath>..\App\src\main.c</FilePath>
             </File>
             <File>
-              <FileName>app_repeat_exe.c</FileName>
+              <FileName>app_key.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\App\src\app_repeat_exe.c</FilePath>
+              <FilePath>..\App\src\app_key.c</FilePath>
             </File>
             <File>
               <FileName>app_work.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\App\src\app_work.c</FilePath>
+            </File>
+            <File>
+              <FileName>app_repeat_exe.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\App\src\app_repeat_exe.c</FilePath>
             </File>
             <File>
               <FileName>app.h</FileName>

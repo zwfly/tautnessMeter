@@ -1,4 +1,4 @@
-C51 COMPILER V9.56.0.0   BSP_DISPLAY                                                       07/06/2017 22:09:56 PAGE 1   
+C51 COMPILER V9.56.0.0   BSP_DISPLAY                                                       07/11/2017 22:20:47 PAGE 1   
 
 
 C51 COMPILER V9.56.0.0, COMPILATION OF MODULE BSP_DISPLAY
@@ -62,12 +62,12 @@ line level    source
   51          
   52          void LCD_Clear_Bluetooth_ICO(void) {
   53   1              clr_SEG10EN;
-C51 COMPILER V9.56.0.0   BSP_DISPLAY                                                       07/06/2017 22:09:56 PAGE 2   
+C51 COMPILER V9.56.0.0   BSP_DISPLAY                                                       07/11/2017 22:20:47 PAGE 2   
 
   54   1              LCDPTR = 10;
   55   1              LCDDAT = 0;
   56   1      }
-  57          void LCD_Display_Bluetooth_ICO(void) {
+  57          void LCD_Show_Bluetooth_ICO(void) {
   58   1              set_SEG10EN;
   59   1              LCDPTR = 10;
   60   1              LCDDAT = COM0;
@@ -78,7 +78,7 @@ line level    source
   65   1              LCDPTR = 12;
   66   1              LCDDAT = 0;
   67   1      }
-  68          void LCD_Display_Bluetooth_Fill_ICO(void) {
+  68          void LCD_Show_Bluetooth_Fill_ICO(void) {
   69   1              set_SEG12EN;
   70   1              LCDPTR = 12;
   71   1              LCDDAT = COM0;
@@ -89,7 +89,7 @@ line level    source
   76   1              LCDPTR = 8;
   77   1              LCDDAT = 0;
   78   1      }
-  79          void LCD_Display_Line_up(void) {
+  79          void LCD_Show_Line_up(void) {
   80   1              set_SEG8EN;
   81   1              LCDPTR = 8;
   82   1              LCDDAT = COM0;
@@ -99,7 +99,7 @@ line level    source
   86   1              LCDPTR = 14;
   87   1              LCDDAT = 0;
   88   1      }
-  89          void LCD_Display_Battery_ICO(void) {
+  89          void LCD_Show_Battery_ICO(void) {
   90   1              set_SEG14EN;
   91   1              LCDPTR = 14;
   92   1              LCDDAT = COM0;
@@ -109,7 +109,7 @@ line level    source
   96   1              LCDPTR = 16;
   97   1              LCDDAT = 0;
   98   1      }
-  99          void LCD_Display_REP_ICO(void) {
+  99          void LCD_Show_REP_ICO(void) {
  100   1              set_SEG16EN;
  101   1              LCDPTR = 16;
  102   1              LCDDAT = COM0;
@@ -126,7 +126,7 @@ line level    source
  113   1              LCDPTR = 19;
  114   1              LCDDAT = COM0 + COM1 + COM2 + COM3;
  115   1      
-C51 COMPILER V9.56.0.0   BSP_DISPLAY                                                       07/06/2017 22:09:56 PAGE 3   
+C51 COMPILER V9.56.0.0   BSP_DISPLAY                                                       07/11/2017 22:20:47 PAGE 3   
 
  116   1              LCDPTR = 20;
  117   1              LCDDAT = COM1 + COM2 + COM3;
@@ -134,7 +134,7 @@ line level    source
  119   1              LCDPTR = 21;
  120   1              LCDDAT = COM0 + COM1 + COM2 + COM3;
  121   1      }
- 122          void LCD_Display_REP_Num(uint8_t num) {
+ 122          void LCD_Show_REP_Num(uint8_t num) {
  123   1      
  124   1              uint8_t ge;
  125   1              uint8_t shi;
@@ -190,7 +190,7 @@ line level    source
  175   3                              LCDDAT = COM1 + COM2;
  176   3      
  177   3                              LCDPTR = 15;
-C51 COMPILER V9.56.0.0   BSP_DISPLAY                                                       07/06/2017 22:09:56 PAGE 4   
+C51 COMPILER V9.56.0.0   BSP_DISPLAY                                                       07/11/2017 22:20:47 PAGE 4   
 
  178   3                              LCDDAT = COM0 + COM2 + COM3;
  179   3                              break;
@@ -254,7 +254,7 @@ line level    source
  237   2                      LCDDAT = COM2 + COM3;
  238   2      
  239   2                      LCDPTR = 17;
-C51 COMPILER V9.56.0.0   BSP_DISPLAY                                                       07/06/2017 22:09:56 PAGE 5   
+C51 COMPILER V9.56.0.0   BSP_DISPLAY                                                       07/11/2017 22:20:47 PAGE 5   
 
  240   2                      LCDDAT = COM0 + COM1 + COM3;
  241   2                      break;
@@ -314,11 +314,11 @@ line level    source
  295   1              LCDPTR = 18;
  296   1              LCDDAT = 0;
  297   1      }
- 298          void LCD_Display_ABCD(char c) {
+ 298          void LCD_Show_ABCD(char c) {
  299   1              set_SEG18EN;
  300   1              switch (c) {
  301   2              case 'A':
-C51 COMPILER V9.56.0.0   BSP_DISPLAY                                                       07/06/2017 22:09:56 PAGE 6   
+C51 COMPILER V9.56.0.0   BSP_DISPLAY                                                       07/11/2017 22:20:47 PAGE 6   
 
  302   2                      LCDPTR = 18;
  303   2                      LCDDAT = COM0;
@@ -367,7 +367,7 @@ line level    source
  346   1              LCDPTR = 13;
  347   1              LCDDAT = COM0 + COM1 + COM2 + COM3;
  348   1      }
- 349          void LCD_Display_Pulls_Num(uint16_t num) {
+ 349          void LCD_Show_Pulls_Num(uint16_t num) {
  350   1              uint8_t ge;
  351   1              uint8_t shi;
  352   1              uint8_t bai;
@@ -382,7 +382,7 @@ line level    source
  361   1              if (num > 99) {
  362   2                      set_SEG8EN;
  363   2                      set_SEG9EN;
-C51 COMPILER V9.56.0.0   BSP_DISPLAY                                                       07/06/2017 22:09:56 PAGE 7   
+C51 COMPILER V9.56.0.0   BSP_DISPLAY                                                       07/11/2017 22:20:47 PAGE 7   
 
  364   2      
  365   2                      switch (bai) {
@@ -446,7 +446,7 @@ line level    source
  423   3                              LCDPTR = 8;
  424   3                              LCDDAT = COM1 + COM2 + COM3;
  425   3      
-C51 COMPILER V9.56.0.0   BSP_DISPLAY                                                       07/06/2017 22:09:56 PAGE 8   
+C51 COMPILER V9.56.0.0   BSP_DISPLAY                                                       07/11/2017 22:20:47 PAGE 8   
 
  426   3                              LCDPTR = 9;
  427   3                              LCDDAT = COM0 + COM1 + COM2 + COM3;
@@ -510,7 +510,7 @@ line level    source
  485   3                              break;
  486   3                      case 5:
  487   3                              LCDPTR = 10;
-C51 COMPILER V9.56.0.0   BSP_DISPLAY                                                       07/06/2017 22:09:56 PAGE 9   
+C51 COMPILER V9.56.0.0   BSP_DISPLAY                                                       07/11/2017 22:20:47 PAGE 9   
 
  488   3                              LCDDAT = COM1 + COM2;
  489   3      
@@ -574,7 +574,7 @@ line level    source
  547   2                      break;
  548   2              case 2:
  549   2                      LCDPTR = 12;
-C51 COMPILER V9.56.0.0   BSP_DISPLAY                                                       07/06/2017 22:09:56 PAGE 10  
+C51 COMPILER V9.56.0.0   BSP_DISPLAY                                                       07/11/2017 22:20:47 PAGE 10  
 
  550   2                      LCDDAT = COM2 + COM3;
  551   2      
@@ -637,8 +637,8 @@ line level    source
  608   1              LCDPTR = 2;
  609   1              LCDDAT = COM0;
  610   1      }
- 611          void LCD_Display_QS_ICO(void) {
-C51 COMPILER V9.56.0.0   BSP_DISPLAY                                                       07/06/2017 22:09:56 PAGE 11  
+ 611          void LCD_Show_QS_ICO(void) {
+C51 COMPILER V9.56.0.0   BSP_DISPLAY                                                       07/11/2017 22:20:47 PAGE 11  
 
  612   1              set_SEG2EN;
  613   1              LCDPTR = 2;
@@ -649,7 +649,7 @@ line level    source
  618   1              LCDPTR = 4;
  619   1              LCDDAT = COM0;
  620   1      }
- 621          void LCD_Display_COACH_ICO(void) {
+ 621          void LCD_Show_COACH_ICO(void) {
  622   1              set_SEG4EN;
  623   1              LCDPTR = 4;
  624   1              LCDDAT = COM0;
@@ -659,7 +659,7 @@ line level    source
  628   1              LCDPTR = 8;
  629   1              LCDDAT = COM0;
  630   1      }
- 631          void LCD_Display_Line_down(void) {
+ 631          void LCD_Show_Line_down(void) {
  632   1              set_SEG8EN;
  633   1              LCDPTR = 8;
  634   1              LCDDAT = COM0;
@@ -669,7 +669,7 @@ line level    source
  638   1              LCDPTR = 0;
  639   1              LCDDAT = COM0;
  640   1      }
- 641          void LCD_Display_Heart_ICO(void) {
+ 641          void LCD_Show_Heart_ICO(void) {
  642   1              set_SEG0EN;
  643   1              LCDPTR = 0;
  644   1              LCDDAT = COM0;
@@ -702,7 +702,7 @@ line level    source
  671   1              LCDPTR = 5;
  672   1              LCDDAT = COM0 + COM1 + COM2 + COM3;
  673   1      
-C51 COMPILER V9.56.0.0   BSP_DISPLAY                                                       07/06/2017 22:09:56 PAGE 12  
+C51 COMPILER V9.56.0.0   BSP_DISPLAY                                                       07/11/2017 22:20:47 PAGE 12  
 
  674   1              LCDPTR = 6;
  675   1              LCDDAT = COM1 + COM2 + COM3;
@@ -710,7 +710,7 @@ line level    source
  677   1              LCDPTR = 7;
  678   1              LCDDAT = COM0 + COM1 + COM2 + COM3;
  679   1      }
- 680          void LCD_Display_CAL_Num(uint16_t num) {
+ 680          void LCD_Show_CAL_Num(uint16_t num) {
  681   1              uint8_t ge;
  682   1              uint8_t shi;
  683   1              uint8_t bai;
@@ -766,7 +766,7 @@ line level    source
  733   3                              break;
  734   3                      case 5:
  735   3                              LCDPTR = 0;
-C51 COMPILER V9.56.0.0   BSP_DISPLAY                                                       07/06/2017 22:09:56 PAGE 13  
+C51 COMPILER V9.56.0.0   BSP_DISPLAY                                                       07/11/2017 22:20:47 PAGE 13  
 
  736   3                              LCDDAT = COM1 + COM2;
  737   3      
@@ -830,7 +830,7 @@ line level    source
  795   3                              LCDPTR = 3;
  796   3                              LCDDAT = COM1 + COM2;
  797   3                              break;
-C51 COMPILER V9.56.0.0   BSP_DISPLAY                                                       07/06/2017 22:09:56 PAGE 14  
+C51 COMPILER V9.56.0.0   BSP_DISPLAY                                                       07/11/2017 22:20:47 PAGE 14  
 
  798   3                      case 2:
  799   3                              LCDPTR = 2;
@@ -894,7 +894,7 @@ line level    source
  857   2                      clr_SEG3EN;
  858   2                      LCDPTR = 2;
  859   2                      LCDDAT = 0;
-C51 COMPILER V9.56.0.0   BSP_DISPLAY                                                       07/06/2017 22:09:56 PAGE 15  
+C51 COMPILER V9.56.0.0   BSP_DISPLAY                                                       07/11/2017 22:20:47 PAGE 15  
 
  860   2      
  861   2                      LCDPTR = 3;
@@ -958,7 +958,7 @@ line level    source
  919   3                              LCDPTR = 4;
  920   3                              LCDDAT = 0;
  921   3      
-C51 COMPILER V9.56.0.0   BSP_DISPLAY                                                       07/06/2017 22:09:56 PAGE 16  
+C51 COMPILER V9.56.0.0   BSP_DISPLAY                                                       07/11/2017 22:20:47 PAGE 16  
 
  922   3                              LCDPTR = 5;
  923   3                              LCDDAT = COM0 + COM1 + COM2;
@@ -1022,7 +1022,7 @@ line level    source
  981   2              case 4:
  982   2                      LCDPTR = 6;
  983   2                      LCDDAT = COM1 + COM2;
-C51 COMPILER V9.56.0.0   BSP_DISPLAY                                                       07/06/2017 22:09:56 PAGE 17  
+C51 COMPILER V9.56.0.0   BSP_DISPLAY                                                       07/11/2017 22:20:47 PAGE 17  
 
  984   2      
  985   2                      LCDPTR = 7;
@@ -1070,7 +1070,7 @@ line level    source
 1027   1              LCDPTR = 6;
 1028   1              LCDDAT = COM0;
 1029   1      }
-1030          void LCD_Display_CAL_ICO(void) {
+1030          void LCD_Show_CAL_ICO(void) {
 1031   1              set_SEG6EN;
 1032   1              LCDPTR = 6;
 1033   1              LCDDAT = COM0;
@@ -1086,7 +1086,7 @@ MODULE INFORMATION:   STATIC OVERLAYABLE
    DATA SIZE        =   ----    ----
    IDATA SIZE       =   ----    ----
    BIT SIZE         =   ----    ----
-C51 COMPILER V9.56.0.0   BSP_DISPLAY                                                       07/06/2017 22:09:56 PAGE 18  
+C51 COMPILER V9.56.0.0   BSP_DISPLAY                                                       07/11/2017 22:20:47 PAGE 18  
 
 END OF MODULE INFORMATION.
 

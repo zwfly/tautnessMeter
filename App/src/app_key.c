@@ -35,8 +35,8 @@ static void app_UI_init(void) {
 		LCD_Clear_COACH_ICO();
 
 		Repeat_Stop();
-		Repeat_SetStart(LCD_Show_QS_ICO);
-		Repeat_SetStop(LCD_Clear_QS_ICO);
+//		Repeat_Start(LCD_Show_QS_ICO);
+//		Repeat_Stop(LCD_Clear_QS_ICO);
 		Repeat_Start(8, 8, 0);
 		break;
 	case E_Coach_mode:
@@ -53,9 +53,8 @@ static void app_UI_init(void) {
 		LCD_Clear_QS_ICO();
 
 		Repeat_Stop();
-		Repeat_SetStart(LCD_Show_COACH_ICO);
-		Repeat_SetStop(LCD_Clear_COACH_ICO);
-		Repeat_Start(8, 8, 0);
+//		Repeat_Start(LCD_Show_COACH_ICO);
+//		Repeat_Stop(LCD_Clear_COACH_ICO);
 		break;
 	}
 }
@@ -118,7 +117,7 @@ void app_key_ok(void) {
 }
 void app_key_pro(uint8_t keyCode) {
 
-//	BEEP_KeyTone();
+	BEEP_KeyTone();
 
 	switch (keyCode) {
 	case KEY_UP_K1:
@@ -167,7 +166,7 @@ void app_key_pro(uint8_t keyCode) {
 
 		break;
 	default:
-		BEEP_KeyTone();
+//		BEEP_KeyTone();
 		break;
 
 	}
