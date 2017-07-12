@@ -13,17 +13,17 @@
 #define COM3    0x08
 
 void LCD_display_InitHard(void) {
-	uint8_t j = 0;
-#if 0
 
-	P1M1 = 0x00;
-	P1M2 = 0xFF;
+#if 1
 
-	P2M1 = 0x00;
-	P2M2 = 0xFF;
+	P1M2 = 0x00;
+	P1M1 = 0xFF;
 
-	P4M1 = 0x00;
-	P4M2 = 0xFF;
+	P2M2 = 0x00;
+	P2M1 = 0xFF;
+
+	P4M2 = 0x00;
+	P4M1 = 0xFF;
 #endif
 
 	LCDCON = 0x40;      //;VLCD = 0.9VDD (VDD = 3.3V, VLCD = 3.0V)

@@ -1,4 +1,4 @@
-C51 COMPILER V9.56.0.0   MAIN                                                              07/11/2017 22:20:47 PAGE 1   
+C51 COMPILER V9.56.0.0   MAIN                                                              07/12/2017 22:47:51 PAGE 1   
 
 
 C51 COMPILER V9.56.0.0, COMPILATION OF MODULE MAIN
@@ -11,98 +11,114 @@ line level    source
 
    1          #include "app.h"
    2          
-   3          void main(void) {
-   4   1              uint8_t ucKeyCode;
-   5   1              System_Clock_Select(E_HIRCEN);
-   6   1      
-   7   1      #if  0
+   3          uint8_t c;
+   4          
+   5          void main(void) {
+   6   1              uint8_t ucKeyCode;
+   7   1              System_Clock_Select(E_HIRCEN);
+   8   1      
+   9   1      #if  0
                       CKDIV = 1;                        //Fsys = Fosc / (2* CLKDIV) = Fcpu
               #endif
-  10   1      
-  11   1              /****************/
-  12   1              bsp_Init();
-  13   1      
-  14   1              /****************/
-  15   1              app_key_init();
-  16   1              work_Init();
-  17   1      
-  18   1              /****************/
-  19   1              Show_FW_Version_Number_To_PC();
+  12   1      
+  13   1              /****************/
+  14   1              bsp_Init();
+  15   1      
+  16   1              /****************/
+  17   1              work_Init();
+  18   1              app_key_init();
+  19   1              app_charge_Init();
   20   1      
-  21   1              while (1) {
-  22   2      
-  23   2                      if (Task_time.flag_10ms) {
-  24   3                              Task_time.flag_10ms = 0;
-  25   3                              //////////////////
-  26   3                              BEEP_Pro();
-  27   3                              bsp_KeyScan();
-  28   3                      }
-  29   2                      if (Task_time.flag_100ms) {
-  30   3                              Task_time.flag_100ms = 0;
-  31   3                              //////////////////
-  32   3                              app_work_100ms_pro();
-  33   3                              Repeat_Pro();
-  34   3      
-  35   3                      }
-  36   2                      if (Task_time.flag_1s) {
-  37   3                              static uint8_t tmp = 0;
-  38   3                              static uint8_t cnt = 0;
-  39   3                              Task_time.flag_1s = 0;
-  40   3                              //////////////////
-  41   3                              app_work_1s_pro();
-  42   3      
-  43   3                              cnt++;
-  44   3                              if (cnt > 3) {
-  45   4                                      cnt = 10;
-  46   4      
-  47   4                                      tmp++;
-  48   4      //                              LCD_Show_REP_Num(tmp % 99);
-  49   4      //                              LCD_Show_Pulls_Num(tmp);
-  50   4      //                              LCD_Show_CAL_Num(tmp);
-  51   4                              }
-  52   3      
-  53   3      //                      if (bb) {
-C51 COMPILER V9.56.0.0   MAIN                                                              07/11/2017 22:20:47 PAGE 2   
+  21   1              /****************/
+  22   1              Show_FW_Version_Number_To_PC();
+  23   1      
+  24   1              while (1) {
+  25   2      
+  26   2                      if (Task_time.flag_10ms) {
+  27   3                              Task_time.flag_10ms = 0;
+  28   3                              //////////////////
+  29   3                              BEEP_Pro();
+  30   3                              bsp_KeyScan();
+  31   3                      }
+  32   2                      if (Task_time.flag_100ms) {
+  33   3                              Task_time.flag_100ms = 0;
+  34   3                              //////////////////
+  35   3                              app_work_100ms_pro();
+  36   3                              app_charge_100ms_pro();
+  37   3                              Repeat_Pro();
+  38   3      
+  39   3                      }
+  40   2                      if (Task_time.flag_1s) {
+  41   3                              static uint8_t tmp = 0;
+  42   3                              static uint8_t cnt = 0;
+  43   3                              Task_time.flag_1s = 0;
+  44   3                              //////////////////
+  45   3                              app_work_1s_pro();
+  46   3      
+  47   3                              cnt++;
+  48   3                              if (cnt > 3) {
+  49   4                                      cnt = 10;
+  50   4      
+  51   4                                      tmp++;
+  52   4      //                              LCD_Show_REP_Num(tmp % 99);
+  53   4      //                              LCD_Show_Pulls_Num(tmp);
+C51 COMPILER V9.56.0.0   MAIN                                                              07/12/2017 22:47:51 PAGE 2   
 
-  54   3      //                              bb = 0;
-  55   3      //                              LCD_Display_Battery_ICO();
-  56   3      //                              LCD_Display_REP_ICO();
-  57   3      //                              LCD_Display_ABCD('A');
-  58   3      //                              LCD_Display_QS_ICO();
-  59   3      //                              LCD_Display_COACH_ICO();
-  60   3      //                              LCD_Display_Heart_ICO();
-  61   3      //                              LCD_Display_CAL_ICO();
-  62   3      //
-  63   3      //                      } else {
-  64   3      //                              bb = 1;
-  65   3      //                              LCD_Clear_Battery_ICO();
-  66   3      //                              LCD_Clear_REP_ICO();
-  67   3      //                              LCD_Clear_ABCD();
-  68   3      //                              LCD_Clear_QS_ICO();
-  69   3      //                              LCD_Clear_COACH_ICO();
-  70   3      //                              LCD_Clear_Heart_ICO();
-  71   3      //                              LCD_Clear_CAL_ICO();
-  72   3      //
-  73   3      //
-  74   3      //
-  75   3      //
-  76   3      //                      }
-  77   3                      }
-  78   2      #if 1
-  79   2      
-  80   2                      ucKeyCode = bsp_GetKey();
-  81   2                      if (ucKeyCode != KEY_NONE) {
-  82   3                              app_key_pro(ucKeyCode);
-  83   3                      }
-  84   2      #endif
-  85   2              }
-  86   1      }
+  54   4      //                              LCD_Show_CAL_Num(tmp);
+  55   4                              }
+  56   3      
+  57   3      //                      if (bb) {
+  58   3      //                              bb = 0;
+  59   3      //                              LCD_Display_Battery_ICO();
+  60   3      //                              LCD_Display_REP_ICO();
+  61   3      //                              LCD_Display_ABCD('A');
+  62   3      //                              LCD_Display_QS_ICO();
+  63   3      //                              LCD_Display_COACH_ICO();
+  64   3      //                              LCD_Display_Heart_ICO();
+  65   3      //                              LCD_Display_CAL_ICO();
+  66   3      //
+  67   3      //                      } else {
+  68   3      //                              bb = 1;
+  69   3      //                              LCD_Clear_Battery_ICO();
+  70   3      //                              LCD_Clear_REP_ICO();
+  71   3      //                              LCD_Clear_ABCD();
+  72   3      //                              LCD_Clear_QS_ICO();
+  73   3      //                              LCD_Clear_COACH_ICO();
+  74   3      //                              LCD_Clear_Heart_ICO();
+  75   3      //                              LCD_Clear_CAL_ICO();
+  76   3      //
+  77   3      //
+  78   3      //
+  79   3      //
+  80   3      //                      }
+  81   3                      }
+  82   2      
+  83   2                      if (TRUE == Get_Data_From_UART1(&c)) {
+  84   3      
+  85   3                              printf("true %x\n",c);
+  86   3      
+  87   3                              if (c) {
+  88   4                                      BEEP_Start(0, 5, 5, 2);
+  89   4                              } else {
+  90   4                                      BEEP_Start(0, 5, 5, 1);
+  91   4                              }
+  92   3                      }
+  93   2      
+  94   2      #if 1
+  95   2      
+  96   2                      ucKeyCode = bsp_GetKey();
+  97   2                      if (ucKeyCode != KEY_NONE) {
+  98   3                              app_key_pro(ucKeyCode);
+  99   3                      }
+ 100   2      #endif
+ 101   2              }
+ 102   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =     94    ----
-   CONSTANT SIZE    =   ----    ----
-   XDATA SIZE       =      2       1
+   CODE SIZE        =    167    ----
+   CONSTANT SIZE    =      9    ----
+   XDATA SIZE       =      3       1
    PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----    ----
    IDATA SIZE       =   ----    ----

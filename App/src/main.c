@@ -1,5 +1,7 @@
 #include "app.h"
 
+uint8_t c;
+
 void main(void) {
 	uint8_t ucKeyCode;
 	System_Clock_Select(E_HIRCEN);
@@ -14,10 +16,10 @@ void main(void) {
 	/****************/
 	work_Init();
 	app_key_init();
-
+	app_charge_Init();
 
 	/****************/
-//	Show_FW_Version_Number_To_PC();
+	Show_FW_Version_Number_To_PC();
 
 	while (1) {
 
@@ -77,6 +79,18 @@ void main(void) {
 //
 //			}
 		}
+
+		if (TRUE == Get_Data_From_UART1(&c)) {
+
+			printf("true %x\n", c);
+
+			if (c) {
+				BEEP_Start(0, 5, 5, 2);
+			} else {
+				BEEP_Start(0, 5, 5, 1);
+			}
+		}
+
 #if 1
 
 		ucKeyCode = bsp_GetKey();

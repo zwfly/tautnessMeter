@@ -32,6 +32,10 @@ void app_key_init(void) {
 static void app_UI_init(void) {
 	switch (mode) {
 	case E_Simple_metering_mode:
+
+		LCD_Show_Pulls_Num(0);
+		LCD_Show_CAL_Num(0);
+
 		LCD_Show_Line_up();
 		LCD_Clear_REP_ICO();
 
@@ -119,7 +123,7 @@ void app_key_power_or_return(void) {
 
 }
 void app_key_set(void) {
-	static BIT power_on_mode_flag = 0;
+//	static BIT power_on_mode_flag = 0;
 
 	switch (level) {
 	case 0:
@@ -232,28 +236,20 @@ void app_flash_Clear_ABCD(void) {
 		LCD_Clear_ABCD();
 	}
 	if (letter == 'A') {
-//		LCD_Clear_ABCD('A');
-		LCD_Clear_ABCD('B');
-		LCD_Clear_ABCD('C');
-		LCD_Clear_ABCD('D');
+		LCD_Clear_ABCD();
+		LCD_Show_ABCD('A');
 	}
 	if (letter == 'B') {
-		LCD_Clear_ABCD('A');
-//		LCD_Clear_ABCD('B');
-		LCD_Clear_ABCD('C');
-		LCD_Clear_ABCD('D');
+		LCD_Clear_ABCD();
+		LCD_Show_ABCD('A');
 	}
 	if (letter == 'C') {
-		LCD_Clear_ABCD('A');
-		LCD_Clear_ABCD('B');
-//		LCD_Clear_ABCD('C');
-		LCD_Clear_ABCD('D');
+		LCD_Clear_ABCD();
+		LCD_Show_ABCD('A');
 	}
 	if (letter == 'D') {
-		LCD_Clear_ABCD('A');
-		LCD_Clear_ABCD('B');
-		LCD_Clear_ABCD('C');
-//		LCD_Clear_ABCD('D');
+		LCD_Clear_ABCD();
+		LCD_Show_ABCD('A');
 	}
 }
 void app_key_ok(void) {
@@ -332,10 +328,10 @@ void app_key_pro(uint8_t keyCode) {
 
 	switch (keyCode) {
 	case KEY_UP_K1:
-		app_key_power_or_return();
+
 		break;
 	case KEY_DOWN_K1:
-
+		app_key_power_or_return();
 		break;
 	case KEY_LONG_K1:
 		if (g_tDevice.status == E_PowerOn) {

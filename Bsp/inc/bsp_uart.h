@@ -10,4 +10,6 @@
 
 void Uart_InitHard(void);
 
+BIT Get_Data_From_UART1(uint8_t *c);
+
 #endif /* BSP_INC_BSP_UART_H_ */
