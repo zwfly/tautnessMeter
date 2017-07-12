@@ -12,11 +12,12 @@ void main(void) {
 	bsp_Init();
 
 	/****************/
-	app_key_init();
 	work_Init();
+	app_key_init();
+
 
 	/****************/
-	Show_FW_Version_Number_To_PC();
+//	Show_FW_Version_Number_To_PC();
 
 	while (1) {
 
@@ -30,6 +31,7 @@ void main(void) {
 			Task_time.flag_100ms = 0;
 			//////////////////
 			app_work_100ms_pro();
+			app_charge_100ms_pro();
 			Repeat_Pro();
 
 		}
