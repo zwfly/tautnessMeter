@@ -94,30 +94,71 @@ void app_key_power_or_return(void) {
 		case E_Simple_metering_mode:
 			g_tWork.sum = 0;
 			g_tWork.cal_num = 0;
+
 			LCD_Show_Pulls_Num(g_tWork.sum);
 			LCD_Show_CAL_Num(g_tWork.cal_num);
+
+			LCD_Show_Line_up();
+			LCD_Clear_REP_ICO();
+
+			LCD_Clear_ABCD();
+
+			LCD_Show_CAL_ICO();
+			LCD_Clear_QS_ICO();
+			LCD_Clear_COACH_ICO();
+
 			break;
 		case E_Quick_start_mode:
 			g_tWork.sum = 0;
 			g_tWork.cal_num = 0;
+
 			LCD_Show_REP_Num(0);
 			LCD_Show_Pulls_Num(0);
 			LCD_Show_CAL_Num(0);
+
+			LCD_Show_Line_up();
+			LCD_Show_REP_ICO();
+
+			LCD_Show_ABCD(g_tWork.reps_mode);
+
+			LCD_Show_CAL_ICO();
+			LCD_Show_QS_ICO();
+			LCD_Clear_COACH_ICO();
 			break;
 		case E_Coach_mode:
 			g_tWork.sum = 0;
 			g_tWork.cal_num = 0;
+
 			LCD_Show_REP_Num(0);
 			LCD_Show_Pulls_Num(0);
 			LCD_Show_CAL_Num(0);
+
+			LCD_Show_Line_up();
+			LCD_Show_REP_ICO();
+
+			LCD_Show_ABCD(g_tWork.reps_mode);
+
+			LCD_Show_CAL_ICO();
+			LCD_Clear_QS_ICO();
+			LCD_Show_COACH_ICO();
+
 			break;
 		}
 		break;
 	case 1:
+		if (level) {
+			level--;
+		}
 		break;
 	case 2:
+		if (level) {
+			level--;
+		}
 		break;
 	case 3:
+		if (level) {
+			level--;
+		}
 		break;
 	}
 
@@ -127,6 +168,20 @@ void app_key_set(void) {
 
 	switch (level) {
 	case 0:
+
+		switch (g_tWork.mode) {
+		case E_Simple_metering_mode:
+			g_tWork.mode = E_Quick_start_mode;
+			mode = E_Quick_start_mode;
+			level = 1;
+			break;
+		case E_Quick_start_mode:
+
+			break;
+		case E_Coach_mode:
+
+			break;
+		}
 		break;
 	case 1:
 		break;
@@ -136,46 +191,136 @@ void app_key_set(void) {
 		break;
 	}
 
-	switch (g_tWork.mode) {
-	case E_Simple_metering_mode:
-		g_tWork.mode = E_Quick_start_mode;
-		mode = E_Quick_start_mode;
-		level = 1;
-		break;
-	case E_Quick_start_mode:
-
-		break;
-	case E_Coach_mode:
-
-		break;
-	}
-
-	app_UI_init();
+//	app_UI_init();
 }
-void app_key_add(void) {
+
+void app_flash_Show(void) {
 
 	switch (level) {
 	case 0:
 		break;
 	case 1:
+		if (mode == E_Quick_start_mode) {
+			LCD_Show_QS_ICO();
+		} else if (mode == E_Coach_mode) {
+			LCD_Show_COACH_ICO();
+		}
 		break;
 	case 2:
+
+		switch (letter) {
+		case '\0':
+			break;
+		case 'A':
+			LCD_Show_REP_Num(Rep_Pull_num['A' - 'A'][0]);
+			LCD_Show_Pulls_Num(Rep_Pull_num['A' - 'A'][1]);
+			break;
+		case 'B':
+			LCD_Show_REP_Num(Rep_Pull_num['B' - 'A'][0]);
+			LCD_Show_Pulls_Num(Rep_Pull_num['B' - 'A'][1]);
+			break;
+		case 'C':
+			LCD_Show_REP_Num(Rep_Pull_num['C' - 'A'][0]);
+			LCD_Show_Pulls_Num(Rep_Pull_num['C' - 'A'][1]);
+			break;
+		case 'D':
+			LCD_Show_REP_Num(Rep_Pull_num['D' - 'A'][0]);
+			LCD_Show_Pulls_Num(Rep_Pull_num['D' - 'A'][1]);
+			break;
+		}
+
+		LCD_Show_ABCD('A');
+		LCD_Show_ABCD('B');
+		LCD_Show_ABCD('C');
+		LCD_Show_ABCD('D');
+
+		if (mode == E_Quick_start_mode) {
+			LCD_Show_QS_ICO();
+		} else if (mode == E_Coach_mode) {
+			LCD_Show_COACH_ICO();
+		}
 		break;
 	case 3:
 		break;
 	}
 
-	switch (mode) {
-	case E_Simple_metering_mode:
-		if (level == 1) {
-			mode = E_Quick_start_mode;
+}
+void app_flash_Clear(void) {
 
+	switch (level) {
+	case 0:
+		break;
+	case 1:
+		LCD_Clear_ABCD();
+		if (mode == E_Quick_start_mode) {
+			LCD_Clear_QS_ICO();
+		} else if (mode == E_Coach_mode) {
+			LCD_Clear_COACH_ICO();
 		}
 		break;
-	case E_Quick_start_mode:
-		if (level == 1) {
+	case 2:
+
+		if (letter == '\0') {
+			LCD_Clear_ABCD();
+		}
+		if (letter == 'A') {
+			LCD_Clear_ABCD();
+			LCD_Show_ABCD('A');
+		}
+		if (letter == 'B') {
+			LCD_Clear_ABCD();
+			LCD_Show_ABCD('A');
+		}
+		if (letter == 'C') {
+			LCD_Clear_ABCD();
+			LCD_Show_ABCD('A');
+		}
+		if (letter == 'D') {
+			LCD_Clear_ABCD();
+			LCD_Show_ABCD('A');
+		}
+		if (mode == E_Quick_start_mode) {
+			LCD_Clear_QS_ICO();
+		} else if (mode == E_Coach_mode) {
+			LCD_Clear_COACH_ICO();
+		}
+		break;
+	case 3:
+		break;
+	}
+
+}
+
+void app_key_add(void) {
+
+	switch (level) {
+	case 0:
+
+		break;
+	case 1:
+		switch (mode) {
+		case E_Simple_metering_mode:
+			mode = E_Quick_start_mode;
+
+			break;
+		case E_Quick_start_mode:
 			mode = E_Coach_mode;
-		} else if (level == 2) {
+
+			break;
+		case E_Coach_mode:
+
+			mode = E_Simple_metering_mode;
+
+			break;
+		}
+		break;
+	case 2:
+		switch (mode) {
+		case E_Simple_metering_mode:
+
+			break;
+		case E_Quick_start_mode:
+
 			if (letter == '\0') {
 				letter = 'A';
 			} else {
@@ -184,84 +329,31 @@ void app_key_add(void) {
 					letter = 'A';
 				}
 			}
+
+			break;
+		case E_Coach_mode:
+			if (letter == '\0') {
+				letter = 'A';
+			} else {
+				letter++;
+				if (letter > 'D') {
+					letter = 'A';
+				}
+			}
+			break;
 		}
-		break;
-	case E_Coach_mode:
-		if (level == 1) {
-			mode = E_Simple_metering_mode;
-		} else if (level == 2) {
-
-		}
-		break;
-	}
-}
-
-void app_flash_Show_ABCD(void) {
-
-	if (mode == E_Quick_start_mode) {
-		LCD_Show_QS_ICO();
-		LCD_Clear_COACH_ICO();
-	} else if (mode == E_Coach_mode) {
-		LCD_Clear_QS_ICO();
-		LCD_Show_COACH_ICO();
-	}
-
-	LCD_Show_ABCD('A');
-	LCD_Show_ABCD('B');
-	LCD_Show_ABCD('C');
-	LCD_Show_ABCD('D');
-
-}
-void app_flash_Clear_ABCD(void) {
-
-	switch (level) {
-	case 0:
-		break;
-	case 1:
-
-		break;
-	case 2:
 		break;
 	case 3:
 		break;
 	}
 
-	if (mode == E_Quick_start_mode) {
-		LCD_Clear_QS_ICO();
-	} else if (mode == E_Coach_mode) {
-		LCD_Clear_COACH_ICO();
-	}
-
-	if (letter == '\0') {
-		LCD_Clear_ABCD();
-	}
-	if (letter == 'A') {
-		LCD_Clear_ABCD();
-		LCD_Show_ABCD('A');
-	}
-	if (letter == 'B') {
-		LCD_Clear_ABCD();
-		LCD_Show_ABCD('A');
-	}
-	if (letter == 'C') {
-		LCD_Clear_ABCD();
-		LCD_Show_ABCD('A');
-	}
-	if (letter == 'D') {
-		LCD_Clear_ABCD();
-		LCD_Show_ABCD('A');
-	}
 }
 void app_key_ok(void) {
 	//g_tWork.mode = mode;
 
-	level++;
-	if (level >= 3) {
-		level = 0;
-	}
-
 	switch (level) {
 	case 0:
+
 		break;
 	case 1:
 
@@ -275,8 +367,8 @@ void app_key_ok(void) {
 			LCD_Clear_COACH_ICO();
 
 			Repeat_Stop();
-			Repeat_SetStart(app_flash_Show_ABCD);
-			Repeat_SetStop(app_flash_Clear_ABCD);
+			Repeat_SetStart(app_flash_Show);
+			Repeat_SetStop(app_flash_Clear);
 			Repeat_Start(9, 9, 0);
 
 			break;
@@ -296,8 +388,8 @@ void app_key_ok(void) {
 				LCD_Clear_COACH_ICO();
 
 				Repeat_Stop();
-				Repeat_SetStart(app_flash_Show_ABCD);
-				Repeat_SetStop(app_flash_Clear_ABCD);
+				Repeat_SetStart(app_flash_Show);
+				Repeat_SetStop(app_flash_Clear);
 				Repeat_Start(9, 9, 0);
 			} else if (level == 2) {
 
@@ -313,6 +405,10 @@ void app_key_ok(void) {
 		break;
 	}
 
+	level++;
+	if (level >= 3) {
+		level = 0;
+	}
 }
 
 void app_power_on(void) {

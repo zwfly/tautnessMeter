@@ -26,6 +26,8 @@ typedef struct _WORK_T {
 } WORK_T;
 extern WORK_T g_tWork;
 
+extern const uint8_t Rep_Pull_num[4][2];
+
 void work_Init(void);
 void query_work_sum(void);
 void app_work_1s_pro(void);
