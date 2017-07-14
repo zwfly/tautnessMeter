@@ -16,7 +16,7 @@ static char letter = '\0';
  * level: 0, 拉动时候的界面
  *        1,
  * */
-static uint8_t level = 0;
+uint8_t level = 0;
 
 static void app_UI_init(void);
 
@@ -86,6 +86,102 @@ static void app_UI_init(void) {
 	}
 }
 
+void app_flash_Show(void) {
+
+	LCD_Show_Line_up();
+	switch (level) {
+	case 0:
+		break;
+	case 1:
+		if (mode == E_Quick_start_mode) {
+			LCD_Show_QS_ICO();
+		} else if (mode == E_Coach_mode) {
+			LCD_Show_COACH_ICO();
+		}
+		break;
+	case 2:
+
+		switch (letter) {
+		case '\0':
+			break;
+		case 'A':
+			LCD_Show_REP_Num(Rep_Pull_num['A' - 'A'][0]);
+			LCD_Show_Pulls_Num(Rep_Pull_num['A' - 'A'][1]);
+			break;
+		case 'B':
+			LCD_Show_REP_Num(Rep_Pull_num['B' - 'A'][0]);
+			LCD_Show_Pulls_Num(Rep_Pull_num['B' - 'A'][1]);
+			break;
+		case 'C':
+			LCD_Show_REP_Num(Rep_Pull_num['C' - 'A'][0]);
+			LCD_Show_Pulls_Num(Rep_Pull_num['C' - 'A'][1]);
+			break;
+		case 'D':
+			LCD_Show_REP_Num(Rep_Pull_num['D' - 'A'][0]);
+			LCD_Show_Pulls_Num(Rep_Pull_num['D' - 'A'][1]);
+			break;
+		}
+		if (mode == E_Quick_start_mode) {
+			LCD_Show_QS_ICO();
+		} else if (mode == E_Coach_mode) {
+			LCD_Show_COACH_ICO();
+		}
+		LCD_Show_ABCD_all();
+
+		break;
+	case 3:
+		break;
+	}
+	LCD_Show_Line_up();
+}
+void app_flash_Clear(void) {
+
+	switch (level) {
+	case 0:
+		break;
+	case 1:
+//		LCD_Clear_ABCD();
+//		if (mode == E_Quick_start_mode) {
+//			LCD_Clear_QS_ICO();
+//		} else if (mode == E_Coach_mode) {
+//			LCD_Clear_COACH_ICO();
+//		}
+
+		LCD_Clear_QS_ICO();
+		LCD_Clear_COACH_ICO();
+		break;
+	case 2:
+
+		if (letter == '\0') {
+			LCD_Clear_ABCD();
+		}
+		if (letter == 'A') {
+			LCD_Clear_ABCD();
+			LCD_Show_ABCD('A');
+		}
+		if (letter == 'B') {
+			LCD_Clear_ABCD();
+			LCD_Show_ABCD('B');
+		}
+		if (letter == 'C') {
+			LCD_Clear_ABCD();
+			LCD_Show_ABCD('C');
+		}
+		if (letter == 'D') {
+			LCD_Clear_ABCD();
+			LCD_Show_ABCD('D');
+		}
+		if (mode == E_Quick_start_mode) {
+			LCD_Clear_QS_ICO();
+		} else if (mode == E_Coach_mode) {
+			LCD_Clear_COACH_ICO();
+		}
+		break;
+	case 3:
+		break;
+	}
+
+}
 void app_key_power_or_return(void) {
 
 	switch (level) {
@@ -146,9 +242,11 @@ void app_key_power_or_return(void) {
 		}
 		break;
 	case 1:
+		Repeat_Stop();
 		if (level) {
 			level--;
 		}
+
 		break;
 	case 2:
 		if (level) {
@@ -171,8 +269,8 @@ void app_key_set(void) {
 
 		switch (g_tWork.mode) {
 		case E_Simple_metering_mode:
-			g_tWork.mode = E_Quick_start_mode;
-			mode = E_Quick_start_mode;
+			//g_tWork.mode = E_Quick_start_mode;
+			//mode = E_Quick_start_mode;
 			level = 1;
 			break;
 		case E_Quick_start_mode:
@@ -182,8 +280,29 @@ void app_key_set(void) {
 
 			break;
 		}
+
+		LCD_Show_REP_Num(0);
+		LCD_Show_Pulls_Num(0);
+		LCD_Show_CAL_Num(0);
+
+		LCD_Show_Line_up();
+		LCD_Show_REP_ICO();
+
+		LCD_Show_ABCD_all();
+
+		LCD_Show_CAL_ICO();
+
+		mode = g_tWork.mode;
+		mode = E_Quick_start_mode;
+		level = 1;
+		Repeat_Stop();
+		Repeat_SetStart(app_flash_Show);
+		Repeat_SetStop(app_flash_Clear);
+		Repeat_Start(9, 9, 0);
 		break;
 	case 1:
+//		level = 2;
+
 		break;
 	case 2:
 		break;
@@ -192,103 +311,6 @@ void app_key_set(void) {
 	}
 
 //	app_UI_init();
-}
-
-void app_flash_Show(void) {
-
-	switch (level) {
-	case 0:
-		break;
-	case 1:
-		if (mode == E_Quick_start_mode) {
-			LCD_Show_QS_ICO();
-		} else if (mode == E_Coach_mode) {
-			LCD_Show_COACH_ICO();
-		}
-		break;
-	case 2:
-
-		switch (letter) {
-		case '\0':
-			break;
-		case 'A':
-			LCD_Show_REP_Num(Rep_Pull_num['A' - 'A'][0]);
-			LCD_Show_Pulls_Num(Rep_Pull_num['A' - 'A'][1]);
-			break;
-		case 'B':
-			LCD_Show_REP_Num(Rep_Pull_num['B' - 'A'][0]);
-			LCD_Show_Pulls_Num(Rep_Pull_num['B' - 'A'][1]);
-			break;
-		case 'C':
-			LCD_Show_REP_Num(Rep_Pull_num['C' - 'A'][0]);
-			LCD_Show_Pulls_Num(Rep_Pull_num['C' - 'A'][1]);
-			break;
-		case 'D':
-			LCD_Show_REP_Num(Rep_Pull_num['D' - 'A'][0]);
-			LCD_Show_Pulls_Num(Rep_Pull_num['D' - 'A'][1]);
-			break;
-		}
-
-		LCD_Show_ABCD('A');
-		LCD_Show_ABCD('B');
-		LCD_Show_ABCD('C');
-		LCD_Show_ABCD('D');
-
-		if (mode == E_Quick_start_mode) {
-			LCD_Show_QS_ICO();
-		} else if (mode == E_Coach_mode) {
-			LCD_Show_COACH_ICO();
-		}
-		break;
-	case 3:
-		break;
-	}
-
-}
-void app_flash_Clear(void) {
-
-	switch (level) {
-	case 0:
-		break;
-	case 1:
-		LCD_Clear_ABCD();
-		if (mode == E_Quick_start_mode) {
-			LCD_Clear_QS_ICO();
-		} else if (mode == E_Coach_mode) {
-			LCD_Clear_COACH_ICO();
-		}
-		break;
-	case 2:
-
-		if (letter == '\0') {
-			LCD_Clear_ABCD();
-		}
-		if (letter == 'A') {
-			LCD_Clear_ABCD();
-			LCD_Show_ABCD('A');
-		}
-		if (letter == 'B') {
-			LCD_Clear_ABCD();
-			LCD_Show_ABCD('A');
-		}
-		if (letter == 'C') {
-			LCD_Clear_ABCD();
-			LCD_Show_ABCD('A');
-		}
-		if (letter == 'D') {
-			LCD_Clear_ABCD();
-			LCD_Show_ABCD('A');
-		}
-		if (mode == E_Quick_start_mode) {
-			LCD_Clear_QS_ICO();
-		} else if (mode == E_Coach_mode) {
-			LCD_Clear_COACH_ICO();
-		}
-		break;
-	case 3:
-		break;
-	}
-
 }
 
 void app_key_add(void) {
@@ -366,16 +388,15 @@ void app_key_ok(void) {
 			LCD_Show_QS_ICO();
 			LCD_Clear_COACH_ICO();
 
-			Repeat_Stop();
-			Repeat_SetStart(app_flash_Show);
-			Repeat_SetStop(app_flash_Clear);
-			Repeat_Start(9, 9, 0);
-
 			break;
 		case E_Coach_mode:
+			LCD_Clear_QS_ICO();
+			LCD_Show_COACH_ICO();
 
 			break;
 		}
+		letter = 'A';
+		level = 2;
 		break;
 	case 2:
 		switch (mode) {
@@ -383,32 +404,29 @@ void app_key_ok(void) {
 
 			break;
 		case E_Quick_start_mode:
-			if (level == 2) {
-				LCD_Show_QS_ICO();
-				LCD_Clear_COACH_ICO();
 
-				Repeat_Stop();
-				Repeat_SetStart(app_flash_Show);
-				Repeat_SetStop(app_flash_Clear);
-				Repeat_Start(9, 9, 0);
-			} else if (level == 2) {
-
-			}
+			Repeat_Stop();
+			LCD_Show_QS_ICO();
+			LCD_Clear_COACH_ICO();
 
 			break;
 		case E_Coach_mode:
 
 			break;
 		}
+		g_tWork.mode = mode;
+		g_tWork.reps_mode = letter;
+		g_tWork.sum = 0;
+		level = 0;
 		break;
 	case 3:
 		break;
 	}
 
-	level++;
-	if (level >= 3) {
-		level = 0;
-	}
+//	level++;
+//	if (level >= 3) {
+//		level = 0;
+//	}
 }
 
 void app_power_on(void) {
@@ -420,16 +438,16 @@ void app_power_off(void) {
 }
 void app_key_pro(uint8_t keyCode) {
 
-	BEEP_KeyTone();
-
 	switch (keyCode) {
 	case KEY_UP_K1:
 
 		break;
 	case KEY_DOWN_K1:
+		BEEP_KeyTone();
 		app_key_power_or_return();
 		break;
 	case KEY_LONG_K1:
+		BEEP_KeyTone();
 		if (g_tDevice.status == E_PowerOn) {
 			g_tDevice.status = E_PowerOff;
 			app_power_off();
@@ -443,6 +461,7 @@ void app_key_pro(uint8_t keyCode) {
 
 		break;
 	case KEY_DOWN_K2:
+		BEEP_KeyTone();
 		app_key_set();
 		break;
 	case KEY_LONG_K2:
@@ -452,6 +471,7 @@ void app_key_pro(uint8_t keyCode) {
 
 		break;
 	case KEY_DOWN_K3:
+		BEEP_KeyTone();
 		app_key_add();
 		break;
 	case KEY_LONG_K3:
@@ -461,11 +481,24 @@ void app_key_pro(uint8_t keyCode) {
 
 		break;
 	case KEY_DOWN_K4:
+		BEEP_KeyTone();
 		app_key_ok();
 		break;
 	case KEY_LONG_K4:
 
 		break;
+#if DEBUG_KEY
+	case KEY_UP_K5:
+
+		break;
+	case KEY_DOWN_K5:
+		//BEEP_KeyTone();
+		query_work_sum();
+		break;
+	case KEY_LONG_K5:
+
+		break;
+#endif
 	case KEY_UP_K1K3:
 
 		break;

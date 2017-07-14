@@ -1,4 +1,4 @@
-C51 COMPILER V9.56.0.0   MAIN                                                              07/12/2017 22:47:51 PAGE 1   
+C51 COMPILER V9.56.0.0   MAIN                                                              07/14/2017 22:01:00 PAGE 1   
 
 
 C51 COMPILER V9.56.0.0, COMPILATION OF MODULE MAIN
@@ -62,7 +62,7 @@ line level    source
   51   4                                      tmp++;
   52   4      //                              LCD_Show_REP_Num(tmp % 99);
   53   4      //                              LCD_Show_Pulls_Num(tmp);
-C51 COMPILER V9.56.0.0   MAIN                                                              07/12/2017 22:47:51 PAGE 2   
+C51 COMPILER V9.56.0.0   MAIN                                                              07/14/2017 22:01:00 PAGE 2   
 
   54   4      //                              LCD_Show_CAL_Num(tmp);
   55   4                              }
@@ -92,18 +92,18 @@ line level    source
   79   3      //
   80   3      //                      }
   81   3                      }
-  82   2      
-  83   2                      if (TRUE == Get_Data_From_UART1(&c)) {
-  84   3      
-  85   3                              printf("true %x\n",c);
-  86   3      
-  87   3                              if (c) {
-  88   4                                      BEEP_Start(0, 5, 5, 2);
-  89   4                              } else {
-  90   4                                      BEEP_Start(0, 5, 5, 1);
-  91   4                              }
-  92   3                      }
-  93   2      
+  82   2      #if 0
+                              if (TRUE == Get_Data_From_UART1(&c)) {
+              
+                                      printf("true %x\n", c);
+              
+                                      if (c) {
+                                              BEEP_Start(0, 5, 5, 2);
+                                      } else {
+                                              BEEP_Start(0, 5, 5, 1);
+                                      }
+                              }
+              #endif
   94   2      #if 1
   95   2      
   96   2                      ucKeyCode = bsp_GetKey();
@@ -116,8 +116,8 @@ line level    source
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    167    ----
-   CONSTANT SIZE    =      9    ----
+   CODE SIZE        =    100    ----
+   CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =      3       1
    PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----    ----

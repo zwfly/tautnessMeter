@@ -72,7 +72,15 @@ static uint8_t IsKeyDown4(void) {
 		return 1;
 	}
 }
-
+#if DEBUG_KEY
+static uint8_t IsKeyDown5(void) {
+	if (P55) {
+		return 0;
+	} else {
+		return 1;
+	}
+}
+#endif
 #endif
 
 /* S1 S3×éºÏ¼ü */
@@ -219,7 +227,10 @@ static void bsp_InitKeyHard(void) {
 
 	set_P0M1_6;
 	clr_P0M2_6;
-
+#if DEBUG_KEY
+	P5M1 |= 0x20;
+	P5M2 &= ~0x20;
+#endif
 }
 
 /*
@@ -255,7 +266,12 @@ static void bsp_InitKeyVar(void) {
 	s_tBtn[1].IsKeyDownFunc = IsKeyDown2;
 	s_tBtn[2].IsKeyDownFunc = IsKeyDown3;
 	s_tBtn[3].IsKeyDownFunc = IsKeyDown4;
+#if DEBUG_KEY
+	s_tBtn[4].IsKeyDownFunc = IsKeyDown5;
+	s_tBtn[5].IsKeyDownFunc = IsKeyDown_1and3;
+#else
 	s_tBtn[4].IsKeyDownFunc = IsKeyDown_1and3;
+#endif
 
 }
 

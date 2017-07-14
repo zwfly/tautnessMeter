@@ -12,8 +12,13 @@
 #ifndef __BSP_KEY_H
 #define __BSP_KEY_H
 
-#define KEY_COUNT    5
+#define DEBUG_KEY 1
 
+#if DEBUG_KEY
+#define KEY_COUNT    6
+#else
+#define KEY_COUNT    5
+#endif
 /* 根据应用程序的功能重命名按键宏 */
 #define KEY_DOWN_K1		KEY_1_DOWN
 #define KEY_UP_K1		KEY_1_UP
@@ -31,13 +36,17 @@
 #define KEY_UP_K4		KEY_4_UP
 #define KEY_LONG_K4		KEY_4_LONG
 
-#define KEY_DOWN_K1K3	KEY_5_DOWN		/* K1 K3 组合键 */
-#define KEY_UP_K1K3	    KEY_5_UP
-#define KEY_LONG_K1K3	KEY_5_LONG
+#define KEY_DOWN_K5		KEY_5_DOWN
+#define KEY_UP_K5		KEY_5_UP
+#define KEY_LONG_K5		KEY_5_LONG
+
+#define KEY_DOWN_K1K3	KEY_1and3_DOWN		/* K1 K3 组合键 */
+#define KEY_UP_K1K3	    KEY_1and3_UP
+#define KEY_LONG_K1K3	KEY_1and3_LONG
 
 /* 按键ID, 主要用于bsp_KeyState()函数的入口参数 */
 typedef enum {
-	KID_K1 = 0, KID_K2, KID_K3, KID_K4, KID_K5,
+	KID_K1 = 0, KID_K2, KID_K3, KID_K4, KID_K5, KID_K1and3,
 
 } KEY_ID_E;
 
@@ -94,6 +103,9 @@ typedef enum {
 	KEY_5_UP, /* 5键弹起 */
 	KEY_5_LONG, /* 5键长按 */
 
+	KEY_1and3_DOWN, /* 5键按下 */
+	KEY_1and3_UP, /* 5键弹起 */
+	KEY_1and3_LONG, /* 5键长按 */
 } KEY_ENUM;
 
 /* 按键FIFO用到变量 */

@@ -66,9 +66,10 @@ void Repeat_Start(uint16_t _usStartTime, uint16_t _usStopTime,
  */
 void Repeat_Stop(void) {
 	g_tRepeat.ucEnalbe = 0;
+	Repeat_Stop_exe(); /* 必须在清控制标志后再停止发声，避免停止后在中断中又开启 */
 	Repeat_SetStart(0);
 	Repeat_SetStop(0);
-	Repeat_Stop_exe(); /* 必须在清控制标志后再停止发声，避免停止后在中断中又开启 */
+
 }
 
 /*
@@ -109,7 +110,6 @@ void Repeat_Pro(void) {
 					return;
 				}
 			}
-
 			g_tRepeat.usCount = 0;
 			g_tRepeat.ucState = 0;
 

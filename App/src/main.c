@@ -79,7 +79,7 @@ void main(void) {
 //
 //			}
 		}
-
+#if 0
 		if (TRUE == Get_Data_From_UART1(&c)) {
 
 			printf("true %x\n", c);
@@ -90,7 +90,7 @@ void main(void) {
 				BEEP_Start(0, 5, 5, 1);
 			}
 		}
-
+#endif
 #if 1
 
 		ucKeyCode = bsp_GetKey();

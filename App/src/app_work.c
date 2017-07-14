@@ -7,8 +7,8 @@
 
 #include "app.h"
 
-#define BEEP_SHORT_TIME  5
-#define BEEP_LONG_TIME  15
+#define BEEP_SHORT_TIME  10
+#define BEEP_LONG_TIME  30
 #define COACH_DELAY_TIME 300
 #define CAL_a 2
 
@@ -60,6 +60,9 @@ static void app_work_pro(void) {
 	static BIT finish_flag = 0;
 	static BIT reps_num_appear_flag = 0;
 
+	level = 0;
+	Repeat_Stop();
+
 	switch (g_tWork.mode) {
 	case E_Simple_metering_mode:
 
@@ -68,9 +71,21 @@ static void app_work_pro(void) {
 		} else {
 			BEEP_Start(1, BEEP_SHORT_TIME, 1, 1);
 		}
-		reps_num_appear_flag = 0;
 		g_tWork.pulls_num = g_tWork.sum;
 		g_tWork.cal_num = g_tWork.sum * CAL_a;
+
+		/********************/
+		LCD_Show_Pulls_Num(g_tWork.pulls_num);
+		LCD_Show_CAL_Num(g_tWork.cal_num);
+
+		LCD_Clear_REP_Num();
+		LCD_Clear_REP_ICO();
+		LCD_Clear_ABCD();
+		LCD_Clear_QS_ICO();
+		LCD_Clear_COACH_ICO();
+
+		LCD_Show_CAL_ICO();
+		LCD_Show_Line_up();
 		break;
 	case E_Quick_start_mode:
 
@@ -99,7 +114,18 @@ static void app_work_pro(void) {
 					% Rep_Pull_num[g_tWork.reps_mode - 'A'][1];
 			g_tWork.cal_num = g_tWork.sum * CAL_a;
 		}
+		LCD_Show_REP_Num(g_tWork.reps_num);
+		LCD_Show_Pulls_Num(g_tWork.pulls_num);
+		LCD_Show_CAL_Num(g_tWork.cal_num);
 
+		LCD_Show_REP_ICO();
+		LCD_Show_ABCD(g_tWork.reps_mode);
+
+		LCD_Show_QS_ICO();
+		LCD_Clear_COACH_ICO();
+
+		LCD_Show_CAL_ICO();
+		LCD_Show_Line_up();
 		break;
 	case E_Coach_mode:
 		if (finish_flag) {
@@ -127,15 +153,29 @@ static void app_work_pro(void) {
 					% Rep_Pull_num[g_tWork.reps_mode - 'A'][1];
 			g_tWork.cal_num = g_tWork.sum * CAL_a;
 		}
+		LCD_Show_REP_Num(g_tWork.reps_num);
+		LCD_Show_Pulls_Num(g_tWork.pulls_num);
+		LCD_Show_CAL_Num(g_tWork.cal_num);
+
+		LCD_Show_REP_ICO();
+		LCD_Show_ABCD(g_tWork.reps_mode);
+
+		LCD_Clear_QS_ICO();
+		LCD_Show_COACH_ICO();
+
+		LCD_Show_CAL_ICO();
+		LCD_Show_Line_up();
 		break;
 	}
+
+#if 0
+	LCD_Show_Pulls_Num(g_tWork.pulls_num);
+	LCD_Show_CAL_Num(g_tWork.cal_num);
 	if (reps_num_appear_flag) {
 		LCD_Show_REP_Num(g_tWork.reps_num);
 	} else {
 		LCD_Clear_REP_Num();
 	}
-	LCD_Show_Pulls_Num(g_tWork.pulls_num);
-	LCD_Show_CAL_Num(g_tWork.cal_num);
-
+#endif
 }
 

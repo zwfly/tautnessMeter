@@ -46,6 +46,7 @@ void BEEP_InitHard(void) {
 	set_TR2D;
 
 	g_tBeep.ucEnalbe = 0;
+
 }
 
 void BEEP_ENABLE() {
@@ -70,12 +71,12 @@ void BEEP_DISABLE() {
  *	·µ »Ø Öµ: ÎÞ
  *********************************************************************************************************
  */
-void BEEP_Start(uint16_t _usInitTime, uint16_t _usBeepTime,
+void BEEP_Start(uint16_t _usDelayTime, uint16_t _usBeepTime,
 		uint16_t _usStopTime, uint16_t _usCycle) {
 	if (_usBeepTime == 0) {
 		return;
 	}
-	g_tBeep.usDelayTime = _usInitTime;
+	g_tBeep.usDelayTime = _usDelayTime;
 	g_tBeep.usBeepTime = _usBeepTime;
 	g_tBeep.usStopTime = _usStopTime;
 	g_tBeep.usCycle = _usCycle;

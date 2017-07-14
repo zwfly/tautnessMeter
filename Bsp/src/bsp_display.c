@@ -52,7 +52,7 @@ void LCD_Clear_All(void) {
 void LCD_Clear_Bluetooth_ICO(void) {
 	clr_SEG10EN;
 	LCDPTR = 10;
-	LCDDAT = 0;
+	LCDDAT = COM0;
 }
 void LCD_Show_Bluetooth_ICO(void) {
 	set_SEG10EN;
@@ -63,7 +63,7 @@ void LCD_Show_Bluetooth_ICO(void) {
 void LCD_Clear_Bluetooth_Fill_ICO(void) {
 	clr_SEG12EN;
 	LCDPTR = 12;
-	LCDDAT = 0;
+	LCDDAT = COM0;
 }
 void LCD_Show_Bluetooth_Fill_ICO(void) {
 	set_SEG12EN;
@@ -74,7 +74,7 @@ void LCD_Show_Bluetooth_Fill_ICO(void) {
 void LCD_Clear_Line_up(void) {
 	clr_SEG8EN;
 	LCDPTR = 8;
-	LCDDAT = 0;
+	LCDDAT = COM0;
 }
 void LCD_Show_Line_up(void) {
 	set_SEG8EN;
@@ -84,7 +84,7 @@ void LCD_Show_Line_up(void) {
 void LCD_Clear_Battery_ICO(void) {
 	clr_SEG14EN;
 	LCDPTR = 14;
-	LCDDAT = 0;
+	LCDDAT = COM0;
 }
 void LCD_Show_Battery_ICO(void) {
 	set_SEG14EN;
@@ -94,7 +94,7 @@ void LCD_Show_Battery_ICO(void) {
 void LCD_Clear_REP_ICO(void) {
 	clr_SEG16EN;
 	LCDPTR = 16;
-	LCDDAT = 0;
+	LCDDAT = COM0;
 }
 void LCD_Show_REP_ICO(void) {
 	set_SEG16EN;
@@ -207,13 +207,14 @@ void LCD_Show_REP_Num(uint8_t num) {
 			break;
 		}
 	} else {
-		set_SEG14EN;
-		set_SEG15EN;
+		clr_SEG14EN;
+		clr_SEG15EN;
+
 		LCDPTR = 14;
-		LCDDAT = 0;
+		LCDDAT = COM0 + COM1 + COM2 + COM3;
 
 		LCDPTR = 15;
-		LCDDAT = 0;
+		LCDDAT = COM0 + COM1 + COM2 + COM3;
 	}
 	set_SEG16EN;
 	set_SEG17EN;
@@ -293,30 +294,33 @@ void LCD_Show_REP_Num(uint8_t num) {
 void LCD_Clear_ABCD(void) {
 	clr_SEG18EN;
 	LCDPTR = 18;
-	LCDDAT = 0;
+	LCDDAT = COM0 + COM1 + COM2 + COM3;
+}
+void LCD_Show_ABCD_all(void) {
+	set_SEG18EN;
+	LCDPTR = 18;
+	LCDDAT = COM0 + COM1 + COM2 + COM3;
 }
 void LCD_Show_ABCD(char c) {
 	set_SEG18EN;
+	LCDPTR = 18;
+
 	switch (c) {
 	case 'A':
-		LCDPTR = 18;
 		LCDDAT = COM0;
 		break;
 	case 'B':
-		LCDPTR = 18;
 		LCDDAT = COM1;
 		break;
 	case 'C':
-		LCDPTR = 18;
 		LCDDAT = COM2;
 		break;
 	case 'D':
-		LCDPTR = 18;
 		LCDDAT = COM3;
 		break;
 	default:
-		LCDPTR = 18;
-		LCDDAT = 0;
+//		LCDPTR = 18;
+//		LCDDAT = 0;
 		break;
 	}
 }

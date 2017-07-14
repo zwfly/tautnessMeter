@@ -8,7 +8,6 @@
 #ifndef BSP_INC_BSP_DISPLAY_H_
 #define BSP_INC_BSP_DISPLAY_H_
 
-
 void LCD_Clear_All(void);
 void LCD_Clear_Bluetooth_ICO(void);
 void LCD_Show_Bluetooth_ICO(void);
@@ -23,6 +22,7 @@ void LCD_Show_REP_ICO(void);
 void LCD_Clear_REP_Num(void);
 void LCD_Show_REP_Num(uint8_t num);
 void LCD_Clear_ABCD(void);
+void LCD_Show_ABCD_all(void);
 void LCD_Show_ABCD(char c);
 void LCD_Clear_Pulls_Num(void);
 void LCD_Show_Pulls_Num(uint16_t num);
