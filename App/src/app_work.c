@@ -9,7 +9,7 @@
 
 #define BEEP_SHORT_TIME  10
 #define BEEP_LONG_TIME  30
-#define COACH_DELAY_TIME 300
+#define COACH_DELAY_TIME 200
 #define CAL_a 2
 
 const uint8_t Rep_Pull_num[4][2] = { { 10, 20 }, { 20, 25 }, { 30, 30 }, { 50,
@@ -126,6 +126,7 @@ static void app_work_pro(void) {
 
 		LCD_Show_CAL_ICO();
 		LCD_Show_Line_up();
+
 		break;
 	case E_Coach_mode:
 		if (finish_flag) {
@@ -165,6 +166,7 @@ static void app_work_pro(void) {
 
 		LCD_Show_CAL_ICO();
 		LCD_Show_Line_up();
+
 		break;
 	}
 

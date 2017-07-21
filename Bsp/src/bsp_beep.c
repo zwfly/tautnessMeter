@@ -1,7 +1,7 @@
 #include "bsp.h"
 
 static BEEP_T g_tBeep; /* 定义蜂鸣器全局结构体变量 */
-
+static BIT delay_flag = 0;
 /*
  *********************************************************************************************************
  *	函 数 名: BEEP_InitHard
@@ -85,7 +85,8 @@ void BEEP_Start(uint16_t _usDelayTime, uint16_t _usBeepTime,
 	g_tBeep.ucState = 0;
 	g_tBeep.ucEnalbe = 1; /* 设置完全局参数后再使能发声标志 */
 
-	BEEP_ENABLE(); /* 开始发声 */
+	delay_flag = 1;
+//	BEEP_ENABLE(); /* 开始发声 */
 }
 
 /*
@@ -129,6 +130,10 @@ void BEEP_Pro(void) {
 	if (g_tBeep.usDelayTime) {
 		g_tBeep.usDelayTime--;
 		return;
+	}
+	if (delay_flag) {
+		delay_flag = 0;
+		BEEP_ENABLE();
 	}
 
 	if (g_tBeep.ucState == 0) {

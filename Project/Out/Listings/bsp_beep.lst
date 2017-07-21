@@ -1,4 +1,4 @@
-C51 COMPILER V9.56.0.0   BSP_BEEP                                                          07/14/2017 22:01:00 PAGE 1   
+C51 COMPILER V9.56.0.0   BSP_BEEP                                                          07/21/2017 22:44:29 PAGE 1   
 
 
 C51 COMPILER V9.56.0.0, COMPILATION OF MODULE BSP_BEEP
@@ -12,7 +12,7 @@ line level    source
    1          #include "bsp.h"
    2          
    3          static BEEP_T g_tBeep; /* 定义蜂鸣器全局结构体变量 */
-   4          
+   4          static BIT delay_flag = 0;
    5          /*
    6           *********************************************************************************************************
    7           *      函 数 名: BEEP_InitHard
@@ -62,7 +62,7 @@ line level    source
   51          
   52          void BEEP_ENABLE() {
   53   1              set_T2DOE1;
-C51 COMPILER V9.56.0.0   BSP_BEEP                                                          07/14/2017 22:01:00 PAGE 2   
+C51 COMPILER V9.56.0.0   BSP_BEEP                                                          07/21/2017 22:44:29 PAGE 2   
 
   54   1              set_P30;
   55   1      }
@@ -98,100 +98,105 @@ line level    source
   85   1              g_tBeep.ucState = 0;
   86   1              g_tBeep.ucEnalbe = 1; /* 设置完全局参数后再使能发声标志 */
   87   1      
-  88   1              BEEP_ENABLE(); /* 开始发声 */
-  89   1      }
-  90          
-  91          /*
-  92           *********************************************************************************************************
-  93           *      函 数 名: BEEP_Stop
-  94           *      功能说明: 停止蜂鸣音。
-  95           *      形    参：无
-  96           *      返 回 值: 无
-  97           *********************************************************************************************************
-  98           */
-  99          void BEEP_Stop(void) {
- 100   1              g_tBeep.ucEnalbe = 0;
- 101   1      
- 102   1              BEEP_DISABLE(); /* 必须在清控制标志后再停止发声，避免停止后在中断中又开启 */
- 103   1      }
- 104          
- 105          /*
- 106           *********************************************************************************************************
- 107           *      函 数 名: BEEP_KeyTone
- 108           *      功能说明: 发送按键音
- 109           *      形    参：无
- 110           *      返 回 值: 无
- 111           *********************************************************************************************************
- 112           */
- 113          void BEEP_KeyTone(void) {
- 114   1              BEEP_Start(0, 5, 1, 1); /* 鸣叫50ms，停10ms， 1次 */
- 115   1      }
-C51 COMPILER V9.56.0.0   BSP_BEEP                                                          07/14/2017 22:01:00 PAGE 3   
+  88   1              delay_flag = 1;
+  89   1      //      BEEP_ENABLE(); /* 开始发声 */
+  90   1      }
+  91          
+  92          /*
+  93           *********************************************************************************************************
+  94           *      函 数 名: BEEP_Stop
+  95           *      功能说明: 停止蜂鸣音。
+  96           *      形    参：无
+  97           *      返 回 值: 无
+  98           *********************************************************************************************************
+  99           */
+ 100          void BEEP_Stop(void) {
+ 101   1              g_tBeep.ucEnalbe = 0;
+ 102   1      
+ 103   1              BEEP_DISABLE(); /* 必须在清控制标志后再停止发声，避免停止后在中断中又开启 */
+ 104   1      }
+ 105          
+ 106          /*
+ 107           *********************************************************************************************************
+ 108           *      函 数 名: BEEP_KeyTone
+ 109           *      功能说明: 发送按键音
+ 110           *      形    参：无
+ 111           *      返 回 值: 无
+ 112           *********************************************************************************************************
+ 113           */
+ 114          void BEEP_KeyTone(void) {
+ 115   1              BEEP_Start(0, 5, 1, 1); /* 鸣叫50ms，停10ms， 1次 */
+C51 COMPILER V9.56.0.0   BSP_BEEP                                                          07/21/2017 22:44:29 PAGE 3   
 
- 116          
- 117          /*
- 118           *********************************************************************************************************
- 119           *      函 数 名: BEEP_Pro
- 120           *      功能说明: 每隔10ms调用1次该函数，用于控制蜂鸣器发声。该函数在 bsp_timer.c 中被调用。
- 121           *      形    参：无
- 122           *      返 回 值: 无
- 123           *********************************************************************************************************
- 124           */
- 125          void BEEP_Pro(void) {
- 126   1              if ((g_tBeep.ucEnalbe == 0) || (g_tBeep.usStopTime == 0)) {
- 127   2                      return;
- 128   2              }
- 129   1              if (g_tBeep.usDelayTime) {
- 130   2                      g_tBeep.usDelayTime--;
- 131   2                      return;
- 132   2              }
- 133   1      
- 134   1              if (g_tBeep.ucState == 0) {
- 135   2                      if (g_tBeep.usStopTime > 0) /* 间断发声 */
- 136   2                      {
- 137   3                              if (++g_tBeep.usCount >= g_tBeep.usBeepTime) {
- 138   4                                      BEEP_DISABLE(); /* 停止发声 */
- 139   4                                      g_tBeep.usCount = 0;
- 140   4                                      g_tBeep.ucState = 1;
- 141   4                              }
- 142   3                      } else {
- 143   3                              ; /* 不做任何处理，连续发声 */
- 144   3                      }
- 145   2              } else if (g_tBeep.ucState == 1) {
- 146   2                      if (++g_tBeep.usCount >= g_tBeep.usStopTime) {
- 147   3                              /* 连续发声时，直到调用stop停止为止 */
- 148   3                              if (g_tBeep.usCycle > 0) {
- 149   4                                      if (++g_tBeep.usCycleCount >= g_tBeep.usCycle) {
- 150   5                                              /* 循环次数到，停止发声 */
- 151   5                                              g_tBeep.ucEnalbe = 0;
- 152   5                                      }
- 153   4      
- 154   4                                      if (g_tBeep.ucEnalbe == 0) {
- 155   5                                              g_tBeep.usStopTime = 0;
- 156   5                                              return;
+ 116   1      }
+ 117          
+ 118          /*
+ 119           *********************************************************************************************************
+ 120           *      函 数 名: BEEP_Pro
+ 121           *      功能说明: 每隔10ms调用1次该函数，用于控制蜂鸣器发声。该函数在 bsp_timer.c 中被调用。
+ 122           *      形    参：无
+ 123           *      返 回 值: 无
+ 124           *********************************************************************************************************
+ 125           */
+ 126          void BEEP_Pro(void) {
+ 127   1              if ((g_tBeep.ucEnalbe == 0) || (g_tBeep.usStopTime == 0)) {
+ 128   2                      return;
+ 129   2              }
+ 130   1              if (g_tBeep.usDelayTime) {
+ 131   2                      g_tBeep.usDelayTime--;
+ 132   2                      return;
+ 133   2              }
+ 134   1              if (delay_flag) {
+ 135   2                      delay_flag = 0;
+ 136   2                      BEEP_ENABLE();
+ 137   2              }
+ 138   1      
+ 139   1              if (g_tBeep.ucState == 0) {
+ 140   2                      if (g_tBeep.usStopTime > 0) /* 间断发声 */
+ 141   2                      {
+ 142   3                              if (++g_tBeep.usCount >= g_tBeep.usBeepTime) {
+ 143   4                                      BEEP_DISABLE(); /* 停止发声 */
+ 144   4                                      g_tBeep.usCount = 0;
+ 145   4                                      g_tBeep.ucState = 1;
+ 146   4                              }
+ 147   3                      } else {
+ 148   3                              ; /* 不做任何处理，连续发声 */
+ 149   3                      }
+ 150   2              } else if (g_tBeep.ucState == 1) {
+ 151   2                      if (++g_tBeep.usCount >= g_tBeep.usStopTime) {
+ 152   3                              /* 连续发声时，直到调用stop停止为止 */
+ 153   3                              if (g_tBeep.usCycle > 0) {
+ 154   4                                      if (++g_tBeep.usCycleCount >= g_tBeep.usCycle) {
+ 155   5                                              /* 循环次数到，停止发声 */
+ 156   5                                              g_tBeep.ucEnalbe = 0;
  157   5                                      }
- 158   4                              }
- 159   3      
- 160   3                              g_tBeep.usCount = 0;
- 161   3                              g_tBeep.ucState = 0;
- 162   3      
- 163   3                              BEEP_ENABLE(); /* 开始发声 */
- 164   3                      }
- 165   2              }
- 166   1      }
- 167          
+ 158   4      
+ 159   4                                      if (g_tBeep.ucEnalbe == 0) {
+ 160   5                                              g_tBeep.usStopTime = 0;
+ 161   5                                              return;
+ 162   5                                      }
+ 163   4                              }
+ 164   3      
+ 165   3                              g_tBeep.usCount = 0;
+ 166   3                              g_tBeep.ucState = 0;
+ 167   3      
+ 168   3                              BEEP_ENABLE(); /* 开始发声 */
+ 169   3                      }
+ 170   2              }
+ 171   1      }
+ 172          
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    344    ----
+   CODE SIZE        =    356    ----
    CONSTANT SIZE    =   ----    ----
+C51 COMPILER V9.56.0.0   BSP_BEEP                                                          07/21/2017 22:44:29 PAGE 4   
+
    XDATA SIZE       =     14       8
    PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----    ----
    IDATA SIZE       =   ----    ----
-   BIT SIZE         =   ----    ----
-C51 COMPILER V9.56.0.0   BSP_BEEP                                                          07/14/2017 22:01:00 PAGE 4   
-
+   BIT SIZE         =      1    ----
 END OF MODULE INFORMATION.
 
 
