@@ -43,6 +43,7 @@ void main(void) {
 			Task_time.flag_1s = 0;
 			//////////////////
 			app_work_1s_pro();
+			app_charge_1s_pro();
 
 			cnt++;
 			if (cnt > 3) {

@@ -1,4 +1,4 @@
-C51 COMPILER V9.56.0.0   APP_CHARGE                                                        07/21/2017 22:44:28 PAGE 1   
+C51 COMPILER V9.56.0.0   APP_CHARGE                                                        07/22/2017 22:46:49 PAGE 1   
 
 
 C51 COMPILER V9.56.0.0, COMPILATION OF MODULE APP_CHARGE
@@ -62,7 +62,7 @@ line level    source
   51   3                              g_tCharge.count = 0;
   52   3      
   53   3                              LCD_Show_Battery_ICO();
-C51 COMPILER V9.56.0.0   APP_CHARGE                                                        07/21/2017 22:44:28 PAGE 2   
+C51 COMPILER V9.56.0.0   APP_CHARGE                                                        07/22/2017 22:46:49 PAGE 2   
 
   54   3                      }
   55   2                      break;
@@ -76,10 +76,20 @@ line level    source
   63   2              }
   64   1      
   65   1      }
+  66          
+  67          void app_charge_1s_pro(void) {
+  68   1      
+  69   1              if (P50) {
+  70   2                      g_tCharge.status = E_FullCharge;
+  71   2              } else {
+  72   2                      g_tCharge.status = E_InCharge;
+  73   2              }
+  74   1      
+  75   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =     97    ----
+   CODE SIZE        =    111    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =      2    ----
    PDATA SIZE       =   ----    ----

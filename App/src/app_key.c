@@ -12,6 +12,8 @@ DEVICE_T g_tDevice;
 static E_TRAINING_MODE mode;
 static char letter = '\0';
 
+#define BLINK_FLASH_TIME   4
+
 /*
  * level: 0, 拉动时候的界面
  *        1,
@@ -63,7 +65,7 @@ static void app_UI_init(void) {
 		Repeat_Stop();
 		Repeat_SetStart(LCD_Show_QS_ICO);
 		Repeat_SetStop(LCD_Clear_QS_ICO);
-		Repeat_Start(8, 8, 0);
+		Repeat_Start(4, 4, 0);
 		break;
 	case E_Coach_mode:
 		LCD_Show_REP_ICO();
@@ -81,7 +83,7 @@ static void app_UI_init(void) {
 		Repeat_Stop();
 		Repeat_SetStart(LCD_Show_COACH_ICO);
 		Repeat_SetStop(LCD_Clear_COACH_ICO);
-		Repeat_Start(8, 8, 0);
+		Repeat_Start(4, 4, 0);
 		break;
 	}
 }
@@ -298,7 +300,7 @@ void app_key_set(void) {
 		Repeat_Stop();
 		Repeat_SetStart(app_flash_Show);
 		Repeat_SetStop(app_flash_Clear);
-		Repeat_Start(9, 9, 0);
+		Repeat_Start(BLINK_FLASH_TIME, BLINK_FLASH_TIME, 0);
 		break;
 	case 1:
 //		level = 2;

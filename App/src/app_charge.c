@@ -63,3 +63,13 @@ void app_charge_100ms_pro(void) {
 	}
 
 }
+
+void app_charge_1s_pro(void) {
+
+	if (P50) {
+		g_tCharge.status = E_FullCharge;
+	} else {
+		g_tCharge.status = E_InCharge;
+	}
+
+}
