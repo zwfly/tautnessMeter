@@ -1,4 +1,4 @@
-C51 COMPILER V9.56.0.0   APP_CHARGE                                                        07/22/2017 22:46:49 PAGE 1   
+C51 COMPILER V9.56.0.0   APP_CHARGE                                                        07/25/2017 22:19:00 PAGE 1   
 
 
 C51 COMPILER V9.56.0.0, COMPILATION OF MODULE APP_CHARGE
@@ -26,70 +26,74 @@ line level    source
   15   1      }
   16          
   17          void app_charge_100ms_pro(void) {
-  18   1      //      uint8_t tmp = 0;
-  19   1              static BIT flag = 0;
-  20   1      
-  21   1              g_tCharge.count++;
-  22   1              switch (g_tCharge.status) {
-  23   2              case E_NeedCharge:
-  24   2                      if (g_tCharge.count >= 5) {
-  25   3                              g_tCharge.count = 0;
-  26   3      
-  27   3                              if (flag) {
-  28   4                                      flag = 0;
-  29   4                                      LCD_Show_Battery_ICO();
-  30   4                              } else {
-  31   4                                      flag = 1;
-  32   4                                      LCD_Clear_Battery_ICO();
-  33   4                              }
-  34   3                      }
-  35   2                      break;
-  36   2              case E_InCharge:
-  37   2                      if (g_tCharge.count >= 10) {
-  38   3                              g_tCharge.count = 0;
-  39   3      
-  40   3                              if (flag) {
-  41   4                                      flag = 0;
-  42   4                                      LCD_Show_Battery_ICO();
-  43   4                              } else {
-  44   4                                      flag = 1;
-  45   4                                      LCD_Clear_Battery_ICO();
-  46   4                              }
-  47   3                      }
-  48   2                      break;
-  49   2              case E_FullCharge:
-  50   2                      if (g_tCharge.count >= 9) {
-  51   3                              g_tCharge.count = 0;
-  52   3      
-  53   3                              LCD_Show_Battery_ICO();
-C51 COMPILER V9.56.0.0   APP_CHARGE                                                        07/22/2017 22:46:49 PAGE 2   
+  18   1              static BIT flag = 0;
+  19   1      
+  20   1              if (g_tDevice.status == E_PowerDown) {
+  21   2                      LCD_Clear_Battery_ICO();
+  22   2                      return;
+  23   2              }
+  24   1      
+  25   1              g_tCharge.count++;
+  26   1              switch (g_tCharge.status) {
+  27   2              case E_NeedCharge:
+  28   2                      if (g_tCharge.count >= 5) {
+  29   3                              g_tCharge.count = 0;
+  30   3      
+  31   3                              if (flag) {
+  32   4                                      flag = 0;
+  33   4                                      LCD_Show_Battery_ICO();
+  34   4                              } else {
+  35   4                                      flag = 1;
+  36   4                                      LCD_Clear_Battery_ICO();
+  37   4                              }
+  38   3                      }
+  39   2                      break;
+  40   2              case E_InCharge:
+  41   2                      if (g_tCharge.count >= 10) {
+  42   3                              g_tCharge.count = 0;
+  43   3      
+  44   3                              if (flag) {
+  45   4                                      flag = 0;
+  46   4                                      LCD_Show_Battery_ICO();
+  47   4                              } else {
+  48   4                                      flag = 1;
+  49   4                                      LCD_Clear_Battery_ICO();
+  50   4                              }
+  51   3                      }
+  52   2                      break;
+  53   2              case E_FullCharge:
+C51 COMPILER V9.56.0.0   APP_CHARGE                                                        07/25/2017 22:19:00 PAGE 2   
 
-  54   3                      }
-  55   2                      break;
-  56   2              case E_Discharge:
-  57   2                      if (g_tCharge.count >= 9) {
-  58   3                              g_tCharge.count = 0;
-  59   3      
-  60   3                              LCD_Clear_Battery_ICO();
-  61   3                      }
-  62   2                      break;
-  63   2              }
-  64   1      
-  65   1      }
-  66          
-  67          void app_charge_1s_pro(void) {
+  54   2                      if (g_tCharge.count >= 9) {
+  55   3                              g_tCharge.count = 0;
+  56   3      
+  57   3                              LCD_Show_Battery_ICO();
+  58   3                      }
+  59   2                      break;
+  60   2              case E_Discharge:
+  61   2                      if (g_tCharge.count >= 9) {
+  62   3                              g_tCharge.count = 0;
+  63   3      
+  64   3                              LCD_Clear_Battery_ICO();
+  65   3                      }
+  66   2                      break;
+  67   2              }
   68   1      
-  69   1              if (P50) {
-  70   2                      g_tCharge.status = E_FullCharge;
-  71   2              } else {
-  72   2                      g_tCharge.status = E_InCharge;
-  73   2              }
-  74   1      
-  75   1      }
+  69   1      }
+  70          
+  71          void app_charge_1s_pro(void) {
+  72   1      
+  73   1              if (P50) {
+  74   2                      g_tCharge.status = E_FullCharge;
+  75   2              } else {
+  76   2                      g_tCharge.status = E_InCharge;
+  77   2              }
+  78   1      
+  79   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    111    ----
+   CODE SIZE        =    124    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =      2    ----
    PDATA SIZE       =   ----    ----

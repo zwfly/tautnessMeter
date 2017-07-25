@@ -56,7 +56,7 @@ typedef enum {
  即使按键电路不做硬件滤波，该滤波机制也可以保证可靠地检测到按键事件
  */
 #define KEY_FILTER_TIME   5
-#define KEY_LONG_TIME     100			/* 单位10ms， 持续1秒，认为长按事件 */
+#define KEY_LONG_TIME     200			/* 单位10ms， 持续1秒，认为长按事件 */
 
 /*
  每个按键对应1个全局的结构体变量。

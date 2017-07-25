@@ -15,8 +15,12 @@ void app_charge_Init(void) {
 }
 
 void app_charge_100ms_pro(void) {
-//	uint8_t tmp = 0;
 	static BIT flag = 0;
+
+	if (g_tDevice.status == E_PowerDown) {
+		LCD_Clear_Battery_ICO();
+		return;
+	}
 
 	g_tCharge.count++;
 	switch (g_tCharge.status) {

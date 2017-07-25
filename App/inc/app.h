@@ -14,4 +14,10 @@
 #include "app_key.h"
 #include "app_charge.h"
 
+//typedef struct _DEVICE_T {
+////	BIT de;
+//
+//} DEVICE_T;
+//extern DEVICE_T g_tDevice;
+
 #endif /* APP_INC_APP_H_ */

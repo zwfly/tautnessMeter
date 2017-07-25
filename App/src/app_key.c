@@ -25,6 +25,14 @@ static void app_UI_init(void);
 void app_key_init(void) {
 	level = 0;
 
+	clr_PIPS2;
+	clr_PIPS1;
+	clr_PIPS0;
+
+	set_PIT3;
+	set_PINEN3;
+	clr_PIPEN3;
+
 	mode = E_Simple_metering_mode;
 	g_tWork.mode = E_Simple_metering_mode;
 	g_tDevice.status = E_PowerOn;
@@ -438,7 +446,37 @@ void app_power_off(void) {
 	lcd_bright_off();
 	LCD_Clear_All();
 }
+void app_key_100ms_pro(void) {
+	static uint8_t cnt = 0;
+
+	if (g_tDevice.status == E_PowerDown) {
+		cnt++;
+		if (cnt >= 30) {
+			cnt = 0;
+			set_PD;
+		}
+	} else {
+		cnt = 0;
+	}
+}
+static uint8_t timeoutCnt = 0;
+
+void app_key_1s_pro(void) {
+
+	timeoutCnt++;
+	if (timeoutCnt >= 20) {
+
+	} else if (timeoutCnt >= 60) {
+
+	}
+
+}
+void app_key_clear_timeoutCnt(void) {
+	timeoutCnt = 0;
+}
 void app_key_pro(uint8_t keyCode) {
+
+	timeoutCnt = 0;
 
 	switch (keyCode) {
 	case KEY_UP_K1:
@@ -446,14 +484,17 @@ void app_key_pro(uint8_t keyCode) {
 		break;
 	case KEY_DOWN_K1:
 		BEEP_KeyTone();
-		app_key_power_or_return();
+		if (g_tDevice.status == E_PowerOn) {
+			app_key_power_or_return();
+		}
+
 		break;
 	case KEY_LONG_K1:
 		BEEP_KeyTone();
 		if (g_tDevice.status == E_PowerOn) {
-			g_tDevice.status = E_PowerOff;
+			g_tDevice.status = E_PowerDown;
 			app_power_off();
-		} else if (g_tDevice.status == E_PowerOff) {
+		} else if (g_tDevice.status == E_PowerDown) {
 			g_tDevice.status = E_PowerOn;
 			app_power_on();
 		}
@@ -516,3 +557,4 @@ void app_key_pro(uint8_t keyCode) {
 
 	}
 }
+

@@ -1,7 +1,17 @@
 #include "app.h"
 
-uint8_t c;
+//uint8_t c;
+//DEVICE_T g_tDevice;
 
+/******************************************************************************
+ * FUNCTION_PURPOSE: I/O Pin interrupt Service Routine
+ ******************************************************************************/
+void PinInterrupt_ISR(void)
+interrupt 7
+{
+	PIF = 0x00;                             //clear interrupt flag
+
+}
 void main(void) {
 	uint8_t ucKeyCode;
 	System_Clock_Select(E_HIRCEN);
@@ -32,6 +42,7 @@ void main(void) {
 		if (Task_time.flag_100ms) {
 			Task_time.flag_100ms = 0;
 			//////////////////
+			app_key_100ms_pro();
 			app_work_100ms_pro();
 			app_charge_100ms_pro();
 			Repeat_Pro();
