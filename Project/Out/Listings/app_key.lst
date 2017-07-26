@@ -1,4 +1,4 @@
-C51 COMPILER V9.56.0.0   APP_KEY                                                           07/25/2017 22:19:00 PAGE 1   
+C51 COMPILER V9.56.0.0   APP_KEY                                                           07/26/2017 23:00:44 PAGE 1   
 
 
 C51 COMPILER V9.56.0.0, COMPILATION OF MODULE APP_KEY
@@ -62,7 +62,7 @@ line level    source
   51   2      
   52   2                      LCD_Clear_ABCD();
   53   2      
-C51 COMPILER V9.56.0.0   APP_KEY                                                           07/25/2017 22:19:00 PAGE 2   
+C51 COMPILER V9.56.0.0   APP_KEY                                                           07/26/2017 23:00:44 PAGE 2   
 
   54   2                      LCD_Show_CAL_ICO();
   55   2                      LCD_Clear_QS_ICO();
@@ -126,7 +126,7 @@ line level    source
  113   2      
  114   2                      switch (letter) {
  115   3                      case '\0':
-C51 COMPILER V9.56.0.0   APP_KEY                                                           07/25/2017 22:19:00 PAGE 3   
+C51 COMPILER V9.56.0.0   APP_KEY                                                           07/26/2017 23:00:44 PAGE 3   
 
  116   3                              break;
  117   3                      case 'A':
@@ -190,7 +190,7 @@ line level    source
  175   3                      }
  176   2                      if (letter == 'C') {
  177   3                              LCD_Clear_ABCD();
-C51 COMPILER V9.56.0.0   APP_KEY                                                           07/25/2017 22:19:00 PAGE 4   
+C51 COMPILER V9.56.0.0   APP_KEY                                                           07/26/2017 23:00:44 PAGE 4   
 
  178   3                              LCD_Show_ABCD('C');
  179   3                      }
@@ -254,7 +254,7 @@ line level    source
  237   3      
  238   3                              LCD_Show_REP_Num(0);
  239   3                              LCD_Show_Pulls_Num(0);
-C51 COMPILER V9.56.0.0   APP_KEY                                                           07/25/2017 22:19:00 PAGE 5   
+C51 COMPILER V9.56.0.0   APP_KEY                                                           07/26/2017 23:00:44 PAGE 5   
 
  240   3                              LCD_Show_CAL_Num(0);
  241   3      
@@ -318,7 +318,7 @@ line level    source
  299   2                      LCD_Show_REP_ICO();
  300   2      
  301   2                      LCD_Show_ABCD_all();
-C51 COMPILER V9.56.0.0   APP_KEY                                                           07/25/2017 22:19:00 PAGE 6   
+C51 COMPILER V9.56.0.0   APP_KEY                                                           07/26/2017 23:00:44 PAGE 6   
 
  302   2      
  303   2                      LCD_Show_CAL_ICO();
@@ -382,7 +382,7 @@ line level    source
  361   5                                              letter = 'A';
  362   5                                      }
  363   4                              }
-C51 COMPILER V9.56.0.0   APP_KEY                                                           07/25/2017 22:19:00 PAGE 7   
+C51 COMPILER V9.56.0.0   APP_KEY                                                           07/26/2017 23:00:44 PAGE 7   
 
  364   3      
  365   3                              break;
@@ -446,7 +446,7 @@ line level    source
  423   3                      case E_Coach_mode:
  424   3      
  425   3                              break;
-C51 COMPILER V9.56.0.0   APP_KEY                                                           07/25/2017 22:19:00 PAGE 8   
+C51 COMPILER V9.56.0.0   APP_KEY                                                           07/26/2017 23:00:44 PAGE 8   
 
  426   3                      }
  427   2                      g_tWork.mode = mode;
@@ -471,117 +471,155 @@ line level    source
  446   1              lcd_bright_off();
  447   1              LCD_Clear_All();
  448   1      }
- 449          void app_key_100ms_pro(void) {
- 450   1              static uint8_t cnt = 0;
- 451   1      
- 452   1              if (g_tDevice.status == E_PowerDown) {
- 453   2                      cnt++;
- 454   2                      if (cnt >= 30) {
- 455   3                              cnt = 0;
- 456   3                              set_PD;
- 457   3      //                      g_tDevice.status = E_PowerDown;
- 458   3                      }
- 459   2              } else {
- 460   2                      cnt = 0;
- 461   2              }
- 462   1      }
- 463          
- 464          void app_key_pro(uint8_t keyCode) {
- 465   1      
- 466   1              switch (keyCode) {
- 467   2              case KEY_UP_K1:
- 468   2      
- 469   2                      break;
- 470   2              case KEY_DOWN_K1:
- 471   2                      BEEP_KeyTone();
- 472   2                      if (g_tDevice.status == E_PowerOn) {
- 473   3                              app_key_power_or_return();
- 474   3                      }
- 475   2      
- 476   2                      break;
- 477   2              case KEY_LONG_K1:
- 478   2                      BEEP_KeyTone();
- 479   2                      if (g_tDevice.status == E_PowerOn) {
- 480   3                              g_tDevice.status = E_PowerDown;
- 481   3                              app_power_off();
- 482   3                      } else if (g_tDevice.status == E_PowerDown) {
- 483   3                              g_tDevice.status = E_PowerOn;
- 484   3                              app_power_on();
- 485   3                      }
- 486   2      
- 487   2                      break;
-C51 COMPILER V9.56.0.0   APP_KEY                                                           07/25/2017 22:19:00 PAGE 9   
+ 449          
+ 450          static uint8_t noOps_timeoutCnt = 0;
+ 451          static BIT offBight_flag = 0;
+ 452          static BIT keyInvalid_flag = 0;
+ 453          void app_key_100ms_pro(void) {
+ 454   1              static uint8_t cnt = 0;
+ 455   1      
+ 456   1              if (g_tDevice.status == E_PowerDown) {
+ 457   2                      cnt++;
+ 458   2                      if (cnt >= 30) {
+ 459   3                              cnt = 0;
+ 460   3      
+ 461   3                              app_key_clear_noOps_timeoutCnt();
+ 462   3      //                      keyInvalid_flag = 1;
+ 463   3                              set_PD;
+ 464   3                      }
+ 465   2              } else {
+ 466   2                      cnt = 0;
+ 467   2              }
+ 468   1      }
+ 469          
+ 470          void app_key_1s_pro(void) {
+ 471   1      
+ 472   1              noOps_timeoutCnt++;
+ 473   1              if (noOps_timeoutCnt == 10) {
+ 474   2                      offBight_flag = 1;
+ 475   2                      keyInvalid_flag = 1;
+ 476   2                      lcd_bright_off();
+ 477   2                      printf("off bright\n");
+ 478   2              } else if (noOps_timeoutCnt == 20) {
+ 479   2                      g_tDevice.status = E_PowerDown;
+ 480   2                      app_power_off();
+ 481   2                      printf("power off\n");
+ 482   2              }
+ 483   1      
+ 484   1      }
+ 485          void app_key_clear_noOps_timeoutCnt(void) {
+ 486   1              noOps_timeoutCnt = 0;
+ 487   1      }
+C51 COMPILER V9.56.0.0   APP_KEY                                                           07/26/2017 23:00:44 PAGE 9   
 
- 488   2              case KEY_UP_K2:
- 489   2      
- 490   2                      break;
- 491   2              case KEY_DOWN_K2:
- 492   2                      BEEP_KeyTone();
- 493   2                      app_key_set();
- 494   2                      break;
- 495   2              case KEY_LONG_K2:
- 496   2      
- 497   2                      break;
- 498   2              case KEY_UP_K3:
- 499   2      
- 500   2                      break;
- 501   2              case KEY_DOWN_K3:
- 502   2                      BEEP_KeyTone();
- 503   2                      app_key_add();
- 504   2                      break;
- 505   2              case KEY_LONG_K3:
+ 488          void app_key_pro(uint8_t keyCode) {
+ 489   1      
+ 490   1              app_key_clear_noOps_timeoutCnt();
+ 491   1      
+ 492   1              if (offBight_flag && (g_tDevice.status == E_PowerOn)) {
+ 493   2                      offBight_flag = 0;
+ 494   2                      lcd_bright_on();
+ 495   2                      //      keyInvalid_flag = 1;
+ 496   2                      return;
+ 497   2              }
+ 498   1      
+ 499   1      //      if (keyInvalid_flag && (g_tDevice.status == E_PowerOn)) {
+ 500   1      //              keyInvalid_flag = 0;
+ 501   1      //              return;
+ 502   1      //      }
+ 503   1      
+ 504   1              switch (keyCode) {
+ 505   2              case KEY_UP_K1:
  506   2      
  507   2                      break;
- 508   2              case KEY_UP_K4:
- 509   2      
- 510   2                      break;
- 511   2              case KEY_DOWN_K4:
- 512   2                      BEEP_KeyTone();
- 513   2                      app_key_ok();
+ 508   2              case KEY_DOWN_K1:
+ 509   2                      BEEP_KeyTone();
+ 510   2                      if (g_tDevice.status == E_PowerOn) {
+ 511   3                              app_key_power_or_return();
+ 512   3                      }
+ 513   2      
  514   2                      break;
- 515   2              case KEY_LONG_K4:
- 516   2      
- 517   2                      break;
- 518   2      #if DEBUG_KEY
- 519   2              case KEY_UP_K5:
- 520   2      
- 521   2                      break;
- 522   2              case KEY_DOWN_K5:
- 523   2                      //BEEP_KeyTone();
- 524   2                      query_work_sum();
+ 515   2              case KEY_LONG_K1:
+ 516   2                      BEEP_KeyTone();
+ 517   2                      if (g_tDevice.status == E_PowerOn) {
+ 518   3                              g_tDevice.status = E_PowerDown;
+ 519   3                              app_power_off();
+ 520   3                      } else if (g_tDevice.status == E_PowerDown) {
+ 521   3                              g_tDevice.status = E_PowerOn;
+ 522   3                              app_power_on();
+ 523   3                      }
+ 524   2      
  525   2                      break;
- 526   2              case KEY_LONG_K5:
+ 526   2              case KEY_UP_K2:
  527   2      
  528   2                      break;
- 529   2      #endif
- 530   2              case KEY_UP_K1K3:
- 531   2      
+ 529   2              case KEY_DOWN_K2:
+ 530   2                      BEEP_KeyTone();
+ 531   2                      app_key_set();
  532   2                      break;
- 533   2              case KEY_DOWN_K1K3:
+ 533   2              case KEY_LONG_K2:
  534   2      
  535   2                      break;
- 536   2              case KEY_LONG_K1K3:
+ 536   2              case KEY_UP_K3:
  537   2      
  538   2                      break;
- 539   2              default:
- 540   2      //              BEEP_KeyTone();
- 541   2                      break;
- 542   2      
- 543   2              }
- 544   1      }
- 545          
+ 539   2              case KEY_DOWN_K3:
+ 540   2                      BEEP_KeyTone();
+ 541   2                      app_key_add();
+ 542   2                      break;
+ 543   2              case KEY_LONG_K3:
+ 544   2      
+ 545   2                      break;
+ 546   2              case KEY_UP_K4:
+ 547   2      
+ 548   2                      break;
+ 549   2              case KEY_DOWN_K4:
+C51 COMPILER V9.56.0.0   APP_KEY                                                           07/26/2017 23:00:44 PAGE 10  
+
+ 550   2                      BEEP_KeyTone();
+ 551   2                      app_key_ok();
+ 552   2                      break;
+ 553   2              case KEY_LONG_K4:
+ 554   2      
+ 555   2                      break;
+ 556   2      #if DEBUG_KEY
+ 557   2              case KEY_UP_K5:
+ 558   2      
+ 559   2                      break;
+ 560   2              case KEY_DOWN_K5:
+ 561   2                      //BEEP_KeyTone();
+ 562   2                      query_work_sum();
+ 563   2                      break;
+ 564   2              case KEY_LONG_K5:
+ 565   2      
+ 566   2                      break;
+ 567   2      #endif
+ 568   2              case KEY_UP_K1K3:
+ 569   2      
+ 570   2                      break;
+ 571   2              case KEY_DOWN_K1K3:
+ 572   2      
+ 573   2                      break;
+ 574   2              case KEY_LONG_K1K3:
+ 575   2      
+ 576   2                      break;
+ 577   2              default:
+ 578   2      //              BEEP_KeyTone();
+ 579   2                      break;
+ 580   2      
+ 581   2              }
+ 582   1      }
+ 583          
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =   1112    ----
-C51 COMPILER V9.56.0.0   APP_KEY                                                           07/25/2017 22:19:00 PAGE 10  
-
-   CONSTANT SIZE    =   ----    ----
-   XDATA SIZE       =      5    ----
+   CODE SIZE        =   1200    ----
+   CONSTANT SIZE    =     23    ----
+   XDATA SIZE       =      6       1
    PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----    ----
    IDATA SIZE       =   ----    ----
-   BIT SIZE         =   ----    ----
+   BIT SIZE         =      2    ----
 END OF MODULE INFORMATION.
 
 

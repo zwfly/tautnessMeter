@@ -23,6 +23,7 @@ extern uint8_t level;
 void app_key_init(void);
 void app_key_100ms_pro(void);
 void app_key_1s_pro(void);
+void app_key_clear_noOps_timeoutCnt(void);
 void app_key_pro(uint8_t keyCode);
 
 #endif /* APP_INC_APP_KEY_H_ */

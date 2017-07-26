@@ -51,6 +51,7 @@ void app_work_100ms_pro(void) {
 	if (pull_once_flag) {
 		pull_once_flag = 0;
 		///////////////////
+		app_key_clear_noOps_timeoutCnt();
 		app_work_pro();
 	}
 

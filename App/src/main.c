@@ -53,6 +53,7 @@ void main(void) {
 			static uint8_t cnt = 0;
 			Task_time.flag_1s = 0;
 			//////////////////
+			app_key_1s_pro();
 			app_work_1s_pro();
 			app_charge_1s_pro();
 
@@ -85,9 +86,7 @@ void main(void) {
 //				LCD_Clear_COACH_ICO();
 //				LCD_Clear_Heart_ICO();
 //				LCD_Clear_CAL_ICO();
-//
-//
-//
+
 //
 //			}
 		}

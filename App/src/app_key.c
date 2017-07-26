@@ -446,6 +446,10 @@ void app_power_off(void) {
 	lcd_bright_off();
 	LCD_Clear_All();
 }
+
+static uint8_t noOps_timeoutCnt = 0;
+static BIT offBight_flag = 0;
+static BIT keyInvalid_flag = 0;
 void app_key_100ms_pro(void) {
 	static uint8_t cnt = 0;
 
@@ -453,30 +457,49 @@ void app_key_100ms_pro(void) {
 		cnt++;
 		if (cnt >= 30) {
 			cnt = 0;
+
+			app_key_clear_noOps_timeoutCnt();
+//			keyInvalid_flag = 1;
 			set_PD;
 		}
 	} else {
 		cnt = 0;
 	}
 }
-static uint8_t timeoutCnt = 0;
 
 void app_key_1s_pro(void) {
 
-	timeoutCnt++;
-	if (timeoutCnt >= 20) {
-
-	} else if (timeoutCnt >= 60) {
-
+	noOps_timeoutCnt++;
+	if (noOps_timeoutCnt == 10) {
+		offBight_flag = 1;
+		keyInvalid_flag = 1;
+		lcd_bright_off();
+		printf("off bright\n");
+	} else if (noOps_timeoutCnt == 20) {
+		g_tDevice.status = E_PowerDown;
+		app_power_off();
+		printf("power off\n");
 	}
 
 }
-void app_key_clear_timeoutCnt(void) {
-	timeoutCnt = 0;
+void app_key_clear_noOps_timeoutCnt(void) {
+	noOps_timeoutCnt = 0;
 }
 void app_key_pro(uint8_t keyCode) {
 
-	timeoutCnt = 0;
+	app_key_clear_noOps_timeoutCnt();
+
+	if (offBight_flag && (g_tDevice.status == E_PowerOn)) {
+		offBight_flag = 0;
+		lcd_bright_on();
+		//	keyInvalid_flag = 1;
+		return;
+	}
+
+//	if (keyInvalid_flag && (g_tDevice.status == E_PowerOn)) {
+//		keyInvalid_flag = 0;
+//		return;
+//	}
 
 	switch (keyCode) {
 	case KEY_UP_K1:
