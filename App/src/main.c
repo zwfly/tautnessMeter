@@ -9,8 +9,18 @@
 void PinInterrupt_ISR(void)
 interrupt 7
 {
-	PIF = 0x00;                             //clear interrupt flag
 
+	if (PIF & 0x08) {
+
+		if (g_tDevice.status == E_PowerDown) {
+
+			g_tDevice.status = E_PowerReady;
+
+		}
+
+	}
+
+	PIF = 0x00;                             //clear interrupt flag
 }
 void main(void) {
 	uint8_t ucKeyCode;

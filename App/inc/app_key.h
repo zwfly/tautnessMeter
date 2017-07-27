@@ -9,7 +9,7 @@
 #define APP_INC_APP_KEY_H_
 
 typedef enum {
-	E_RUN_STATUS_PLACE = 0, E_PowerOn, E_PowerDown,
+	E_RUN_STATUS_PLACE = 0, E_PowerOn, E_PowerDown, E_PowerReady,
 } E_RUN_STATUS;
 typedef struct _DEVICE_T {
 	E_RUN_STATUS status;

@@ -227,6 +227,7 @@ static void bsp_InitKeyHard(void) {
 
 	set_P0M1_6;
 	clr_P0M2_6;
+
 #if DEBUG_KEY
 	P5M1 |= 0x20;
 	P5M2 &= ~0x20;
