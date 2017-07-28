@@ -1,8 +1,16 @@
 #include "app.h"
-
+#include "app_charge.h"
 //uint8_t c;
 //DEVICE_T g_tDevice;
-
+/******************************************************************************
+ * FUNCTION_PURPOSE: ADC interrupt Service Routine
+ ******************************************************************************/
+void ADC_ISR(void) interrupt 11
+{
+	clr_ADCF;                               //clear ADC interrupt flag
+	app_battery_voltage_result();
+//	app_charge_100ms_pro();
+}
 /******************************************************************************
  * FUNCTION_PURPOSE: I/O Pin interrupt Service Routine
  ******************************************************************************/
@@ -66,6 +74,7 @@ void main(void) {
 			app_key_1s_pro();
 			app_work_1s_pro();
 			app_charge_1s_pro();
+			app_battery_1s_pro();
 
 			cnt++;
 			if (cnt > 3) {

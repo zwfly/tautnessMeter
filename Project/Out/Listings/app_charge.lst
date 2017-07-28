@@ -1,4 +1,4 @@
-C51 COMPILER V9.56.0.0   APP_CHARGE                                                        07/27/2017 22:14:16 PAGE 1   
+C51 COMPILER V9.56.0.0   APP_CHARGE                                                        07/28/2017 23:49:07 PAGE 1   
 
 
 C51 COMPILER V9.56.0.0, COMPILATION OF MODULE APP_CHARGE
@@ -62,7 +62,7 @@ line level    source
   51   3                      }
   52   2                      break;
   53   2              case E_FullCharge:
-C51 COMPILER V9.56.0.0   APP_CHARGE                                                        07/27/2017 22:14:16 PAGE 2   
+C51 COMPILER V9.56.0.0   APP_CHARGE                                                        07/28/2017 23:49:07 PAGE 2   
 
   54   2                      if (g_tCharge.count >= 9) {
   55   3                              g_tCharge.count = 0;
@@ -81,25 +81,42 @@ line level    source
   68   1      
   69   1      }
   70          
-  71          void app_charge_1s_pro(void) {
+  71          void app_battery_voltage_result(void) {
   72   1      
-  73   1              if (P50) {
-  74   2                      g_tCharge.status = E_FullCharge;
-  75   2              } else {
-  76   2                      g_tCharge.status = E_InCharge;
-  77   2              }
-  78   1      
-  79   1      }
+  73   1              uint16_t  result = 0;
+  74   1              BIT  cmp = 0;
+  75   1      
+  76   1              P01 = 1;
+  77   1      
+  78   1              result = ADCRH;
+  79   1              result <<= 2;
+  80   1              result |= ADCRL;
+  81   1      
+  82   1              ((ADCCON2 & SET_BIT4) == 0) ? (cmp = 1) : (cmp = 0);
+  83   1      
+  84   1      //      printf("battery voltage ADC value = %d, cmp = %d\n", result, cmp);
+  85   1      
+  86   1      }
+  87          
+  88          void app_charge_1s_pro(void) {
+  89   1      
+  90   1              if (P50) {
+  91   2                      g_tCharge.status = E_FullCharge;
+  92   2              } else {
+  93   2                      g_tCharge.status = E_InCharge;
+  94   2              }
+  95   1      
+  96   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    124    ----
+   CODE SIZE        =    158    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =      2    ----
    PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----    ----
    IDATA SIZE       =   ----    ----
-   BIT SIZE         =      1    ----
+   BIT SIZE         =      1       1
 END OF MODULE INFORMATION.
 
 

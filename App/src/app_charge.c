@@ -68,6 +68,23 @@ void app_charge_100ms_pro(void) {
 
 }
 
+void app_battery_voltage_result(void) {
+
+	uint16_t  result = 0;
+	BIT  cmp = 0;
+
+	P01 = 1;
+
+	result = ADCRH;
+	result <<= 2;
+	result |= ADCRL;
+
+	((ADCCON2 & SET_BIT4) == 0) ? (cmp = 1) : (cmp = 0);
+
+//	printf("battery voltage ADC value = %d, cmp = %d\n", result, cmp);
+
+}
+
 void app_charge_1s_pro(void) {
 
 	if (P50) {

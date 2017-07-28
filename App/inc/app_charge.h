@@ -24,6 +24,7 @@ typedef struct _CHARGE_T {
 
 void app_charge_Init(void);
 void app_charge_100ms_pro(void);
+void app_battery_voltage_result(void);
 void app_charge_1s_pro(void);
 
 

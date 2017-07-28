@@ -393,6 +393,11 @@
               <FileType>1</FileType>
               <FilePath>..\App\src\app_charge.c</FilePath>
             </File>
+            <File>
+              <FileName>app_battery.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\App\src\app_battery.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -447,6 +452,11 @@
               <FileName>bsp_timer1.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Bsp\src\bsp_timer1.c</FilePath>
+            </File>
+            <File>
+              <FileName>bsp_adc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Bsp\src\bsp_adc.c</FilePath>
             </File>
           </Files>
         </Group>
