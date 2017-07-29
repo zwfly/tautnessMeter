@@ -25,7 +25,7 @@ void app_battery_1s_pro(void) {
 	cnt++;
 	if (cnt >= 5) {
 		cnt = 0;
-		app_battery_detection();
+//		app_battery_detection();
 	}
 
 }
