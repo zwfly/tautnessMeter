@@ -8,7 +8,9 @@
 #ifndef APP_INC_APP_H_
 #define APP_INC_APP_H_
 
-#include <stdio.h>
+//#include <stdio.h>
+//#include <N76E616.h>
+
 
 #include "bsp.h"
 #include "app_repeat_exe.h"

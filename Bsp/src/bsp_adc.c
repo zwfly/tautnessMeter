@@ -9,7 +9,7 @@
 
 void ADC_Init(void) {
 
-#if 0
+#if 1
 
 	P0M1 &= ~SET_BIT1;
 	P0M2 |= SET_BIT1;

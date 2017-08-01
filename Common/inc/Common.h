@@ -1,3 +1,4 @@
+
 typedef enum {
 	E_HXTEN,  //External 2~16MHz, HXT
 	E_LXTEN,  //External 32.768KHz, LXT
@@ -28,3 +29,5 @@ void Fsys_Clock_Output_On_P26(void);
 extern bit BIT_TMP;
 
 #define DEBUG_PORT   1          /* 0:UART0, 1:UART1 */
+
+

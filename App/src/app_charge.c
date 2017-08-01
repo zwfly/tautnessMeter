@@ -7,7 +7,7 @@
 
 #include "app.h"
 
-CHARGE_T g_tCharge;
+static idata CHARGE_T g_tCharge;
 
 void app_charge_Init(void) {
 
@@ -68,18 +68,20 @@ void app_charge_100ms_pro(void) {
 
 }
 
+static BIT result_flag = 0;
+
 void app_battery_voltage_result(void) {
+	BIT cmp = 0;
 
-	uint16_t  result = 0;
-	BIT  cmp = 0;
+	set_P01;
 
-	P01 = 1;
-
-	result = ADCRH;
-	result <<= 2;
-	result |= ADCRL;
+	g_tCharge.result = ADCRH;
+	g_tCharge.result <<= 2;
+	g_tCharge.result |= ADCRL;
 
 	((ADCCON2 & SET_BIT4) == 0) ? (cmp = 1) : (cmp = 0);
+
+	result_flag = 1;
 
 //	printf("battery voltage ADC value = %d, cmp = %d\n", result, cmp);
 
@@ -91,6 +93,19 @@ void app_charge_1s_pro(void) {
 		g_tCharge.status = E_FullCharge;
 	} else {
 		g_tCharge.status = E_InCharge;
+	}
+
+	if (result_flag) {
+		result_flag = 0;
+
+		if (g_tCharge.result < 490) {
+			g_tCharge.status = E_NeedCharge;
+		} else {
+			g_tCharge.status = E_Discharge;
+		}
+
+//		printf("adc = %d\n", g_tCharge.result);
+		printf("adc = %d\n", g_tCharge.result);
 	}
 
 }

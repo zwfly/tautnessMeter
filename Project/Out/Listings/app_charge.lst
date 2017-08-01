@@ -1,4 +1,4 @@
-C51 COMPILER V9.56.0.0   APP_CHARGE                                                        07/29/2017 23:42:29 PAGE 1   
+C51 COMPILER V9.56.0.0   APP_CHARGE                                                        08/01/2017 22:22:46 PAGE 1   
 
 
 C51 COMPILER V9.56.0.0, COMPILATION OF MODULE APP_CHARGE
@@ -18,7 +18,7 @@ line level    source
    7          
    8          #include "app.h"
    9          
-  10          CHARGE_T g_tCharge;
+  10          static idata CHARGE_T g_tCharge;
   11          
   12          void app_charge_Init(void) {
   13   1      
@@ -62,7 +62,7 @@ line level    source
   51   3                      }
   52   2                      break;
   53   2              case E_FullCharge:
-C51 COMPILER V9.56.0.0   APP_CHARGE                                                        07/29/2017 23:42:29 PAGE 2   
+C51 COMPILER V9.56.0.0   APP_CHARGE                                                        08/01/2017 22:22:46 PAGE 2   
 
   54   2                      if (g_tCharge.count >= 9) {
   55   3                              g_tCharge.count = 0;
@@ -81,42 +81,59 @@ line level    source
   68   1      
   69   1      }
   70          
-  71          void app_battery_voltage_result(void) {
-  72   1      
-  73   1              uint16_t  result = 0;
-  74   1              BIT  cmp = 0;
+  71          static BIT result_flag = 0;
+  72          
+  73          void app_battery_voltage_result(void) {
+  74   1              BIT cmp = 0;
   75   1      
-  76   1              P01 = 1;
+  76   1              set_P01;
   77   1      
-  78   1              result = ADCRH;
-  79   1              result <<= 2;
-  80   1              result |= ADCRL;
+  78   1              g_tCharge.result = ADCRH;
+  79   1              g_tCharge.result <<= 2;
+  80   1              g_tCharge.result |= ADCRL;
   81   1      
   82   1              ((ADCCON2 & SET_BIT4) == 0) ? (cmp = 1) : (cmp = 0);
   83   1      
-  84   1      //      printf("battery voltage ADC value = %d, cmp = %d\n", result, cmp);
+  84   1              result_flag = 1;
   85   1      
-  86   1      }
-  87          
-  88          void app_charge_1s_pro(void) {
-  89   1      
-  90   1              if (P50) {
-  91   2                      g_tCharge.status = E_FullCharge;
-  92   2              } else {
-  93   2                      g_tCharge.status = E_InCharge;
-  94   2              }
-  95   1      
-  96   1      }
+  86   1      //      printf("battery voltage ADC value = %d, cmp = %d\n", result, cmp);
+  87   1      
+  88   1      }
+  89          
+  90          void app_charge_1s_pro(void) {
+  91   1      
+  92   1              if (P50) {
+  93   2                      g_tCharge.status = E_FullCharge;
+  94   2              } else {
+  95   2                      g_tCharge.status = E_InCharge;
+  96   2              }
+  97   1      
+  98   1              if (result_flag) {
+  99   2                      result_flag = 0;
+ 100   2      
+ 101   2                      if (g_tCharge.result < 600) {
+ 102   3                              g_tCharge.status = E_NeedCharge;
+ 103   3                      } else {
+ 104   3                              g_tCharge.status = E_Discharge;
+ 105   3                      }
+ 106   2      
+ 107   2      //              printf("adc = %d\n", g_tCharge.result);
+ 108   2                      printf("adc = %d\n", g_tCharge.result);
+ 109   2              }
+ 110   1      
+ 111   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    158    ----
-   CONSTANT SIZE    =   ----    ----
-   XDATA SIZE       =      2    ----
+   CODE SIZE        =    218    ----
+C51 COMPILER V9.56.0.0   APP_CHARGE                                                        08/01/2017 22:22:46 PAGE 3   
+
+   CONSTANT SIZE    =     10    ----
+   XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----    ----
-   IDATA SIZE       =   ----    ----
-   BIT SIZE         =      1       1
+   IDATA SIZE       =      4    ----
+   BIT SIZE         =      2       1
 END OF MODULE INFORMATION.
 
 

@@ -1,4 +1,4 @@
-C51 COMPILER V9.56.0.0   BSP_ADC                                                           07/29/2017 23:42:29 PAGE 1   
+C51 COMPILER V9.56.0.0   BSP_ADC                                                           08/01/2017 22:22:46 PAGE 1   
 
 
 C51 COMPILER V9.56.0.0, COMPILATION OF MODULE BSP_ADC
@@ -20,40 +20,40 @@ line level    source
    9          
   10          void ADC_Init(void) {
   11   1      
-  12   1      #if 0
-              
-                      P0M1 &= ~SET_BIT1;
-                      P0M2 |= SET_BIT1;
-                      set_P01;
-              
-                      set_ADCEN;
-              
-                      ADCCON0 = 0x00;                   //select ADC pin
-                      set_P0M1_0;                       //set ADC pin is input only mode
-                      clr_P0M2_0;
-                      set_P00DIDS;                      //disable digital connection
-              
-                      clr_ADCDIV2;
-                      set_ADCDIV1;
-                      clr_ADCDIV0;
-              
-                      //////
-              
-                      set_ADCMPEN;
-                      set_ADCMPOP;
-              
-                      ADCMPH = 0;
-                      ADCMPL = 0;
-              
-                      EADC = 1;
-              #endif
+  12   1      #if 1
+  13   1      
+  14   1              P0M1 &= ~SET_BIT1;
+  15   1              P0M2 |= SET_BIT1;
+  16   1              set_P01;
+  17   1      
+  18   1              set_ADCEN;
+  19   1      
+  20   1              ADCCON0 = 0x00;                   //select ADC pin
+  21   1              set_P0M1_0;                       //set ADC pin is input only mode
+  22   1              clr_P0M2_0;
+  23   1              set_P00DIDS;                      //disable digital connection
+  24   1      
+  25   1              clr_ADCDIV2;
+  26   1              set_ADCDIV1;
+  27   1              clr_ADCDIV0;
+  28   1      
+  29   1              //////
+  30   1      
+  31   1              set_ADCMPEN;
+  32   1              set_ADCMPOP;
+  33   1      
+  34   1              ADCMPH = 0;
+  35   1              ADCMPL = 0;
+  36   1      
+  37   1              EADC = 1;
+  38   1      #endif
   39   1      }
   40          
   41          
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =      1    ----
+   CODE SIZE        =     45    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----

@@ -9,7 +9,6 @@ void ADC_ISR(void) interrupt 11
 {
 	clr_ADCF;                               //clear ADC interrupt flag
 	app_battery_voltage_result();
-//	app_charge_100ms_pro();
 }
 /******************************************************************************
  * FUNCTION_PURPOSE: I/O Pin interrupt Service Routine
@@ -86,41 +85,9 @@ void main(void) {
 //				LCD_Show_CAL_Num(tmp);
 			}
 
-//			if (bb) {
-//				bb = 0;
-//				LCD_Display_Battery_ICO();
-//				LCD_Display_REP_ICO();
-//				LCD_Display_ABCD('A');
-//				LCD_Display_QS_ICO();
-//				LCD_Display_COACH_ICO();
-//				LCD_Display_Heart_ICO();
-//				LCD_Display_CAL_ICO();
-//
-//			} else {
-//				bb = 1;
-//				LCD_Clear_Battery_ICO();
-//				LCD_Clear_REP_ICO();
-//				LCD_Clear_ABCD();
-//				LCD_Clear_QS_ICO();
-//				LCD_Clear_COACH_ICO();
-//				LCD_Clear_Heart_ICO();
-//				LCD_Clear_CAL_ICO();
 
-//
-//			}
 		}
-#if 0
-		if (TRUE == Get_Data_From_UART1(&c)) {
 
-			printf("true %x\n", c);
-
-			if (c) {
-				BEEP_Start(0, 5, 5, 2);
-			} else {
-				BEEP_Start(0, 5, 5, 1);
-			}
-		}
-#endif
 #if 1
 
 		ucKeyCode = bsp_GetKey();
