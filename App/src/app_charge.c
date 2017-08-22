@@ -8,10 +8,15 @@
 #include "app.h"
 
 static idata CHARGE_T g_tCharge;
+//static CHARGE_T g_tCharge;
 
 void app_charge_Init(void) {
 
 	g_tCharge.count = 0;
+
+	set_P0M1_7;
+	clr_P0M2_7;
+
 }
 
 void app_charge_100ms_pro(void) {
@@ -89,23 +94,25 @@ void app_battery_voltage_result(void) {
 
 void app_charge_1s_pro(void) {
 
-	if (P50) {
-		g_tCharge.status = E_FullCharge;
-	} else {
-		g_tCharge.status = E_InCharge;
-	}
-
-	if (result_flag) {
-		result_flag = 0;
-
-		if (g_tCharge.result < 490) {
-			g_tCharge.status = E_NeedCharge;
+	if (P07) {  //insert usb
+		if (P50) {
+			g_tCharge.status = E_FullCharge;
 		} else {
-			g_tCharge.status = E_Discharge;
+			g_tCharge.status = E_InCharge;
+		}
+	} else {
+		if (result_flag) {
+			result_flag = 0;
+
+			if (g_tCharge.result < 490) {
+				g_tCharge.status = E_NeedCharge;
+			} else {
+				g_tCharge.status = E_Discharge;
+			}
+
+			printf("adc = %u\n", g_tCharge.result);
 		}
 
-//		printf("adc = %d\n", g_tCharge.result);
-		printf("adc = %d\n", g_tCharge.result);
 	}
 
 }

@@ -45,28 +45,28 @@ static uint8_t IsKeyDown4(void) {
 }
 #else
 static uint8_t IsKeyDown1(void) {
-	if (P03) {
+	if (P06) {
 		return 0;
 	} else {
 		return 1;
 	}
 }
 static uint8_t IsKeyDown2(void) {
-	if (P04) {
-		return 0;
-	} else {
-		return 1;
-	}
-}
-static uint8_t IsKeyDown3(void) {
 	if (P05) {
 		return 0;
 	} else {
 		return 1;
 	}
 }
+static uint8_t IsKeyDown3(void) {
+	if (P04) {
+		return 0;
+	} else {
+		return 1;
+	}
+}
 static uint8_t IsKeyDown4(void) {
-	if (P06) {
+	if (P03) {
 		return 0;
 	} else {
 		return 1;
@@ -85,7 +85,7 @@ static uint8_t IsKeyDown5(void) {
 
 /* S1 S3×éºÏ¼ü */
 static uint8_t IsKeyDown_1and3(void) {
-	if ((P03 == 0) && (P05 == 0)) {
+	if ((P04 == 0) && (P06 == 0)) {
 		return 1;
 	} else {
 		return 0;

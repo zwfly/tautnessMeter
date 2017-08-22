@@ -5,7 +5,8 @@
 /******************************************************************************
  * FUNCTION_PURPOSE: ADC interrupt Service Routine
  ******************************************************************************/
-void ADC_ISR(void) interrupt 11
+void ADC_ISR(void)
+interrupt 11
 {
 	clr_ADCF;                               //clear ADC interrupt flag
 	app_battery_voltage_result();
@@ -16,17 +17,21 @@ void ADC_ISR(void) interrupt 11
 void PinInterrupt_ISR(void)
 interrupt 7
 {
-
-	if (PIF & 0x08) {
-
+	if (PIF & 0x40) {
 		if (g_tDevice.status == E_PowerDown) {
-
 			g_tDevice.status = E_PowerReady;
-
 		}
-
 	}
 
+	if (PIF & 0x02) {
+		hall_2_interrupt();
+	}
+	if (PIF & 0x04) {
+		hall_1_interrupt();
+	}
+	if (PIF & 0x08) {
+		hall_3_interrupt();
+	}
 	PIF = 0x00;                             //clear interrupt flag
 }
 void main(void) {
@@ -84,7 +89,6 @@ void main(void) {
 //				LCD_Show_Pulls_Num(tmp);
 //				LCD_Show_CAL_Num(tmp);
 			}
-
 
 		}
 

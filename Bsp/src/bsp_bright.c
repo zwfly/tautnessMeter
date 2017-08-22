@@ -10,16 +10,16 @@
 void Bright_InitHard(void) {
 
 #if 1
-	P3M1 &= ~SET_BIT1;
-	P3M2 |= SET_BIT1;
+	P3M1 &= ~SET_BIT2;
+	P3M2 |= SET_BIT2;
 
 	lcd_bright_on();
 #endif
 
 }
 void lcd_bright_off(void) {
-	clr_P31;
+	clr_P32;
 }
 void lcd_bright_on() {
-	set_P31;
+	set_P32;
 }

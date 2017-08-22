@@ -7,7 +7,7 @@
 
 #include "bsp.h"
 #include "app_work.h"
-
+#include "bsp_beep.h"
 
 #define HALL_NUM  3
 #define HALL_CNT_UP  100
@@ -16,10 +16,11 @@
 static HALL_T g_tHall;
 
 static void Hall_InitHard(void) {
-	PICON = 0x00;
-	PITYP = 0x00;
-	PINEN = 0x00;
-	PIPEN = 0x00;
+
+	P5M1 &= ~ SET_BIT4;
+	P5M2 |= SET_BIT4;
+
+	bsp_hallInt_open();
 
 	set_EPI;
 }
@@ -29,15 +30,50 @@ static void Hall_InitVar(void) {
 	g_tHall.lastPos = 0;
 
 }
+
+void bsp_hallInt_open(void) {
+
+	P54 = 0;
+
+	set_PIPS2;
+	clr_PIPS1;
+	set_PIPS0;
+
+	set_PIT1;
+	set_PIT2;
+	set_PIT3;
+
+	set_PINEN1;
+	set_PINEN2;
+	set_PINEN3;
+
+	clr_PIPEN1;
+	clr_PIPEN2;
+	clr_PIPEN3;
+
+}
+void bsp_hallInt_close(void) {
+
+	P54 = 1;
+
+	clr_PIT1;
+	clr_PIT2;
+	clr_PIT3;
+
+	clr_PINEN1;
+	clr_PINEN2;
+	clr_PINEN3;
+}
 void Hall_Init(void) {
 	Hall_InitHard();
 	Hall_InitVar();
 }
 
 
-
+//123 拉长
 void hall_pro(uint8_t n) {
 	static BIT valid_flag = 0;
+
 
 	if (((n - g_tHall.lastPos) == 1) || ((g_tHall.lastPos - n) == 2)) {
 		g_tHall.direction = 1;  //拉长方向

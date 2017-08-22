@@ -13,7 +13,8 @@ typedef struct _HALL_T {
 	uint8_t direction;
 	uint8_t lastPos;
 } HALL_T;
-
+void bsp_hallInt_open(void);
+void bsp_hallInt_close(void);
 void Hall_Init(void);
 void hall_1_interrupt(void);
 void hall_2_interrupt(void);

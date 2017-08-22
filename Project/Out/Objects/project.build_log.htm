@@ -48,10 +48,14 @@ compiling Delay.c...
 compiling Version.c...
 assembling STARTUP.A51...
 linking...
-Program Size: data=37.5 xdata=204 code=10761
+*** WARNING L15: MULTIPLE CALL TO SEGMENT
+    SEGMENT: ?PR?_BEEP_START?BSP_BEEP
+    CALLER1: ?PR?PININTERRUPT_ISR?MAIN
+    CALLER2: ?C_C51STARTUP
+Program Size: data=37.5 xdata=202 code=10863
 creating hex file from ".\Out\Objects\project"...
-".\Out\Objects\project" - 0 Error(s), 0 Warning(s).
-Build Time Elapsed:  00:00:01
+".\Out\Objects\project" - 0 Error(s), 1 Warning(s).
+Build Time Elapsed:  00:00:02
 </pre>
 </body>
 </html>

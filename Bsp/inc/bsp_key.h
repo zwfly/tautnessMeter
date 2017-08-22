@@ -12,7 +12,7 @@
 #ifndef __BSP_KEY_H
 #define __BSP_KEY_H
 
-#define DEBUG_KEY 1
+#define DEBUG_KEY 0
 
 #if DEBUG_KEY
 #define KEY_COUNT    6

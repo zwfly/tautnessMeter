@@ -25,20 +25,34 @@ static void app_UI_init(void);
 void app_key_init(void) {
 	level = 0;
 
-	clr_PIPS2;
-	clr_PIPS1;
-	clr_PIPS0;
-
-	set_PIT3;
-	set_PINEN3;
-	clr_PIPEN3;
+//	app_powerKeyInt_open();
+	app_powerKeyInt_close();
 
 	mode = E_Simple_metering_mode;
 	g_tWork.mode = E_Simple_metering_mode;
 	g_tDevice.status = E_PowerOn;
 	app_UI_init();
 }
+void app_powerKeyInt_open(void) {
 
+	clr_PIPS2;
+	clr_PIPS1;
+	clr_PIPS0;
+
+	set_PIT6;
+	set_PINEN6;
+	clr_PIPEN6;
+
+}
+void app_powerKeyInt_close(void) {
+	clr_PIPS2;
+	clr_PIPS1;
+	clr_PIPS0;
+
+	clr_PIT6;
+	clr_PINEN6;
+	clr_PIPEN6;
+}
 static void app_UI_init(void) {
 	switch (mode) {
 	case E_Simple_metering_mode:
@@ -460,6 +474,8 @@ void app_key_100ms_pro(void) {
 
 			app_key_clear_noOps_timeoutCnt();
 //			keyInvalid_flag = 1;
+			bsp_hallInt_close();
+			app_powerKeyInt_open();
 			set_PD;
 		}
 	} else {
@@ -470,12 +486,12 @@ void app_key_100ms_pro(void) {
 void app_key_1s_pro(void) {
 
 	noOps_timeoutCnt++;
-	if (noOps_timeoutCnt == 10) {
+	if (noOps_timeoutCnt == 20) {
 		offBight_flag = 1;
 //		keyInvalid_flag = 1;
 		lcd_bright_off();
 		printf("off bright\n");
-	} else if (noOps_timeoutCnt == 20) {
+	} else if (noOps_timeoutCnt == 30) {
 		app_power_off();
 		printf("power off\n");
 		g_tDevice.status = E_PowerDown;
@@ -558,14 +574,14 @@ void app_key_pro(uint8_t keyCode) {
 
 		break;
 #if DEBUG_KEY
-	case KEY_UP_K5:
+		case KEY_UP_K5:
 
 		break;
-	case KEY_DOWN_K5:
+		case KEY_DOWN_K5:
 		//BEEP_KeyTone();
 		query_work_sum();
 		break;
-	case KEY_LONG_K5:
+		case KEY_LONG_K5:
 
 		break;
 #endif
