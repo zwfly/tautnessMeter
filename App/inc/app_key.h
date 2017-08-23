@@ -19,7 +19,7 @@ typedef struct _DEVICE_T {
 extern DEVICE_T g_tDevice;
 
 extern uint8_t level;
-
+extern uint8_t noOps_timeoutCnt;
 void app_key_init(void);
 void app_powerKeyInt_open(void);
 void app_powerKeyInt_close(void);

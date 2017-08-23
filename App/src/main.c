@@ -8,8 +8,9 @@
 void ADC_ISR(void)
 interrupt 11
 {
-	clr_ADCF;                               //clear ADC interrupt flag
+	                             //clear ADC interrupt flag
 	app_battery_voltage_result();
+	clr_ADCF;
 }
 /******************************************************************************
  * FUNCTION_PURPOSE: I/O Pin interrupt Service Routine
@@ -51,7 +52,7 @@ void main(void) {
 	app_charge_Init();
 
 	/****************/
-	Show_FW_Version_Number_To_PC();
+//	Show_FW_Version_Number_To_PC();
 
 	while (1) {
 
@@ -79,6 +80,7 @@ void main(void) {
 			app_work_1s_pro();
 			app_charge_1s_pro();
 			app_battery_1s_pro();
+			bsp_hall_1s_pro();
 
 			cnt++;
 			if (cnt > 3) {

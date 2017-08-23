@@ -17,8 +17,7 @@ static void app_battery_detection(void) {
 }
 
 void app_battery_1s_pro(void) {
-	static idata uint8_t
-	cnt = 0;
+	static uint8_t cnt = 0;
 
 	cnt++;
 	if (cnt == 4) {

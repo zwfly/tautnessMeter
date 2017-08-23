@@ -25,8 +25,8 @@ static void app_UI_init(void);
 void app_key_init(void) {
 	level = 0;
 
-//	app_powerKeyInt_open();
 	app_powerKeyInt_close();
+	bsp_hallInt_open();
 
 	mode = E_Simple_metering_mode;
 	g_tWork.mode = E_Simple_metering_mode;
@@ -461,7 +461,7 @@ void app_power_off(void) {
 	LCD_Clear_All();
 }
 
-static uint8_t noOps_timeoutCnt = 0;
+ uint8_t noOps_timeoutCnt = 0;
 static BIT offBight_flag = 0;
 //static BIT keyInvalid_flag = 0;
 void app_key_100ms_pro(void) {
