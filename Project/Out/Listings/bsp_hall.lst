@@ -1,4 +1,4 @@
-C51 COMPILER V9.56.0.0   BSP_HALL                                                          08/23/2017 22:34:21 PAGE 1   
+C51 COMPILER V9.56.0.0   BSP_HALL                                                          08/24/2017 23:29:04 PAGE 1   
 
 
 C51 COMPILER V9.56.0.0, COMPILATION OF MODULE BSP_HALL
@@ -22,8 +22,8 @@ line level    source
   11          #include "app_key.h"
   12          
   13          #define HALL_NUM  3
-  14          #define HALL_CNT_UP  18
-  15          #define HALL_CNT_DOWN  6
+  14          #define HALL_CNT_UP  12
+  15          #define HALL_CNT_DOWN  5
   16          
   17          static HALL_T g_tHall;
   18          
@@ -62,7 +62,7 @@ line level    source
   51   1              clr_PIT6;
   52   1              clr_PIT7;
   53   1      
-C51 COMPILER V9.56.0.0   BSP_HALL                                                          08/23/2017 22:34:21 PAGE 2   
+C51 COMPILER V9.56.0.0   BSP_HALL                                                          08/24/2017 23:29:04 PAGE 2   
 
   54   1              clr_PINEN0;
   55   1              set_PINEN1;
@@ -98,7 +98,7 @@ line level    source
   85          
   86          void bsp_hall_1s_pro(void) {
   87   1      
-  88   1              printf("meter count %u\r\n", g_tHall.count);
+  88   1              printf("meter count %d\r\n", g_tHall.count);
   89   1      
   90   1      }
   91          
@@ -107,92 +107,91 @@ line level    source
   94   1              static BIT valid_flag = 0;
   95   1      
   96   1              noOps_timeoutCnt = 0;
-  97   1      
-  98   1              switch (n) {
-  99   2              case 0:
- 100   2                      if (g_tHall.lastPos == 0) {
- 101   3                              if (g_tHall.direction) {
- 102   4                                      g_tHall.direction = 0;
- 103   4                              } else {
- 104   4                                      g_tHall.direction = 1;
- 105   4                              }
- 106   3                      } else if (g_tHall.lastPos == 1) {
- 107   3                              g_tHall.direction = 0;
- 108   3                      } else if (g_tHall.lastPos == 2) {
- 109   3                              g_tHall.direction = 1;  //拉长
- 110   3                      }
- 111   2                      break;
- 112   2              case 1:
- 113   2                      if (g_tHall.lastPos == 1) {
- 114   3                              if (g_tHall.direction) {
- 115   4                                      g_tHall.direction = 0;
-C51 COMPILER V9.56.0.0   BSP_HALL                                                          08/23/2017 22:34:21 PAGE 3   
+  97   1              lcd_bright_on();
+  98   1      
+  99   1              switch (n) {
+ 100   2              case 0:
+ 101   2                      if (g_tHall.lastPos == 0) {
+ 102   3                              if (g_tHall.direction) {
+ 103   4                                      g_tHall.direction = 0;
+ 104   4                              } else {
+ 105   4                                      g_tHall.direction = 1;
+ 106   4                              }
+ 107   3                      } else if (g_tHall.lastPos == 1) {
+ 108   3                              g_tHall.direction = 0;
+ 109   3                      } else if (g_tHall.lastPos == 2) {
+ 110   3                              g_tHall.direction = 1;  //拉长
+ 111   3                      }
+ 112   2                      break;
+ 113   2              case 1:
+ 114   2                      if (g_tHall.lastPos == 1) {
+ 115   3                              if (g_tHall.direction) {
+C51 COMPILER V9.56.0.0   BSP_HALL                                                          08/24/2017 23:29:04 PAGE 3   
 
- 116   4                              } else {
- 117   4                                      g_tHall.direction = 1;
- 118   4                              }
- 119   3                      } else if (g_tHall.lastPos == 2) {
- 120   3                              g_tHall.direction = 0;
- 121   3                      } else if (g_tHall.lastPos == 0) {
- 122   3                              g_tHall.direction = 1;  //拉长
- 123   3                      }
- 124   2                      break;
- 125   2              case 2:
- 126   2                      if (g_tHall.lastPos == 2) {
- 127   3                              if (g_tHall.direction) {
- 128   4                                      g_tHall.direction = 0;
- 129   4                              } else {
- 130   4                                      g_tHall.direction = 1;
- 131   4                              }
- 132   3                      } else if (g_tHall.lastPos == 2) {
- 133   3                              g_tHall.direction = 0;
- 134   3                      } else if (g_tHall.lastPos == 1) {
- 135   3                              g_tHall.direction = 1;  //拉长
- 136   3                      }
- 137   2                      break;
- 138   2              }
- 139   1              g_tHall.lastPos = n;
- 140   1              if (g_tHall.direction) {
- 141   2                      g_tHall.count++;
- 142   2              } else {
- 143   2                      if (g_tHall.count) {
- 144   3                              g_tHall.count--;
- 145   3                      }
- 146   2              }
- 147   1              if (valid_flag) {
- 148   2                      if (g_tHall.count < HALL_CNT_DOWN) {
- 149   3                              valid_flag = 0;
- 150   3                      }
- 151   2              } else {
- 152   2                      if (g_tHall.count > HALL_CNT_UP) {
- 153   3                              valid_flag = 1;
- 154   3                              /* your code   --start */
- 155   3                              // 拉一次计数一次，计数一次调用一次
- 156   3                              query_work_sum();
- 157   3                              /* your code   --end */
- 158   3                      }
- 159   2              }
- 160   1      
- 161   1      }
- 162          
- 163          void hall_1_interrupt(void) {
- 164   1              hall_pro(0);
- 165   1      }
- 166          void hall_2_interrupt(void) {
- 167   1              hall_pro(1);
- 168   1      }
- 169          void hall_3_interrupt(void) {
- 170   1              hall_pro(2);
- 171   1      }
+ 116   4                                      g_tHall.direction = 0;
+ 117   4                              } else {
+ 118   4                                      g_tHall.direction = 1;
+ 119   4                              }
+ 120   3                      } else if (g_tHall.lastPos == 2) {
+ 121   3                              g_tHall.direction = 0;
+ 122   3                      } else if (g_tHall.lastPos == 0) {
+ 123   3                              g_tHall.direction = 1;  //拉长
+ 124   3                      }
+ 125   2                      break;
+ 126   2              case 2:
+ 127   2                      if (g_tHall.lastPos == 2) {
+ 128   3                              if (g_tHall.direction) {
+ 129   4                                      g_tHall.direction = 0;
+ 130   4                              } else {
+ 131   4                                      g_tHall.direction = 1;
+ 132   4                              }
+ 133   3                      } else if (g_tHall.lastPos == 0) {
+ 134   3                              g_tHall.direction = 0;
+ 135   3                      } else if (g_tHall.lastPos == 1) {
+ 136   3                              g_tHall.direction = 1;  //拉长
+ 137   3                      }
+ 138   2                      break;
+ 139   2              }
+ 140   1              g_tHall.lastPos = n;
+ 141   1              if (g_tHall.direction) {
+ 142   2                      g_tHall.count++;
+ 143   2              } else {
+ 144   2                      g_tHall.count--;
+ 145   2              }
+ 146   1              if (valid_flag) {
+ 147   2                      if (g_tHall.count < HALL_CNT_DOWN) {
+ 148   3                              valid_flag = 0;
+ 149   3                      }
+ 150   2              } else {
+ 151   2                      if (g_tHall.count > HALL_CNT_UP) {
+ 152   3                              valid_flag = 1;
+ 153   3                              /* your code   --start */
+ 154   3                              // 拉一次计数一次，计数一次调用一次
+ 155   3                              query_work_sum();
+ 156   3                              /* your code   --end */
+ 157   3                      }
+ 158   2              }
+ 159   1      
+ 160   1      }
+ 161          
+ 162          void hall_1_interrupt(void) {
+ 163   1              hall_pro(0);
+ 164   1      }
+ 165          void hall_2_interrupt(void) {
+ 166   1              hall_pro(1);
+ 167   1      }
+ 168          void hall_3_interrupt(void) {
+ 169   1              hall_pro(2);
+ 170   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    388    ----
+   CODE SIZE        =    393    ----
    CONSTANT SIZE    =     17    ----
-   XDATA SIZE       =      4    ----
-C51 COMPILER V9.56.0.0   BSP_HALL                                                          08/23/2017 22:34:21 PAGE 4   
-
+   XDATA SIZE       =      4       1
    PDATA SIZE       =   ----    ----
+C51 COMPILER V9.56.0.0   BSP_HALL                                                          08/24/2017 23:29:04 PAGE 4   
+
    DATA SIZE        =   ----    ----
    IDATA SIZE       =   ----    ----
    BIT SIZE         =      1    ----

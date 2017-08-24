@@ -11,8 +11,8 @@
 #include "app_key.h"
 
 #define HALL_NUM  3
-#define HALL_CNT_UP  18
-#define HALL_CNT_DOWN  6
+#define HALL_CNT_UP  12
+#define HALL_CNT_DOWN  5
 
 static HALL_T g_tHall;
 
@@ -85,7 +85,7 @@ void Hall_Init(void) {
 
 void bsp_hall_1s_pro(void) {
 
-	printf("meter count %u\r\n", g_tHall.count);
+	printf("meter count %d\r\n", g_tHall.count);
 
 }
 
@@ -94,6 +94,7 @@ void hall_pro(uint8_t n) {
 	static BIT valid_flag = 0;
 
 	noOps_timeoutCnt = 0;
+	lcd_bright_on();
 
 	switch (n) {
 	case 0:
@@ -129,7 +130,7 @@ void hall_pro(uint8_t n) {
 			} else {
 				g_tHall.direction = 1;
 			}
-		} else if (g_tHall.lastPos == 2) {
+		} else if (g_tHall.lastPos == 0) {
 			g_tHall.direction = 0;
 		} else if (g_tHall.lastPos == 1) {
 			g_tHall.direction = 1;  //À­³¤
@@ -140,9 +141,7 @@ void hall_pro(uint8_t n) {
 	if (g_tHall.direction) {
 		g_tHall.count++;
 	} else {
-		if (g_tHall.count) {
-			g_tHall.count--;
-		}
+		g_tHall.count--;
 	}
 	if (valid_flag) {
 		if (g_tHall.count < HALL_CNT_DOWN) {
