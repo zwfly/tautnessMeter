@@ -9,16 +9,22 @@
 #define APP_INC_APP_KEY_H_
 
 typedef enum {
-	E_RUN_STATUS_PLACE = 0, E_PowerOn, E_PowerDown, E_PowerReady,
+	E_RUN_STATUS_NONE = 0, E_PowerOn, E_PowerDown, E_PowerReady,
 } E_RUN_STATUS;
+
+typedef enum {
+	E_LEVEL_NONE = 0, E_LEVEL_MODE, E_LEVEL_REP, E_LEVEL_READY,
+} E_LEVEL;
+
 typedef struct _DEVICE_T {
 	E_RUN_STATUS status;
-
+	E_LEVEL level;
+	E_TRAINING_MODE mode;
 } DEVICE_T;
 
 extern DEVICE_T g_tDevice;
 
-extern uint8_t level;
+//extern uint8_t level;
 extern uint8_t noOps_timeoutCnt;
 void app_key_init(void);
 void app_powerKeyInt_open(void);

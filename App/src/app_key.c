@@ -9,7 +9,6 @@
 
 DEVICE_T g_tDevice;
 
-static E_TRAINING_MODE mode;
 static char letter = '\0';
 
 #define BLINK_FLASH_TIME   4
@@ -18,23 +17,23 @@ static char letter = '\0';
  * level: 0, 拉动时候的界面
  *        1,
  * */
-uint8_t level = 0;
-
+//uint8_t level = 0;
 static void app_UI_init(void);
 
 void app_key_init(void) {
-	level = 0;
 
 	app_powerKeyInt_close();
 	bsp_hallInt_open();
 
-	mode = E_Simple_metering_mode;
-	g_tWork.mode = E_Simple_metering_mode;
+	g_tWork.mode = E_TRAINING_NONE;
+
+	g_tDevice.mode = E_Simple_metering_mode;
 	g_tDevice.status = E_PowerOn;
+	g_tDevice.level = E_LEVEL_READY;
+
 	app_UI_init();
 }
 void app_powerKeyInt_open(void) {
-
 	clr_PIPS2;
 	clr_PIPS1;
 	clr_PIPS0;
@@ -54,7 +53,7 @@ void app_powerKeyInt_close(void) {
 	clr_PIPEN6;
 }
 static void app_UI_init(void) {
-	switch (mode) {
+	switch (g_tDevice.mode) {
 	case E_Simple_metering_mode:
 
 		LCD_Show_Pulls_Num(0);
@@ -113,17 +112,18 @@ static void app_UI_init(void) {
 void app_flash_Show(void) {
 
 	LCD_Show_Line_up();
-	switch (level) {
-	case 0:
+	switch (g_tDevice.level) {
+	case E_LEVEL_NONE:
+
 		break;
-	case 1:
-		if (mode == E_Quick_start_mode) {
+	case E_LEVEL_MODE:
+		if (g_tDevice.mode == E_Quick_start_mode) {
 			LCD_Show_QS_ICO();
-		} else if (mode == E_Coach_mode) {
+		} else if (g_tDevice.mode == E_Coach_mode) {
 			LCD_Show_COACH_ICO();
 		}
 		break;
-	case 2:
+	case E_LEVEL_REP:
 
 		switch (letter) {
 		case '\0':
@@ -145,22 +145,23 @@ void app_flash_Show(void) {
 			LCD_Show_Pulls_Num(Rep_Pull_num['D' - 'A'][1]);
 			break;
 		}
-		if (mode == E_Quick_start_mode) {
+		if (g_tDevice.mode == E_Quick_start_mode) {
 			LCD_Show_QS_ICO();
-		} else if (mode == E_Coach_mode) {
+		} else if (g_tDevice.mode == E_Coach_mode) {
 			LCD_Show_COACH_ICO();
 		}
 		LCD_Show_ABCD_all();
 
 		break;
-	case 3:
+	case E_LEVEL_READY:
+
 		break;
 	}
 	LCD_Show_Line_up();
 }
 void app_flash_Clear(void) {
 
-	switch (level) {
+	switch (g_tDevice.level) {
 	case 0:
 		break;
 	case 1:
@@ -195,9 +196,9 @@ void app_flash_Clear(void) {
 			LCD_Clear_ABCD();
 			LCD_Show_ABCD('D');
 		}
-		if (mode == E_Quick_start_mode) {
+		if (g_tDevice.mode == E_Quick_start_mode) {
 			LCD_Clear_QS_ICO();
-		} else if (mode == E_Coach_mode) {
+		} else if (g_tDevice.mode == E_Coach_mode) {
 			LCD_Clear_COACH_ICO();
 		}
 		break;
@@ -208,9 +209,9 @@ void app_flash_Clear(void) {
 }
 void app_key_power_or_return(void) {
 
-	switch (level) {
+	switch (g_tDevice.level) {
 	case 0:
-		switch (mode) {
+		switch (g_tDevice.mode) {
 		case E_Simple_metering_mode:
 			g_tWork.sum = 0;
 			g_tWork.cal_num = 0;
@@ -267,19 +268,19 @@ void app_key_power_or_return(void) {
 		break;
 	case 1:
 		Repeat_Stop();
-		if (level) {
-			level--;
+		if (g_tDevice.level) {
+			g_tDevice.level--;
 		}
 
 		break;
 	case 2:
-		if (level) {
-			level--;
+		if (g_tDevice.level) {
+			g_tDevice.level--;
 		}
 		break;
 	case 3:
-		if (level) {
-			level--;
+		if (g_tDevice.level) {
+			g_tDevice.level--;
 		}
 		break;
 	}
@@ -288,14 +289,14 @@ void app_key_power_or_return(void) {
 void app_key_set(void) {
 //	static BIT power_on_mode_flag = 0;
 
-	switch (level) {
+	switch (g_tDevice.level) {
 	case 0:
 
 		switch (g_tWork.mode) {
 		case E_Simple_metering_mode:
 			//g_tWork.mode = E_Quick_start_mode;
 			//mode = E_Quick_start_mode;
-			level = 1;
+			g_tDevice.level = 1;
 			break;
 		case E_Quick_start_mode:
 
@@ -316,9 +317,9 @@ void app_key_set(void) {
 
 		LCD_Show_CAL_ICO();
 
-		mode = g_tWork.mode;
-		mode = E_Quick_start_mode;
-		level = 1;
+		g_tDevice.mode = g_tWork.mode;
+		g_tDevice.mode = E_Quick_start_mode;
+		g_tDevice.level = 1;
 		Repeat_Stop();
 		Repeat_SetStart(app_flash_Show);
 		Repeat_SetStop(app_flash_Clear);
@@ -339,29 +340,29 @@ void app_key_set(void) {
 
 void app_key_add(void) {
 
-	switch (level) {
+	switch (g_tDevice.level) {
 	case 0:
 
 		break;
 	case 1:
-		switch (mode) {
+		switch (g_tDevice.mode) {
 		case E_Simple_metering_mode:
-			mode = E_Quick_start_mode;
+			g_tDevice.mode = E_Quick_start_mode;
 
 			break;
 		case E_Quick_start_mode:
-			mode = E_Coach_mode;
+			g_tDevice.mode = E_Coach_mode;
 
 			break;
 		case E_Coach_mode:
 
-			mode = E_Simple_metering_mode;
+			g_tDevice.mode = E_Simple_metering_mode;
 
 			break;
 		}
 		break;
 	case 2:
-		switch (mode) {
+		switch (g_tDevice.mode) {
 		case E_Simple_metering_mode:
 
 			break;
@@ -397,13 +398,13 @@ void app_key_add(void) {
 void app_key_ok(void) {
 	//g_tWork.mode = mode;
 
-	switch (level) {
+	switch (g_tDevice.level) {
 	case 0:
 
 		break;
 	case 1:
 
-		switch (mode) {
+		switch (g_tDevice.mode) {
 		case E_Simple_metering_mode:
 
 			break;
@@ -420,10 +421,10 @@ void app_key_ok(void) {
 			break;
 		}
 		letter = 'A';
-		level = 2;
+		g_tDevice.level = 2;
 		break;
 	case 2:
-		switch (mode) {
+		switch (g_tDevice.mode) {
 		case E_Simple_metering_mode:
 
 			break;
@@ -438,10 +439,10 @@ void app_key_ok(void) {
 
 			break;
 		}
-		g_tWork.mode = mode;
+		g_tWork.mode = g_tDevice.mode;
 		g_tWork.reps_mode = letter;
 		g_tWork.sum = 0;
-		level = 0;
+		g_tDevice.level = 0;
 		break;
 	case 3:
 		break;
@@ -461,7 +462,7 @@ void app_power_off(void) {
 	LCD_Clear_All();
 }
 
- uint8_t noOps_timeoutCnt = 0;
+uint8_t noOps_timeoutCnt = 0;
 static BIT offBight_flag = 0;
 //static BIT keyInvalid_flag = 0;
 void app_key_100ms_pro(void) {
@@ -486,12 +487,12 @@ void app_key_100ms_pro(void) {
 void app_key_1s_pro(void) {
 
 	noOps_timeoutCnt++;
-	if (noOps_timeoutCnt == 20) {
+	if (noOps_timeoutCnt == 40) {
 		offBight_flag = 1;
 //		keyInvalid_flag = 1;
 		lcd_bright_off();
 		printf("off bright\n");
-	} else if (noOps_timeoutCnt == 30) {
+	} else if (noOps_timeoutCnt == 50) {
 		app_power_off();
 		printf("power off\n");
 		g_tDevice.status = E_PowerDown;

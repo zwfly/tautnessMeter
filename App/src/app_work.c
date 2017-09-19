@@ -61,7 +61,7 @@ static void app_work_pro(void) {
 	static BIT finish_flag = 0;
 	static BIT reps_num_appear_flag = 0;
 
-	level = 0;
+	g_tDevice.level = 0;
 	Repeat_Stop();
 
 	switch (g_tWork.mode) {

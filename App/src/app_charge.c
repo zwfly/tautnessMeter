@@ -113,7 +113,7 @@ void app_charge_1s_pro(void) {
 		if (result_flag) {
 			result_flag = 0;
 
-			if (g_tCharge.result < 490) {
+			if (g_tCharge.result < 510) {
 				g_tCharge.status = E_NeedCharge;
 			} else {
 				g_tCharge.status = E_Discharge;

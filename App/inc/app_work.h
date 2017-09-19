@@ -9,7 +9,7 @@
 #define APP_INC_APP_WORK_H_
 
 typedef enum {
-	E_TRAINING_PLACE = 0,
+	E_TRAINING_NONE = 0,
 	E_Simple_metering_mode,
 	E_Quick_start_mode,
 	E_Coach_mode,
