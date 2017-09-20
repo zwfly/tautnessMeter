@@ -23,7 +23,7 @@ static void app_work_pro(void);
 
 void work_Init(void) {
 	g_tWork.mode = E_Simple_metering_mode;
-	g_tWork.reps_mode = '\0';
+	g_tWork.reps_mode = 'A';
 	g_tWork.sum = 0;
 	g_tWork.reps_num = 0;
 	g_tWork.pulls_num = 0;
@@ -33,12 +33,23 @@ void work_Init(void) {
 }
 
 void query_work_sum(void) {
-	g_tWork.sum++;
-	if (g_tWork.sum > 10000) {
-		g_tWork.sum = 0;
-	}
-	pull_once_flag = 1;
 
+	if (g_tDevice.level == E_LEVEL_PULL) {
+		g_tWork.sum++;
+		if (g_tWork.sum > 10000) {
+			g_tWork.sum = 0;
+		}
+		pull_once_flag = 1;
+	}
+
+	if (g_tDevice.level == E_LEVEL_READY) {
+		g_tDevice.level = E_LEVEL_PULL;
+		g_tWork.sum++;
+		if (g_tWork.sum > 10000) {
+			g_tWork.sum = 0;
+		}
+		pull_once_flag = 1;
+	}
 }
 
 void app_work_1s_pro(void) {
@@ -61,10 +72,12 @@ static void app_work_pro(void) {
 	static BIT finish_flag = 0;
 	static BIT reps_num_appear_flag = 0;
 
-	g_tDevice.level = 0;
 	Repeat_Stop();
 
 	switch (g_tWork.mode) {
+	case E_TRAINING_NONE:
+
+		break;
 	case E_Simple_metering_mode:
 
 		if (g_tWork.sum % 10 == 0) {

@@ -13,13 +13,14 @@ typedef enum {
 } E_RUN_STATUS;
 
 typedef enum {
-	E_LEVEL_NONE = 0, E_LEVEL_MODE, E_LEVEL_REP, E_LEVEL_READY,
+	E_LEVEL_NONE = 0, E_LEVEL_MODE, E_LEVEL_REP, E_LEVEL_READY, E_LEVEL_PULL,
 } E_LEVEL;
 
 typedef struct _DEVICE_T {
 	E_RUN_STATUS status;
 	E_LEVEL level;
 	E_TRAINING_MODE mode;
+	char letter;
 } DEVICE_T;
 
 extern DEVICE_T g_tDevice;

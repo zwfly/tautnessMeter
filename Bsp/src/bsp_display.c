@@ -308,16 +308,16 @@ void LCD_Show_ABCD(char c) {
 
 	switch (c) {
 	case 'A':
-		LCDDAT = COM0;
+		LCDDAT |= COM0;
 		break;
 	case 'B':
-		LCDDAT = COM1;
+		LCDDAT |= COM1;
 		break;
 	case 'C':
-		LCDDAT = COM2;
+		LCDDAT |= COM2;
 		break;
 	case 'D':
-		LCDDAT = COM3;
+		LCDDAT |= COM3;
 		break;
 	default:
 //		LCDPTR = 18;

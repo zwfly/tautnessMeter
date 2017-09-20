@@ -376,7 +376,6 @@ void SW_Reset(void) {
 	TA = 0xAA;
 	TA = 0x55;
 	set_SWRST
-	;
 }
 /*==========================================================================*/
 void Fsys_Clock_Output_On_P26(void) {

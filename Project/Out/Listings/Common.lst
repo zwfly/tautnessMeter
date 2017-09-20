@@ -1,4 +1,4 @@
-C51 COMPILER V9.56.0.0   COMMON                                                            09/19/2017 22:23:41 PAGE 1   
+C51 COMPILER V9.56.0.0   COMMON                                                            09/20/2017 23:38:00 PAGE 1   
 
 
 C51 COMPILER V9.56.0.0, COMPILATION OF MODULE COMMON
@@ -62,7 +62,7 @@ line level    source
   44   3                      ;
   45   3              }
   46   2                      break;
-C51 COMPILER V9.56.0.0   COMMON                                                            09/19/2017 22:23:41 PAGE 2   
+C51 COMPILER V9.56.0.0   COMMON                                                            09/20/2017 23:38:00 PAGE 2   
 
   47   2      
   48   2              case E_LXTEN: {
@@ -126,7 +126,7 @@ line level    source
  106   2                      break;
  107   2      
  108   2              case E_OSCEN: {
-C51 COMPILER V9.56.0.0   COMMON                                                            09/19/2017 22:23:41 PAGE 3   
+C51 COMPILER V9.56.0.0   COMMON                                                            09/20/2017 23:38:00 PAGE 3   
 
  109   3                      //step1: enable clock source
  110   3                      clr_EXTEN1
@@ -190,7 +190,7 @@ line level    source
  166   1      
  167   1      #ifdef FOSC_110592
  168   1              TH1 = 256 - (57600 / u32Baudrate); /*11.0592 MHz */
-C51 COMPILER V9.56.0.0   COMMON                                                            09/19/2017 22:23:41 PAGE 4   
+C51 COMPILER V9.56.0.0   COMMON                                                            09/20/2017 23:38:00 PAGE 4   
 
  169   1      #endif    
  170   1      #ifdef FOSC_165888
@@ -254,7 +254,7 @@ line level    source
  226   1              R3H = HIBYTE(65536 - (345600 / u32Baudrate)); /*11.0592 MHz */
  227   1              R3L = LOBYTE(65536 - (345600 / u32Baudrate)); /*11.0592 MHz */
  228   1      #endif
-C51 COMPILER V9.56.0.0   COMMON                                                            09/19/2017 22:23:41 PAGE 5   
+C51 COMPILER V9.56.0.0   COMMON                                                            09/20/2017 23:38:00 PAGE 5   
 
  229   1      #ifdef FOSC_165888
                       R3H = HIBYTE(65536 - (518400/u32Baudrate)); /*16.5888 MHz */
@@ -318,7 +318,7 @@ line level    source
  288   1      }
  289          /**************************************************************************
  290           *
-C51 COMPILER V9.56.0.0   COMMON                                                            09/19/2017 22:23:41 PAGE 6   
+C51 COMPILER V9.56.0.0   COMMON                                                            09/20/2017 23:38:00 PAGE 6   
 
  291           *  Function Name: Send_Data_To_UART0()
  292           *
@@ -382,7 +382,7 @@ line level    source
  350   1              P2M2 = 0x00;
  351   1              P3M1 = 0x00;
  352   1              P3M2 = 0x00;
-C51 COMPILER V9.56.0.0   COMMON                                                            09/19/2017 22:23:41 PAGE 7   
+C51 COMPILER V9.56.0.0   COMMON                                                            09/20/2017 23:38:00 PAGE 7   
 
  353   1              P4M1 = 0x00;
  354   1              P4M2 = 0x00;
@@ -410,22 +410,21 @@ line level    source
  376   1              TA = 0xAA;
  377   1              TA = 0x55;
  378   1              set_SWRST
- 379   1              ;
- 380   1      }
- 381          /*==========================================================================*/
- 382          void Fsys_Clock_Output_On_P26(void) {
- 383   1              set_CLOEN;                                  //System Clock Output Enable
- 384   1      }
- 385          
- 386          /*****************************************************************************
- 387           * putchar (full version):  expands '\n' into CR LF and handles
- 388           *                          XON/XOFF (Ctrl+S/Ctrl+Q) protocol
- 389           ****************************************************************************/
- 390          #define XON  0x11
- 391          #define XOFF 0x13
- 392          
- 393          char putchar(char c) {
- 394   1      #if DEBUG_PORT == 0
+ 379   1      }
+ 380          /*==========================================================================*/
+ 381          void Fsys_Clock_Output_On_P26(void) {
+ 382   1              set_CLOEN;                                  //System Clock Output Enable
+ 383   1      }
+ 384          
+ 385          /*****************************************************************************
+ 386           * putchar (full version):  expands '\n' into CR LF and handles
+ 387           *                          XON/XOFF (Ctrl+S/Ctrl+Q) protocol
+ 388           ****************************************************************************/
+ 389          #define XON  0x11
+ 390          #define XOFF 0x13
+ 391          
+ 392          char putchar(char c) {
+ 393   1      #if DEBUG_PORT == 0
                       if (c == '\n')
                       {
                               if (RI)
@@ -446,9 +445,9 @@ line level    source
                               SBUF = 0x0d; /* output CR  */
                       }
                       if (RI)
-C51 COMPILER V9.56.0.0   COMMON                                                            09/19/2017 22:23:41 PAGE 8   
-
                       {
+C51 COMPILER V9.56.0.0   COMMON                                                            09/20/2017 23:38:00 PAGE 8   
+
                               if (SBUF == XOFF)
                               {
                                       do
@@ -464,38 +463,38 @@ line level    source
                       return (SBUF = c);
                       ;
               #elif DEBUG_PORT == 1
- 431   1              if (c == '\n') {
- 432   2                      if (RI_1) {
- 433   3                              if (SBUF_1 == XOFF) {
- 434   4                                      do {
- 435   5                                              clr_RI_1;
- 436   5                                              while (!RI_1)
- 437   5                                                      ;
- 438   5                                      } while (SBUF_1 != XON);
- 439   4                                      clr_RI_1;
- 440   4                              }
- 441   3                      }
- 442   2                      while (!TI_1)
- 443   2                              ;
- 444   2                      clr_TI_1;
- 445   2                      SBUF_1 = 0x0d; /* output CR  */
- 446   2              }
- 447   1              if (RI_1) {
- 448   2                      if (SBUF_1 == XOFF) {
- 449   3                              do {
- 450   4                                      clr_RI_1;
- 451   4                                      while (!RI_1)
- 452   4                                              ;
- 453   4                              } while (SBUF_1 != XON);
- 454   3                              clr_RI_1;
- 455   3                      }
- 456   2              }
- 457   1              while (!TI_1)
- 458   1                      ;
- 459   1              clr_TI_1;
- 460   1              return (SBUF_1 = c);
- 461   1      #endif
- 462   1      }
+ 430   1              if (c == '\n') {
+ 431   2                      if (RI_1) {
+ 432   3                              if (SBUF_1 == XOFF) {
+ 433   4                                      do {
+ 434   5                                              clr_RI_1;
+ 435   5                                              while (!RI_1)
+ 436   5                                                      ;
+ 437   5                                      } while (SBUF_1 != XON);
+ 438   4                                      clr_RI_1;
+ 439   4                              }
+ 440   3                      }
+ 441   2                      while (!TI_1)
+ 442   2                              ;
+ 443   2                      clr_TI_1;
+ 444   2                      SBUF_1 = 0x0d; /* output CR  */
+ 445   2              }
+ 446   1              if (RI_1) {
+ 447   2                      if (SBUF_1 == XOFF) {
+ 448   3                              do {
+ 449   4                                      clr_RI_1;
+ 450   4                                      while (!RI_1)
+ 451   4                                              ;
+ 452   4                              } while (SBUF_1 != XON);
+ 453   3                              clr_RI_1;
+ 454   3                      }
+ 455   2              }
+ 456   1              while (!TI_1)
+ 457   1                      ;
+ 458   1              clr_TI_1;
+ 459   1              return (SBUF_1 = c);
+ 460   1      #endif
+ 461   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
