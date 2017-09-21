@@ -1,4 +1,4 @@
-C51 COMPILER V9.56.0.0   APP_KEY                                                           09/20/2017 23:38:00 PAGE 1   
+C51 COMPILER V9.56.0.0   APP_KEY                                                           09/21/2017 22:58:23 PAGE 1   
 
 
 C51 COMPILER V9.56.0.0, COMPILATION OF MODULE APP_KEY
@@ -28,632 +28,755 @@ line level    source
   17           * */
   18          //uint8_t level = 0;
   19          static void app_UI_init(void);
-  20          
-  21          void app_key_init(void) {
-  22   1      
-  23   1              app_powerKeyInt_close();
-  24   1              bsp_hallInt_open();
-  25   1      
-  26   1      //      g_tWork.mode = E_TRAINING_NONE;
+  20          void app_flash_Clear(void);
+  21          void app_flash_Show(void);
+  22          
+  23          void app_key_init(void) {
+  24   1      
+  25   1              app_powerKeyInt_close();
+  26   1              bsp_hallInt_open();
   27   1      
-  28   1              g_tDevice.mode = E_Simple_metering_mode;
-  29   1              g_tDevice.status = E_PowerOn;
-  30   1              g_tDevice.level = E_LEVEL_PULL;
-  31   1              g_tDevice.letter = 'A';
-  32   1      
-  33   1              app_UI_init();
-  34   1      }
-  35          void app_powerKeyInt_open(void) {
-  36   1              clr_PIPS2;
-  37   1              clr_PIPS1;
-  38   1              clr_PIPS0;
-  39   1      
-  40   1              set_PIT6;
-  41   1              set_PINEN6;
-  42   1              clr_PIPEN6;
-  43   1      
-  44   1      }
-  45          void app_powerKeyInt_close(void) {
-  46   1              clr_PIPS2;
-  47   1              clr_PIPS1;
-  48   1              clr_PIPS0;
-  49   1      
-  50   1              clr_PIT6;
-  51   1              clr_PINEN6;
-  52   1              clr_PIPEN6;
-  53   1      }
-C51 COMPILER V9.56.0.0   APP_KEY                                                           09/20/2017 23:38:00 PAGE 2   
+  28   1      //      g_tWork.mode = E_TRAINING_NONE;
+  29   1      
+  30   1              g_tDevice.mode = E_Simple_metering_mode;
+  31   1              g_tDevice.status = E_PowerOn;
+  32   1              g_tDevice.level = E_LEVEL_PULL;
+  33   1              g_tDevice.letter = 'A';
+  34   1      
+  35   1              app_UI_init();
+  36   1      
+  37   1              Repeat_Stop();
+  38   1              Repeat_SetStart(app_flash_Show);
+  39   1              Repeat_SetStop(app_flash_Clear);
+  40   1              Repeat_Start(BLINK_FLASH_TIME, BLINK_FLASH_TIME, 0);
+  41   1      }
+  42          void app_powerKeyInt_open(void) {
+  43   1              clr_PIPS2;
+  44   1              clr_PIPS1;
+  45   1              clr_PIPS0;
+  46   1      
+  47   1              set_PIT6;
+  48   1              set_PINEN6;
+  49   1              clr_PIPEN6;
+  50   1      
+  51   1      }
+  52          void app_powerKeyInt_close(void) {
+  53   1              clr_PIPS2;
+C51 COMPILER V9.56.0.0   APP_KEY                                                           09/21/2017 22:58:23 PAGE 2   
 
-  54          static void app_UI_init(void) {
-  55   1              switch (g_tDevice.mode) {
-  56   2              case E_TRAINING_NONE:
-  57   2      
-  58   2                      break;
-  59   2              case E_Simple_metering_mode:
-  60   2      
-  61   2                      LCD_Clear_REP_Num();
-  62   2                      LCD_Show_Pulls_Num(0);
-  63   2                      LCD_Show_CAL_Num(0);
-  64   2      
-  65   2                      LCD_Show_Line_up();
-  66   2                      LCD_Clear_REP_ICO();
-  67   2      
-  68   2                      LCD_Clear_ABCD();
-  69   2      
-  70   2                      LCD_Show_CAL_ICO();
-  71   2                      LCD_Clear_QS_ICO();
-  72   2                      LCD_Clear_COACH_ICO();
-  73   2      
-  74   2      //              Repeat_Stop();
-  75   2                      break;
-  76   2              case E_Quick_start_mode:
+  54   1              clr_PIPS1;
+  55   1              clr_PIPS0;
+  56   1      
+  57   1              clr_PIT6;
+  58   1              clr_PINEN6;
+  59   1              clr_PIPEN6;
+  60   1      }
+  61          
+  62          static void app_UI_init(void) {
+  63   1              switch (g_tDevice.mode) {
+  64   2              case E_TRAINING_NONE:
+  65   2      
+  66   2                      break;
+  67   2              case E_Simple_metering_mode:
+  68   2      
+  69   2                      LCD_Clear_REP_Num();
+  70   2                      LCD_Show_Pulls_Num(0);
+  71   2                      LCD_Show_CAL_Num(0);
+  72   2      
+  73   2                      LCD_Show_Line_up();
+  74   2                      LCD_Clear_REP_ICO();
+  75   2      
+  76   2                      LCD_Clear_ABCD();
   77   2      
-  78   2                      LCD_Show_REP_ICO();
-  79   2                      LCD_Show_Line_up();
-  80   2      
-  81   2                      LCD_Show_ABCD('A');
-  82   2                      LCD_Show_ABCD('B');
-  83   2                      LCD_Show_ABCD('C');
-  84   2                      LCD_Show_ABCD('D');
-  85   2      
-  86   2                      LCD_Show_CAL_ICO();
+  78   2                      LCD_Show_CAL_ICO();
+  79   2                      LCD_Clear_QS_ICO();
+  80   2                      LCD_Clear_COACH_ICO();
+  81   2      
+  82   2                      break;
+  83   2              case E_Quick_start_mode:
+  84   2      
+  85   2                      LCD_Show_REP_ICO();
+  86   2                      LCD_Show_Line_up();
   87   2      
-  88   2                      LCD_Clear_COACH_ICO();
-  89   2      
-  90   2      //              Repeat_Stop();
-  91   2      //              Repeat_SetStart(LCD_Show_QS_ICO);
-  92   2      //              Repeat_SetStop(LCD_Clear_QS_ICO);
-  93   2      //              Repeat_Start(4, 4, 0);
-  94   2                      break;
-  95   2              case E_Coach_mode:
-  96   2                      LCD_Show_REP_ICO();
-  97   2                      LCD_Show_Line_up();
-  98   2      
-  99   2                      LCD_Show_ABCD('A');
- 100   2                      LCD_Show_ABCD('B');
- 101   2                      LCD_Show_ABCD('C');
- 102   2                      LCD_Show_ABCD('D');
- 103   2      
- 104   2                      LCD_Show_CAL_ICO();
- 105   2      
- 106   2                      LCD_Clear_QS_ICO();
- 107   2      
- 108   2      //              Repeat_Stop();
- 109   2      //              Repeat_SetStart(LCD_Show_COACH_ICO);
- 110   2      //              Repeat_SetStop(LCD_Clear_COACH_ICO);
- 111   2      //              Repeat_Start(4, 4, 0);
- 112   2                      break;
- 113   2              }
- 114   1      }
- 115          
-C51 COMPILER V9.56.0.0   APP_KEY                                                           09/20/2017 23:38:00 PAGE 3   
+  88   2                      LCD_Show_ABCD('A');
+  89   2                      LCD_Show_ABCD('B');
+  90   2                      LCD_Show_ABCD('C');
+  91   2                      LCD_Show_ABCD('D');
+  92   2      
+  93   2                      LCD_Show_CAL_ICO();
+  94   2      
+  95   2                      LCD_Clear_COACH_ICO();
+  96   2      
+  97   2                      break;
+  98   2              case E_Coach_mode:
+  99   2                      LCD_Show_REP_ICO();
+ 100   2                      LCD_Show_Line_up();
+ 101   2      
+ 102   2                      LCD_Show_ABCD('A');
+ 103   2                      LCD_Show_ABCD('B');
+ 104   2                      LCD_Show_ABCD('C');
+ 105   2                      LCD_Show_ABCD('D');
+ 106   2      
+ 107   2                      LCD_Show_CAL_ICO();
+ 108   2      
+ 109   2                      LCD_Clear_QS_ICO();
+ 110   2      
+ 111   2                      break;
+ 112   2              }
+ 113   1      }
+ 114          
+ 115          void app_flash_Show(void) {
+C51 COMPILER V9.56.0.0   APP_KEY                                                           09/21/2017 22:58:23 PAGE 3   
 
- 116          void app_flash_Show(void) {
- 117   1      
- 118   1              LCD_Show_Line_up();
- 119   1              switch (g_tDevice.level) {
- 120   2              case E_LEVEL_NONE:
- 121   2      
- 122   2                      break;
- 123   2              case E_LEVEL_MODE:
- 124   2      
- 125   2                      switch (g_tDevice.mode) {
- 126   3                      case E_TRAINING_NONE:
- 127   3                              break;
- 128   3                      case E_Simple_metering_mode:
- 129   3      
- 130   3                              break;
- 131   3                      case E_Quick_start_mode:
- 132   3                              LCD_Show_QS_ICO();
- 133   3                              break;
- 134   3                      case E_Coach_mode:
- 135   3                              LCD_Show_COACH_ICO();
- 136   3                              break;
- 137   3                      }
- 138   2      
- 139   2                      break;
- 140   2              case E_LEVEL_REP:
- 141   2      
- 142   2                      switch (g_tDevice.letter) {
- 143   3                      case '\0':
- 144   3                              g_tDevice.letter = 'A';
- 145   3                              break;
- 146   3                      case 'A':
- 147   3                              LCD_Show_REP_Num(Rep_Pull_num['A' - 'A'][0]);
- 148   3                              LCD_Show_Pulls_Num(Rep_Pull_num['A' - 'A'][1]);
- 149   3                              break;
- 150   3                      case 'B':
- 151   3                              LCD_Show_REP_Num(Rep_Pull_num['B' - 'A'][0]);
- 152   3                              LCD_Show_Pulls_Num(Rep_Pull_num['B' - 'A'][1]);
- 153   3                              break;
- 154   3                      case 'C':
- 155   3                              LCD_Show_REP_Num(Rep_Pull_num['C' - 'A'][0]);
- 156   3                              LCD_Show_Pulls_Num(Rep_Pull_num['C' - 'A'][1]);
- 157   3                              break;
- 158   3                      case 'D':
- 159   3                              LCD_Show_REP_Num(Rep_Pull_num['D' - 'A'][0]);
- 160   3                              LCD_Show_Pulls_Num(Rep_Pull_num['D' - 'A'][1]);
- 161   3                              break;
- 162   3                      default:
- 163   3                              g_tDevice.letter = 'A';
- 164   3                              break;
- 165   3                      }
- 166   2                      if (g_tDevice.mode == E_Quick_start_mode) {
- 167   3                              LCD_Show_QS_ICO();
- 168   3                      } else if (g_tDevice.mode == E_Coach_mode) {
- 169   3                              LCD_Show_COACH_ICO();
- 170   3                      }
- 171   2                      LCD_Show_ABCD_all();
- 172   2      
- 173   2                      break;
- 174   2              case E_LEVEL_READY:
- 175   2      
- 176   2                      break;
- 177   2              case E_LEVEL_PULL:
-C51 COMPILER V9.56.0.0   APP_KEY                                                           09/20/2017 23:38:00 PAGE 4   
+ 116   1      
+ 117   1              LCD_Show_Line_up();
+ 118   1              switch (g_tDevice.level) {
+ 119   2              case E_LEVEL_NONE:
+ 120   2      
+ 121   2                      break;
+ 122   2              case E_LEVEL_MODE:
+ 123   2      
+ 124   2                      switch (g_tDevice.mode) {
+ 125   3                      case E_TRAINING_NONE:
+ 126   3                              break;
+ 127   3                      case E_Simple_metering_mode:
+ 128   3      
+ 129   3                              break;
+ 130   3                      case E_Quick_start_mode:
+ 131   3                              LCD_Show_QS_ICO();
+ 132   3                              break;
+ 133   3                      case E_Coach_mode:
+ 134   3                              LCD_Show_COACH_ICO();
+ 135   3                              break;
+ 136   3                      }
+ 137   2      
+ 138   2                      break;
+ 139   2              case E_LEVEL_REP:
+ 140   2      
+ 141   2                      switch (g_tDevice.letter) {
+ 142   3                      case '\0':
+ 143   3                              g_tDevice.letter = 'A';
+ 144   3                              break;
+ 145   3                      case 'A':
+ 146   3                              LCD_Show_REP_Num(Rep_Pull_num['A' - 'A'][0]);
+ 147   3                              LCD_Show_Pulls_Num(Rep_Pull_num['A' - 'A'][1]);
+ 148   3                              break;
+ 149   3                      case 'B':
+ 150   3                              LCD_Show_REP_Num(Rep_Pull_num['B' - 'A'][0]);
+ 151   3                              LCD_Show_Pulls_Num(Rep_Pull_num['B' - 'A'][1]);
+ 152   3                              break;
+ 153   3                      case 'C':
+ 154   3                              LCD_Show_REP_Num(Rep_Pull_num['C' - 'A'][0]);
+ 155   3                              LCD_Show_Pulls_Num(Rep_Pull_num['C' - 'A'][1]);
+ 156   3                              break;
+ 157   3                      case 'D':
+ 158   3                              LCD_Show_REP_Num(Rep_Pull_num['D' - 'A'][0]);
+ 159   3                              LCD_Show_Pulls_Num(Rep_Pull_num['D' - 'A'][1]);
+ 160   3                              break;
+ 161   3                      default:
+ 162   3                              g_tDevice.letter = 'A';
+ 163   3                              break;
+ 164   3                      }
+ 165   2                      if (g_tDevice.mode == E_Quick_start_mode) {
+ 166   3                              LCD_Show_QS_ICO();
+ 167   3                      } else if (g_tDevice.mode == E_Coach_mode) {
+ 168   3                              LCD_Show_COACH_ICO();
+ 169   3                      }
+ 170   2                      LCD_Show_ABCD_all();
+ 171   2      
+ 172   2                      break;
+ 173   2              case E_LEVEL_READY:
+ 174   2      
+ 175   2                      break;
+ 176   2              case E_LEVEL_PULL:
+ 177   2      
+C51 COMPILER V9.56.0.0   APP_KEY                                                           09/21/2017 22:58:23 PAGE 4   
 
- 178   2      
- 179   2                      break;
- 180   2              }
- 181   1              LCD_Show_Line_up();
- 182   1      }
- 183          void app_flash_Clear(void) {
- 184   1      
- 185   1              switch (g_tDevice.level) {
- 186   2              case E_LEVEL_NONE:
- 187   2                      break;
- 188   2              case E_LEVEL_MODE:
- 189   2      
- 190   2                      LCD_Clear_QS_ICO();
- 191   2                      LCD_Clear_COACH_ICO();
- 192   2                      break;
- 193   2              case E_LEVEL_REP:
- 194   2      
- 195   2                      if (g_tDevice.letter == '\0') {
- 196   3                              LCD_Clear_ABCD();
- 197   3                      }
- 198   2                      if (g_tDevice.letter == 'A') {
- 199   3                              LCD_Clear_ABCD();
- 200   3                              LCD_Show_ABCD('A');
- 201   3                      }
- 202   2                      if (g_tDevice.letter == 'B') {
- 203   3                              LCD_Clear_ABCD();
- 204   3                              LCD_Show_ABCD('B');
- 205   3                      }
- 206   2                      if (g_tDevice.letter == 'C') {
- 207   3                              LCD_Clear_ABCD();
- 208   3                              LCD_Show_ABCD('C');
- 209   3                      }
- 210   2                      if (g_tDevice.letter == 'D') {
- 211   3                              LCD_Clear_ABCD();
- 212   3                              LCD_Show_ABCD('D');
- 213   3                      }
- 214   2                      if (g_tDevice.mode == E_Quick_start_mode) {
- 215   3                              LCD_Clear_QS_ICO();
- 216   3                      } else if (g_tDevice.mode == E_Coach_mode) {
- 217   3                              LCD_Clear_COACH_ICO();
- 218   3                      }
- 219   2                      break;
- 220   2              case E_LEVEL_READY:
- 221   2                      break;
- 222   2              case E_LEVEL_PULL:
- 223   2      
- 224   2                      break;
- 225   2              }
- 226   1      
- 227   1      }
- 228          void app_key_power_or_return(void) {
- 229   1      
- 230   1              switch (g_tDevice.level) {
- 231   2              case E_LEVEL_NONE:
- 232   2      
- 233   2                      break;
- 234   2              case E_LEVEL_MODE:
- 235   2      //              Repeat_Stop();
- 236   2      
- 237   2                      break;
- 238   2              case E_LEVEL_REP:
- 239   2      
-C51 COMPILER V9.56.0.0   APP_KEY                                                           09/20/2017 23:38:00 PAGE 5   
+ 178   2                      break;
+ 179   2              }
+ 180   1              LCD_Show_Line_up();
+ 181   1      }
+ 182          void app_flash_Clear(void) {
+ 183   1      
+ 184   1              switch (g_tDevice.level) {
+ 185   2              case E_LEVEL_NONE:
+ 186   2                      break;
+ 187   2              case E_LEVEL_MODE:
+ 188   2      
+ 189   2                      LCD_Clear_QS_ICO();
+ 190   2                      LCD_Clear_COACH_ICO();
+ 191   2                      break;
+ 192   2              case E_LEVEL_REP:
+ 193   2      
+ 194   2                      if (g_tDevice.letter == '\0') {
+ 195   3                              LCD_Clear_ABCD();
+ 196   3                      }
+ 197   2                      if (g_tDevice.letter == 'A') {
+ 198   3                              LCD_Clear_ABCD();
+ 199   3                              LCD_Show_ABCD('A');
+ 200   3                      }
+ 201   2                      if (g_tDevice.letter == 'B') {
+ 202   3                              LCD_Clear_ABCD();
+ 203   3                              LCD_Show_ABCD('B');
+ 204   3                      }
+ 205   2                      if (g_tDevice.letter == 'C') {
+ 206   3                              LCD_Clear_ABCD();
+ 207   3                              LCD_Show_ABCD('C');
+ 208   3                      }
+ 209   2                      if (g_tDevice.letter == 'D') {
+ 210   3                              LCD_Clear_ABCD();
+ 211   3                              LCD_Show_ABCD('D');
+ 212   3                      }
+ 213   2                      if (g_tDevice.mode == E_Quick_start_mode) {
+ 214   3                              LCD_Clear_QS_ICO();
+ 215   3                      } else if (g_tDevice.mode == E_Coach_mode) {
+ 216   3                              LCD_Clear_COACH_ICO();
+ 217   3                      }
+ 218   2                      break;
+ 219   2              case E_LEVEL_READY:
+ 220   2                      break;
+ 221   2              case E_LEVEL_PULL:
+ 222   2      
+ 223   2                      break;
+ 224   2              }
+ 225   1      
+ 226   1      }
+ 227          void app_key_power(void) {
+ 228   1      
+ 229   1              switch (g_tDevice.level) {
+ 230   2              case E_LEVEL_NONE:
+ 231   2      
+ 232   2                      break;
+ 233   2              case E_LEVEL_MODE:
+ 234   2      
+ 235   2                      break;
+ 236   2              case E_LEVEL_REP:
+ 237   2      
+ 238   2                      LCD_Show_ABCD('A');
+ 239   2                      LCD_Show_ABCD('B');
+C51 COMPILER V9.56.0.0   APP_KEY                                                           09/21/2017 22:58:23 PAGE 5   
 
- 240   2                      g_tDevice.level = E_LEVEL_MODE;
- 241   2      
- 242   2                      break;
- 243   2              case E_LEVEL_READY:
- 244   2      
- 245   2                      g_tDevice.level = E_LEVEL_REP;
- 246   2      
- 247   2                      break;
- 248   2              case E_LEVEL_PULL:
+ 240   2                      LCD_Show_ABCD('C');
+ 241   2                      LCD_Show_ABCD('D');
+ 242   2      
+ 243   2                      LCD_Show_REP_Num(0);
+ 244   2                      LCD_Show_Pulls_Num(0);
+ 245   2                      LCD_Show_CAL_Num(0);
+ 246   2                      LCD_Show_CAL_ICO();
+ 247   2      
+ 248   2                      g_tDevice.level = E_LEVEL_MODE;
  249   2      
- 250   2      #if 1
- 251   2                      g_tWork.sum = 0;
- 252   2                      g_tWork.cal_num = 0;
- 253   2      
- 254   2                      app_UI_init();
- 255   2      
- 256   2                      LCD_Show_Pulls_Num(g_tWork.sum);
- 257   2                      LCD_Show_CAL_Num(g_tWork.cal_num);
- 258   2      
- 259   2                      switch (g_tDevice.mode) {
- 260   3                      case E_TRAINING_NONE:
- 261   3      
- 262   3                              break;
- 263   3                      case E_Simple_metering_mode:
- 264   3      
- 265   3                              LCD_Show_Line_up();
- 266   3                              LCD_Clear_REP_ICO();
- 267   3      
- 268   3                              LCD_Clear_REP_Num();
+ 250   2                      break;
+ 251   2              case E_LEVEL_READY:
+ 252   2      
+ 253   2                      g_tDevice.level = E_LEVEL_REP;
+ 254   2      
+ 255   2                      break;
+ 256   2              case E_LEVEL_PULL:
+ 257   2      
+ 258   2      #if 1
+ 259   2                      g_tWork.sum = 0;
+ 260   2                      g_tWork.cal_num = 0;
+ 261   2      
+ 262   2      //              app_UI_init();
+ 263   2      
+ 264   2                      LCD_Show_Pulls_Num(g_tWork.sum);
+ 265   2                      LCD_Show_CAL_Num(g_tWork.cal_num);
+ 266   2      
+ 267   2                      switch (g_tDevice.mode) {
+ 268   3                      case E_TRAINING_NONE:
  269   3      
- 270   3                              LCD_Clear_ABCD();
- 271   3      
- 272   3                              LCD_Show_CAL_ICO();
- 273   3                              LCD_Clear_QS_ICO();
- 274   3                              LCD_Clear_COACH_ICO();
+ 270   3                              break;
+ 271   3                      case E_Simple_metering_mode:
+ 272   3      
+ 273   3                              LCD_Show_Line_up();
+ 274   3                              LCD_Clear_REP_ICO();
  275   3      
- 276   3                              break;
- 277   3                      case E_Quick_start_mode:
- 278   3      
- 279   3                              LCD_Show_Line_up();
- 280   3                              LCD_Show_REP_ICO();
- 281   3                              LCD_Show_REP_Num(0);
- 282   3                              LCD_Show_ABCD(g_tWork.reps_mode);
+ 276   3                              LCD_Clear_REP_Num();
+ 277   3      
+ 278   3                              LCD_Clear_ABCD();
+ 279   3      
+ 280   3                              LCD_Show_CAL_ICO();
+ 281   3                              LCD_Clear_QS_ICO();
+ 282   3                              LCD_Clear_COACH_ICO();
  283   3      
- 284   3                              LCD_Show_CAL_ICO();
- 285   3                              LCD_Show_QS_ICO();
- 286   3                              LCD_Clear_COACH_ICO();
- 287   3                              break;
- 288   3                      case E_Coach_mode:
- 289   3      
- 290   3                              LCD_Show_Line_up();
- 291   3                              LCD_Show_REP_ICO();
- 292   3                              LCD_Show_REP_Num(0);
- 293   3                              LCD_Show_ABCD(g_tWork.reps_mode);
- 294   3      
- 295   3                              LCD_Show_CAL_ICO();
- 296   3                              LCD_Clear_QS_ICO();
- 297   3                              LCD_Show_COACH_ICO();
- 298   3      
- 299   3                              break;
- 300   3                      }
- 301   2      #endif
-C51 COMPILER V9.56.0.0   APP_KEY                                                           09/20/2017 23:38:00 PAGE 6   
+ 284   3                              break;
+ 285   3                      case E_Quick_start_mode:
+ 286   3      
+ 287   3                              LCD_Show_Line_up();
+ 288   3                              LCD_Show_REP_ICO();
+ 289   3                              LCD_Show_REP_Num(0);
+ 290   3                              LCD_Show_ABCD(g_tWork.reps_mode);
+ 291   3      
+ 292   3                              LCD_Show_CAL_ICO();
+ 293   3                              LCD_Show_QS_ICO();
+ 294   3                              LCD_Clear_COACH_ICO();
+ 295   3                              break;
+ 296   3                      case E_Coach_mode:
+ 297   3      
+ 298   3                              LCD_Show_Line_up();
+ 299   3                              LCD_Show_REP_ICO();
+ 300   3                              LCD_Show_REP_Num(0);
+ 301   3                              LCD_Show_ABCD(g_tWork.reps_mode);
+C51 COMPILER V9.56.0.0   APP_KEY                                                           09/21/2017 22:58:23 PAGE 6   
 
- 302   2      
- 303   2                      break;
- 304   2              }
- 305   1      
- 306   1      }
- 307          void app_key_set(void) {
- 308   1      
- 309   1              LCD_Show_REP_Num(0);
- 310   1              LCD_Show_Pulls_Num(0);
- 311   1              LCD_Show_CAL_Num(0);
- 312   1      
- 313   1              LCD_Show_Line_up();
- 314   1              LCD_Show_REP_ICO();
- 315   1      
- 316   1              LCD_Show_ABCD_all();
- 317   1      
- 318   1              LCD_Show_CAL_ICO();
- 319   1      
- 320   1              g_tDevice.mode = E_Quick_start_mode;
- 321   1      
- 322   1      //      g_tDevice.mode = E_Quick_start_mode;
- 323   1      //      g_tDevice.level = 1;
- 324   1      
- 325   1              g_tDevice.level = E_LEVEL_MODE;
- 326   1              Repeat_Stop();
- 327   1              Repeat_SetStart(app_flash_Show);
- 328   1              Repeat_SetStop(app_flash_Clear);
- 329   1              Repeat_Start(BLINK_FLASH_TIME, BLINK_FLASH_TIME, 0);
- 330   1      
- 331   1              switch (g_tDevice.level) {
- 332   2              case E_LEVEL_NONE:
- 333   2      
- 334   2                      break;
- 335   2              case E_LEVEL_MODE:
- 336   2                      switch (g_tWork.mode) {
- 337   3                      case E_Simple_metering_mode:
- 338   3      
- 339   3                              break;
- 340   3                      case E_Quick_start_mode:
+ 302   3      
+ 303   3                              LCD_Show_CAL_ICO();
+ 304   3                              LCD_Clear_QS_ICO();
+ 305   3                              LCD_Show_COACH_ICO();
+ 306   3      
+ 307   3                              break;
+ 308   3                      }
+ 309   2      #endif
+ 310   2      
+ 311   2                      break;
+ 312   2              }
+ 313   1      
+ 314   1      }
+ 315          
+ 316          void app_key_clear(void) {
+ 317   1      #if 0
+                      LCD_Show_REP_Num(0);
+                      LCD_Show_Pulls_Num(0);
+                      LCD_Show_CAL_Num(0);
+              
+                      LCD_Show_Line_up();
+                      LCD_Show_REP_ICO();
+              
+                      LCD_Show_ABCD_all();
+              
+                      LCD_Show_CAL_ICO();
+              
+                      g_tDevice.mode = E_Quick_start_mode;
+              
+                      g_tDevice.level = E_LEVEL_MODE;
+              #endif
+ 333   1      
+ 334   1              switch (g_tDevice.level) {
+ 335   2              case E_LEVEL_NONE:
+ 336   2      
+ 337   2                      break;
+ 338   2              case E_LEVEL_MODE:
+ 339   2                      switch (g_tWork.mode) {
+ 340   3                      case E_Simple_metering_mode:
  341   3      
  342   3                              break;
- 343   3                      case E_Coach_mode:
+ 343   3                      case E_Quick_start_mode:
  344   3      
  345   3                              break;
- 346   3                      }
- 347   2                      break;
- 348   2              case E_LEVEL_REP:
- 349   2      
+ 346   3                      case E_Coach_mode:
+ 347   3      
+ 348   3                              break;
+ 349   3                      }
  350   2                      break;
- 351   2              case E_LEVEL_READY:
- 352   2      
- 353   2                      break;
- 354   2              case E_LEVEL_PULL:
- 355   2      
- 356   2                      break;
- 357   2              }
- 358   1      
- 359   1              app_UI_init();
- 360   1      }
- 361          
- 362          void app_key_add(void) {
- 363   1      
-C51 COMPILER V9.56.0.0   APP_KEY                                                           09/20/2017 23:38:00 PAGE 7   
+ 351   2              case E_LEVEL_REP:
+ 352   2                      g_tDevice.level = E_LEVEL_MODE;
+ 353   2      
+ 354   2                      break;
+ 355   2              case E_LEVEL_READY:
+ 356   2                      g_tDevice.level = E_LEVEL_REP;
+ 357   2      
+ 358   2                      break;
+ 359   2              case E_LEVEL_PULL:
+ 360   2      
+ 361   2                      break;
+ 362   2              }
+ 363   1      }
+C51 COMPILER V9.56.0.0   APP_KEY                                                           09/21/2017 22:58:23 PAGE 7   
 
- 364   1              switch (g_tDevice.level) {
- 365   2              case E_LEVEL_NONE:
- 366   2      
- 367   2                      break;
- 368   2              case E_LEVEL_MODE:
- 369   2                      switch (g_tDevice.mode) {
- 370   3                      case E_TRAINING_NONE:
- 371   3      
- 372   3                              break;
- 373   3                      case E_Simple_metering_mode:
- 374   3                              g_tDevice.mode = E_Quick_start_mode;
- 375   3      
- 376   3                              break;
- 377   3                      case E_Quick_start_mode:
- 378   3                              g_tDevice.mode = E_Coach_mode;
- 379   3      
- 380   3                              break;
- 381   3                      case E_Coach_mode:
- 382   3                              g_tDevice.mode = E_Simple_metering_mode;
- 383   3      
- 384   3                              break;
- 385   3                      }
- 386   2                      break;
- 387   2              case E_LEVEL_REP:
- 388   2                      switch (g_tDevice.mode) {
- 389   3                      case E_TRAINING_NONE:
- 390   3      
- 391   3                              break;
- 392   3                      case E_Simple_metering_mode:
- 393   3      
- 394   3                              break;
- 395   3                      case E_Quick_start_mode:
- 396   3      
- 397   3                              if (g_tDevice.letter == '\0') {
- 398   4                                      g_tDevice.letter = 'A';
- 399   4                              } else {
- 400   4                                      g_tDevice.letter++;
- 401   4                                      if (g_tDevice.letter > 'D') {
- 402   5                                              g_tDevice.letter = 'A';
- 403   5                                      }
- 404   4                              }
- 405   3      
- 406   3                              break;
- 407   3                      case E_Coach_mode:
- 408   3                              if (g_tDevice.letter == '\0') {
- 409   4                                      g_tDevice.letter = 'A';
- 410   4                              } else {
- 411   4                                      g_tDevice.letter++;
- 412   4                                      if (g_tDevice.letter > 'D') {
- 413   5                                              g_tDevice.letter = 'A';
- 414   5                                      }
- 415   4                              }
- 416   3                              break;
- 417   3                      }
- 418   2                      break;
- 419   2              case E_LEVEL_READY:
- 420   2                      break;
- 421   2              case E_LEVEL_PULL:
- 422   2      
- 423   2                      break;
- 424   2              }
- 425   1              app_UI_init();
-C51 COMPILER V9.56.0.0   APP_KEY                                                           09/20/2017 23:38:00 PAGE 8   
+ 364          
+ 365          static void app_key_clear_long(void) {
+ 366   1      
+ 367   1              switch (g_tDevice.level) {
+ 368   2              case E_LEVEL_NONE:
+ 369   2      
+ 370   2                      break;
+ 371   2              case E_LEVEL_MODE:
+ 372   2      
+ 373   2                      break;
+ 374   2              case E_LEVEL_REP:
+ 375   2      
+ 376   2                      break;
+ 377   2              case E_LEVEL_READY:
+ 378   2      
+ 379   2                      break;
+ 380   2              case E_LEVEL_PULL:
+ 381   2                      g_tWork.reps_num = 0;
+ 382   2                      g_tWork.pulls_num = 0;
+ 383   2                      g_tWork.cal_num = 0;
+ 384   2      
+ 385   2                      LCD_Show_REP_Num(g_tWork.reps_num);
+ 386   2                      LCD_Show_Pulls_Num(g_tWork.pulls_num);
+ 387   2                      LCD_Show_CAL_Num(g_tWork.cal_num);
+ 388   2      
+ 389   2                      break;
+ 390   2              }
+ 391   1      }
+ 392          
+ 393          void app_key_set(void) {
+ 394   1      
+ 395   1              switch (g_tDevice.level) {
+ 396   2              case E_LEVEL_NONE:
+ 397   2      
+ 398   2                      break;
+ 399   2              case E_LEVEL_MODE:
+ 400   2                      switch (g_tDevice.mode) {
+ 401   3                      case E_TRAINING_NONE:
+ 402   3      
+ 403   3                              break;
+ 404   3                      case E_Simple_metering_mode:
+ 405   3                              g_tDevice.mode = E_Quick_start_mode;
+ 406   3      
+ 407   3                              LCD_Show_REP_Num(0);
+ 408   3                              LCD_Show_REP_ICO();
+ 409   3                              LCD_Show_Line_up();
+ 410   3      
+ 411   3                              LCD_Show_ABCD('A');
+ 412   3                              LCD_Show_ABCD('B');
+ 413   3                              LCD_Show_ABCD('C');
+ 414   3                              LCD_Show_ABCD('D');
+ 415   3      
+ 416   3                              LCD_Show_CAL_ICO();
+ 417   3      
+ 418   3                              LCD_Clear_COACH_ICO();
+ 419   3      
+ 420   3                              break;
+ 421   3                      case E_Quick_start_mode:
+ 422   3                              g_tDevice.mode = E_Coach_mode;
+ 423   3      
+ 424   3                              LCD_Show_REP_Num(0);
+ 425   3                              LCD_Show_REP_ICO();
+C51 COMPILER V9.56.0.0   APP_KEY                                                           09/21/2017 22:58:23 PAGE 8   
 
- 426   1      }
- 427          
- 428          void app_key_ok(void) {
- 429   1      
- 430   1              switch (g_tDevice.level) {
- 431   2              case E_LEVEL_NONE:
- 432   2      
- 433   2                      break;
- 434   2              case E_LEVEL_MODE:
- 435   2      
- 436   2                      switch (g_tDevice.mode) {
- 437   3                      case E_TRAINING_NONE:
- 438   3      
- 439   3                              break;
- 440   3                      case E_Simple_metering_mode:
- 441   3                              g_tDevice.level = E_LEVEL_READY;
- 442   3                              break;
- 443   3                      case E_Quick_start_mode:
- 444   3                              g_tDevice.level = E_LEVEL_REP;
- 445   3      
- 446   3                              LCD_Show_QS_ICO();
+ 426   3                              LCD_Show_Line_up();
+ 427   3      
+ 428   3                              LCD_Show_ABCD('A');
+ 429   3                              LCD_Show_ABCD('B');
+ 430   3                              LCD_Show_ABCD('C');
+ 431   3                              LCD_Show_ABCD('D');
+ 432   3      
+ 433   3                              LCD_Show_CAL_ICO();
+ 434   3      
+ 435   3                              LCD_Clear_COACH_ICO();
+ 436   3                              break;
+ 437   3                      case E_Coach_mode:
+ 438   3                              g_tDevice.mode = E_Simple_metering_mode;
+ 439   3      
+ 440   3                              LCD_Show_Line_up();
+ 441   3                              LCD_Clear_REP_ICO();
+ 442   3      
+ 443   3                              LCD_Clear_ABCD();
+ 444   3      
+ 445   3                              LCD_Show_CAL_ICO();
+ 446   3                              LCD_Clear_QS_ICO();
  447   3                              LCD_Clear_COACH_ICO();
  448   3      
- 449   3      //                      Repeat_Stop();
- 450   3      //                      Repeat_SetStart(app_flash_Show);
- 451   3      //                      Repeat_SetStop(app_flash_Clear);
- 452   3      //                      Repeat_Start(BLINK_FLASH_TIME, BLINK_FLASH_TIME, 0);
- 453   3      
- 454   3                              break;
- 455   3                      case E_Coach_mode:
- 456   3                              g_tDevice.level = E_LEVEL_REP;
- 457   3                              LCD_Clear_QS_ICO();
- 458   3                              LCD_Show_COACH_ICO();
- 459   3      
- 460   3      //                      Repeat_Stop();
- 461   3      //                      Repeat_SetStart(app_flash_Show);
- 462   3      //                      Repeat_SetStop(app_flash_Clear);
- 463   3      //                      Repeat_Start(BLINK_FLASH_TIME, BLINK_FLASH_TIME, 0);
- 464   3                              break;
- 465   3                      }
- 466   2                      g_tDevice.letter = g_tWork.reps_mode;
- 467   2      
- 468   2                      break;
- 469   2              case E_LEVEL_REP:
- 470   2                      switch (g_tDevice.mode) {
- 471   3                      case E_TRAINING_NONE:
+ 449   3                              LCD_Clear_REP_Num();
+ 450   3      
+ 451   3                              break;
+ 452   3                      }
+ 453   2                      break;
+ 454   2              case E_LEVEL_REP:
+ 455   2                      switch (g_tDevice.mode) {
+ 456   3                      case E_TRAINING_NONE:
+ 457   3      
+ 458   3                              break;
+ 459   3                      case E_Simple_metering_mode:
+ 460   3      
+ 461   3                              break;
+ 462   3                      case E_Quick_start_mode:
+ 463   3      
+ 464   3                              if (g_tDevice.letter == '\0') {
+ 465   4                                      g_tDevice.letter = 'A';
+ 466   4                              } else {
+ 467   4                                      g_tDevice.letter++;
+ 468   4                                      if (g_tDevice.letter > 'D') {
+ 469   5                                              g_tDevice.letter = 'A';
+ 470   5                                      }
+ 471   4                              }
  472   3      
  473   3                              break;
- 474   3                      case E_Simple_metering_mode:
- 475   3      
- 476   3                              break;
- 477   3                      case E_Quick_start_mode:
- 478   3      
- 479   3      //                      Repeat_Stop();
- 480   3                              LCD_Show_QS_ICO();
- 481   3                              LCD_Clear_COACH_ICO();
- 482   3      
+ 474   3                      case E_Coach_mode:
+ 475   3                              if (g_tDevice.letter == '\0') {
+ 476   4                                      g_tDevice.letter = 'A';
+ 477   4                              } else {
+ 478   4                                      g_tDevice.letter++;
+ 479   4                                      if (g_tDevice.letter > 'D') {
+ 480   5                                              g_tDevice.letter = 'A';
+ 481   5                                      }
+ 482   4                              }
  483   3                              break;
- 484   3                      case E_Coach_mode:
- 485   3      //                      Repeat_Stop();
- 486   3                              LCD_Show_COACH_ICO();
- 487   3                              LCD_Clear_QS_ICO();
-C51 COMPILER V9.56.0.0   APP_KEY                                                           09/20/2017 23:38:00 PAGE 9   
+ 484   3                      }
+ 485   2                      break;
+ 486   2              case E_LEVEL_READY:
+ 487   2                      break;
+C51 COMPILER V9.56.0.0   APP_KEY                                                           09/21/2017 22:58:23 PAGE 9   
 
- 488   3      
- 489   3                              break;
- 490   3                      }
- 491   2                      g_tWork.mode = g_tDevice.mode;
- 492   2                      g_tWork.reps_mode = g_tDevice.letter;
- 493   2                      g_tWork.sum = 0;
- 494   2                      g_tDevice.level = E_LEVEL_READY;
- 495   2                      break;
- 496   2              case E_LEVEL_READY:
- 497   2      
- 498   2                      break;
- 499   2              case E_LEVEL_PULL:
- 500   2      
- 501   2                      break;
- 502   2              }
- 503   1      //      app_UI_init();
- 504   1      }
- 505          
- 506          void app_power_on(void) {
- 507   1              SW_Reset();  //¸´Î»
- 508   1      }
- 509          void app_power_off(void) {
- 510   1              lcd_bright_off();
- 511   1              LCD_Clear_All();
- 512   1      }
- 513          
- 514          uint8_t noOps_timeoutCnt = 0;
- 515          static BIT offBight_flag = 0;
- 516          
- 517          void app_key_100ms_pro(void) {
- 518   1              static uint8_t cnt = 0;
- 519   1      
- 520   1              if (g_tDevice.status == E_PowerDown) {
- 521   2                      cnt++;
- 522   2                      if (cnt >= 3) {
- 523   3                              cnt = 0;
- 524   3      
- 525   3                              app_key_clear_noOps_timeoutCnt();
- 526   3      //                      keyInvalid_flag = 1;
- 527   3                              bsp_hallInt_close();
- 528   3                              app_powerKeyInt_open();
- 529   3                              set_PD;
- 530   3                      }
- 531   2              } else {
- 532   2                      cnt = 0;
- 533   2              }
- 534   1      }
- 535          
- 536          void app_key_1s_pro(void) {
- 537   1      
- 538   1              noOps_timeoutCnt++;
- 539   1              if (noOps_timeoutCnt == 40) {
- 540   2                      offBight_flag = 1;
- 541   2      //              keyInvalid_flag = 1;
- 542   2                      lcd_bright_off();
- 543   2                      printf("off bright\n");
- 544   2              } else if (noOps_timeoutCnt == 50) {
- 545   2                      app_power_off();
- 546   2                      printf("power off\n");
- 547   2                      g_tDevice.status = E_PowerDown;
- 548   2              }
- 549   1      
-C51 COMPILER V9.56.0.0   APP_KEY                                                           09/20/2017 23:38:00 PAGE 10  
+ 488   2              case E_LEVEL_PULL:
+ 489   2      
+ 490   2                      break;
+ 491   2              }
+ 492   1      }
+ 493          
+ 494          static void app_key_set_long(void) {
+ 495   1      
+ 496   1              switch (g_tDevice.level) {
+ 497   2              case E_LEVEL_NONE:
+ 498   2      
+ 499   2                      break;
+ 500   2              case E_LEVEL_MODE:
+ 501   2      
+ 502   2                      break;
+ 503   2              case E_LEVEL_REP:
+ 504   2      
+ 505   2                      break;
+ 506   2              case E_LEVEL_READY:
+ 507   2      
+ 508   2                      break;
+ 509   2              case E_LEVEL_PULL:
+ 510   2                      if (g_tDevice.mode == E_Simple_metering_mode) {
+ 511   3                              g_tDevice.level = E_LEVEL_MODE;
+ 512   3                      } else {
+ 513   3                              g_tDevice.level = E_LEVEL_REP;
+ 514   3                      }
+ 515   2      
+ 516   2                      break;
+ 517   2              }
+ 518   1      
+ 519   1      }
+ 520          
+ 521          void app_key_ok(void) {
+ 522   1      
+ 523   1              switch (g_tDevice.level) {
+ 524   2              case E_LEVEL_NONE:
+ 525   2      
+ 526   2                      break;
+ 527   2              case E_LEVEL_MODE:
+ 528   2      
+ 529   2                      switch (g_tDevice.mode) {
+ 530   3                      case E_TRAINING_NONE:
+ 531   3      
+ 532   3                              break;
+ 533   3                      case E_Simple_metering_mode:
+ 534   3                              g_tDevice.level = E_LEVEL_READY;
+ 535   3                              break;
+ 536   3                      case E_Quick_start_mode:
+ 537   3                              g_tDevice.level = E_LEVEL_REP;
+ 538   3      
+ 539   3                              LCD_Show_REP_ICO();
+ 540   3                              LCD_Show_QS_ICO();
+ 541   3                              LCD_Clear_COACH_ICO();
+ 542   3      
+ 543   3                              break;
+ 544   3                      case E_Coach_mode:
+ 545   3                              g_tDevice.level = E_LEVEL_REP;
+ 546   3      
+ 547   3                              LCD_Show_REP_ICO();
+ 548   3                              LCD_Clear_QS_ICO();
+ 549   3                              LCD_Show_COACH_ICO();
+C51 COMPILER V9.56.0.0   APP_KEY                                                           09/21/2017 22:58:23 PAGE 10  
 
- 550   1      }
- 551          void app_key_clear_noOps_timeoutCnt(void) {
- 552   1              noOps_timeoutCnt = 0;
- 553   1      }
- 554          void app_key_pro(uint8_t keyCode) {
- 555   1      
- 556   1              app_key_clear_noOps_timeoutCnt();
- 557   1      
- 558   1              if (offBight_flag && (g_tDevice.status == E_PowerOn)) {
- 559   2                      offBight_flag = 0;
- 560   2                      lcd_bright_on();
- 561   2                      //      keyInvalid_flag = 1;
- 562   2                      return;
- 563   2              }
- 564   1      
- 565   1              switch (keyCode) {
- 566   2              case KEY_UP_K1:
- 567   2      #if 0
-                              if (g_tDevice.status == E_PowerReady) {
-                                      app_power_off();
-                                      printf("power off\n");
-                                      g_tDevice.status = E_PowerDown;
-                              }
-              #endif
- 574   2                      break;
- 575   2              case KEY_DOWN_K1:
- 576   2                      BEEP_KeyTone();
- 577   2                      if (g_tDevice.status == E_PowerOn) {
- 578   3                              app_key_power_or_return();
- 579   3                      } else if (g_tDevice.status == E_PowerDown) {
- 580   3                              g_tDevice.status = E_PowerOn;
- 581   3                              app_power_on();
- 582   3                      }
+ 550   3      
+ 551   3                              break;
+ 552   3                      }
+ 553   2                      g_tDevice.letter = g_tWork.reps_mode;
+ 554   2      
+ 555   2                      break;
+ 556   2              case E_LEVEL_REP:
+ 557   2                      switch (g_tDevice.mode) {
+ 558   3                      case E_TRAINING_NONE:
+ 559   3      
+ 560   3                              break;
+ 561   3                      case E_Simple_metering_mode:
+ 562   3      
+ 563   3                              break;
+ 564   3                      case E_Quick_start_mode:
+ 565   3      
+ 566   3                              LCD_Show_QS_ICO();
+ 567   3                              LCD_Clear_COACH_ICO();
+ 568   3      
+ 569   3                              break;
+ 570   3                      case E_Coach_mode:
+ 571   3                              LCD_Show_COACH_ICO();
+ 572   3                              LCD_Clear_QS_ICO();
+ 573   3      
+ 574   3                              break;
+ 575   3                      }
+ 576   2                      g_tWork.mode = g_tDevice.mode;
+ 577   2                      g_tWork.reps_mode = g_tDevice.letter;
+ 578   2                      g_tWork.sum = 0;
+ 579   2                      g_tDevice.level = E_LEVEL_READY;
+ 580   2                      break;
+ 581   2              case E_LEVEL_READY:
+ 582   2      
  583   2                      break;
- 584   2              case KEY_LONG_K1:
- 585   2                      BEEP_KeyTone();
- 586   2                      if (g_tDevice.status == E_PowerOn) {
- 587   3                              g_tDevice.status = E_PowerDown;
- 588   3                              app_power_off();
- 589   3                      } else if (g_tDevice.status == E_PowerReady) {
- 590   3                              g_tDevice.status = E_PowerOn;
- 591   3                              app_power_on();
- 592   3                      }
- 593   2      
- 594   2                      break;
- 595   2              case KEY_UP_K2:
- 596   2      
- 597   2                      break;
- 598   2              case KEY_DOWN_K2:
- 599   2                      BEEP_KeyTone();
- 600   2                      app_key_set();
+ 584   2              case E_LEVEL_PULL:
+ 585   2      
+ 586   2                      break;
+ 587   2              }
+ 588   1      }
+ 589          
+ 590          static void app_key_ok_long(void) {
+ 591   1      
+ 592   1              switch (g_tDevice.level) {
+ 593   2              case E_LEVEL_NONE:
+ 594   2      
+ 595   2                      break;
+ 596   2              case E_LEVEL_MODE:
+ 597   2      
+ 598   2                      break;
+ 599   2              case E_LEVEL_REP:
+ 600   2      
  601   2                      break;
- 602   2              case KEY_LONG_K2:
+ 602   2              case E_LEVEL_READY:
  603   2      
  604   2                      break;
- 605   2              case KEY_UP_K3:
+ 605   2              case E_LEVEL_PULL:
  606   2      
  607   2                      break;
- 608   2              case KEY_DOWN_K3:
- 609   2                      BEEP_KeyTone();
- 610   2                      app_key_add();
- 611   2                      break;
-C51 COMPILER V9.56.0.0   APP_KEY                                                           09/20/2017 23:38:00 PAGE 11  
+ 608   2              }
+ 609   1              SW_Reset();  //¸´Î»
+ 610   1      }
+ 611          
+C51 COMPILER V9.56.0.0   APP_KEY                                                           09/21/2017 22:58:23 PAGE 11  
 
- 612   2              case KEY_LONG_K3:
- 613   2      
- 614   2                      break;
- 615   2              case KEY_UP_K4:
- 616   2      
- 617   2                      break;
- 618   2              case KEY_DOWN_K4:
- 619   2                      BEEP_KeyTone();
- 620   2                      app_key_ok();
- 621   2                      break;
- 622   2              case KEY_LONG_K4:
- 623   2      
- 624   2                      break;
- 625   2      #if DEBUG_KEY
+ 612          void app_power_on(void) {
+ 613   1              SW_Reset();  //¸´Î»
+ 614   1      }
+ 615          void app_power_off(void) {
+ 616   1              lcd_bright_off();
+ 617   1              LCD_Clear_All();
+ 618   1      }
+ 619          
+ 620          uint8_t noOps_timeoutCnt = 0;
+ 621          static BIT offBight_flag = 0;
+ 622          
+ 623          void app_key_100ms_pro(void) {
+ 624   1              static uint8_t cnt = 0;
+ 625   1      
+ 626   1              if (g_tDevice.status == E_PowerDown) {
+ 627   2                      cnt++;
+ 628   2                      if (cnt >= 3) {
+ 629   3                              cnt = 0;
+ 630   3      
+ 631   3                              app_key_clear_noOps_timeoutCnt();
+ 632   3      //                      keyInvalid_flag = 1;
+ 633   3                              bsp_hallInt_close();
+ 634   3                              app_powerKeyInt_open();
+ 635   3                              printf("power off\n");
+ 636   3                              set_PD;
+ 637   3      
+ 638   3                              printf("power on\n");
+ 639   3                              app_power_on();
+ 640   3                      }
+ 641   2              } else {
+ 642   2                      cnt = 0;
+ 643   2              }
+ 644   1      }
+ 645          
+ 646          void app_key_1s_pro(void) {
+ 647   1      
+ 648   1              noOps_timeoutCnt++;
+ 649   1              if (noOps_timeoutCnt == 400) {
+ 650   2                      offBight_flag = 1;
+ 651   2      //              keyInvalid_flag = 1;
+ 652   2                      lcd_bright_off();
+ 653   2                      printf("off bright\n");
+ 654   2              } else if (noOps_timeoutCnt == 500) {
+ 655   2                      app_power_off();
+ 656   2                      printf("power off\n");
+ 657   2                      g_tDevice.status = E_PowerDown;
+ 658   2              }
+ 659   1      
+ 660   1      }
+ 661          void app_key_clear_noOps_timeoutCnt(void) {
+ 662   1              noOps_timeoutCnt = 0;
+ 663   1      }
+ 664          void app_key_pro(uint8_t keyCode) {
+ 665   1              static BIT key_exe_flag = 0;
+ 666   1      
+ 667   1              app_key_clear_noOps_timeoutCnt();
+ 668   1      
+ 669   1              if (offBight_flag && (g_tDevice.status == E_PowerOn)) {
+ 670   2                      offBight_flag = 0;
+ 671   2                      lcd_bright_on();
+ 672   2                      //      keyInvalid_flag = 1;
+ 673   2                      return;
+C51 COMPILER V9.56.0.0   APP_KEY                                                           09/21/2017 22:58:23 PAGE 12  
+
+ 674   2              }
+ 675   1      
+ 676   1              switch (keyCode) {
+ 677   2              case KEY_UP_K1:
+ 678   2      
+ 679   2                      break;
+ 680   2              case KEY_DOWN_K1:
+ 681   2      
+ 682   2                      break;
+ 683   2              case KEY_LONG_K1:
+ 684   2                      printf("POWER long\n");
+ 685   2                      if (g_tDevice.status == E_PowerOn) {
+ 686   3                              g_tDevice.status = E_PowerDown;
+ 687   3                              printf("key power off\n");
+ 688   3                              app_power_off();
+ 689   3                      }
+ 690   2      
+ 691   2                      break;
+ 692   2              case KEY_UP_K2:
+ 693   2                      if (key_exe_flag) {
+ 694   3                              key_exe_flag = 0;
+ 695   3                      } else {
+ 696   3                              printf("CLEAR click\n");
+ 697   3                              app_key_clear();
+ 698   3                      }
+ 699   2      
+ 700   2                      break;
+ 701   2              case KEY_DOWN_K2:
+ 702   2      
+ 703   2                      break;
+ 704   2              case KEY_LONG_K2:
+ 705   2                      printf("CLEAR long\n");
+ 706   2                      key_exe_flag = 1;
+ 707   2                      app_key_clear_long();
+ 708   2      
+ 709   2                      break;
+ 710   2              case KEY_UP_K3:
+ 711   2                      if (key_exe_flag) {
+ 712   3                              key_exe_flag = 0;
+ 713   3                      } else {
+ 714   3                              printf("SET click\n");
+ 715   3                              app_key_set();
+ 716   3                      }
+ 717   2                      break;
+ 718   2              case KEY_DOWN_K3:
+ 719   2      
+ 720   2                      break;
+ 721   2              case KEY_LONG_K3:
+ 722   2                      printf("SET long\n");
+ 723   2                      key_exe_flag = 1;
+ 724   2                      app_key_set_long();
+ 725   2      
+ 726   2                      break;
+ 727   2              case KEY_UP_K4:
+ 728   2                      if (key_exe_flag) {
+ 729   3                              key_exe_flag = 0;
+ 730   3                      } else {
+ 731   3                              printf("OK click\n");
+ 732   3                              app_key_ok();
+ 733   3                      }
+ 734   2                      break;
+ 735   2              case KEY_DOWN_K4:
+C51 COMPILER V9.56.0.0   APP_KEY                                                           09/21/2017 22:58:23 PAGE 13  
+
+ 736   2      
+ 737   2                      break;
+ 738   2              case KEY_LONG_K4:
+ 739   2                      printf("OK long\n");
+ 740   2                      key_exe_flag = 1;
+ 741   2                      app_key_ok_long();
+ 742   2      
+ 743   2                      break;
+ 744   2      #if DEBUG_KEY
                               case KEY_UP_K5:
               
                               break;
@@ -665,32 +788,32 @@ line level    source
               
                               break;
               #endif
- 637   2              case KEY_UP_K1K3:
- 638   2      
- 639   2                      break;
- 640   2              case KEY_DOWN_K1K3:
- 641   2      
- 642   2                      break;
- 643   2              case KEY_LONG_K1K3:
- 644   2      
- 645   2                      break;
- 646   2              default:
- 647   2      //              BEEP_KeyTone();
- 648   2                      break;
- 649   2      
- 650   2              }
- 651   1      }
- 652          
+ 756   2              case KEY_UP_K1K3:
+ 757   2      
+ 758   2                      break;
+ 759   2              case KEY_DOWN_K1K3:
+ 760   2      
+ 761   2                      break;
+ 762   2              case KEY_LONG_K1K3:
+ 763   2      
+ 764   2                      break;
+ 765   2              default:
+ 766   2      //              BEEP_KeyTone();
+ 767   2                      break;
+ 768   2      
+ 769   2              }
+ 770   1      }
+ 771          
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =   1152    ----
-   CONSTANT SIZE    =     23    ----
+   CODE SIZE        =   1441    ----
+   CONSTANT SIZE    =    125    ----
    XDATA SIZE       =      6       1
    PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----    ----
    IDATA SIZE       =   ----    ----
-   BIT SIZE         =      1    ----
+   BIT SIZE         =      2    ----
 END OF MODULE INFORMATION.
 
 

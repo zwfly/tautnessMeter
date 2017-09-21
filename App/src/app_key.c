@@ -17,6 +17,8 @@ DEVICE_T g_tDevice;
  * */
 //uint8_t level = 0;
 static void app_UI_init(void);
+void app_flash_Clear(void);
+void app_flash_Show(void);
 
 void app_key_init(void) {
 
@@ -31,6 +33,11 @@ void app_key_init(void) {
 	g_tDevice.letter = 'A';
 
 	app_UI_init();
+
+	Repeat_Stop();
+	Repeat_SetStart(app_flash_Show);
+	Repeat_SetStop(app_flash_Clear);
+	Repeat_Start(BLINK_FLASH_TIME, BLINK_FLASH_TIME, 0);
 }
 void app_powerKeyInt_open(void) {
 	clr_PIPS2;
@@ -51,6 +58,7 @@ void app_powerKeyInt_close(void) {
 	clr_PINEN6;
 	clr_PIPEN6;
 }
+
 static void app_UI_init(void) {
 	switch (g_tDevice.mode) {
 	case E_TRAINING_NONE:
@@ -71,7 +79,6 @@ static void app_UI_init(void) {
 		LCD_Clear_QS_ICO();
 		LCD_Clear_COACH_ICO();
 
-//		Repeat_Stop();
 		break;
 	case E_Quick_start_mode:
 
@@ -87,10 +94,6 @@ static void app_UI_init(void) {
 
 		LCD_Clear_COACH_ICO();
 
-//		Repeat_Stop();
-//		Repeat_SetStart(LCD_Show_QS_ICO);
-//		Repeat_SetStop(LCD_Clear_QS_ICO);
-//		Repeat_Start(4, 4, 0);
 		break;
 	case E_Coach_mode:
 		LCD_Show_REP_ICO();
@@ -105,10 +108,6 @@ static void app_UI_init(void) {
 
 		LCD_Clear_QS_ICO();
 
-//		Repeat_Stop();
-//		Repeat_SetStart(LCD_Show_COACH_ICO);
-//		Repeat_SetStop(LCD_Clear_COACH_ICO);
-//		Repeat_Start(4, 4, 0);
 		break;
 	}
 }
@@ -225,17 +224,26 @@ void app_flash_Clear(void) {
 	}
 
 }
-void app_key_power_or_return(void) {
+void app_key_power(void) {
 
 	switch (g_tDevice.level) {
 	case E_LEVEL_NONE:
 
 		break;
 	case E_LEVEL_MODE:
-//		Repeat_Stop();
 
 		break;
 	case E_LEVEL_REP:
+
+		LCD_Show_ABCD('A');
+		LCD_Show_ABCD('B');
+		LCD_Show_ABCD('C');
+		LCD_Show_ABCD('D');
+
+		LCD_Show_REP_Num(0);
+		LCD_Show_Pulls_Num(0);
+		LCD_Show_CAL_Num(0);
+		LCD_Show_CAL_ICO();
 
 		g_tDevice.level = E_LEVEL_MODE;
 
@@ -251,7 +259,7 @@ void app_key_power_or_return(void) {
 		g_tWork.sum = 0;
 		g_tWork.cal_num = 0;
 
-		app_UI_init();
+//		app_UI_init();
 
 		LCD_Show_Pulls_Num(g_tWork.sum);
 		LCD_Show_CAL_Num(g_tWork.cal_num);
@@ -304,8 +312,9 @@ void app_key_power_or_return(void) {
 	}
 
 }
-void app_key_set(void) {
 
+void app_key_clear(void) {
+#if 0
 	LCD_Show_REP_Num(0);
 	LCD_Show_Pulls_Num(0);
 	LCD_Show_CAL_Num(0);
@@ -319,14 +328,8 @@ void app_key_set(void) {
 
 	g_tDevice.mode = E_Quick_start_mode;
 
-//	g_tDevice.mode = E_Quick_start_mode;
-//	g_tDevice.level = 1;
-
 	g_tDevice.level = E_LEVEL_MODE;
-	Repeat_Stop();
-	Repeat_SetStart(app_flash_Show);
-	Repeat_SetStop(app_flash_Clear);
-	Repeat_Start(BLINK_FLASH_TIME, BLINK_FLASH_TIME, 0);
+#endif
 
 	switch (g_tDevice.level) {
 	case E_LEVEL_NONE:
@@ -346,20 +349,48 @@ void app_key_set(void) {
 		}
 		break;
 	case E_LEVEL_REP:
+		g_tDevice.level = E_LEVEL_MODE;
 
 		break;
 	case E_LEVEL_READY:
+		g_tDevice.level = E_LEVEL_REP;
 
 		break;
 	case E_LEVEL_PULL:
 
 		break;
 	}
-
-	app_UI_init();
 }
 
-void app_key_add(void) {
+static void app_key_clear_long(void) {
+
+	switch (g_tDevice.level) {
+	case E_LEVEL_NONE:
+
+		break;
+	case E_LEVEL_MODE:
+
+		break;
+	case E_LEVEL_REP:
+
+		break;
+	case E_LEVEL_READY:
+
+		break;
+	case E_LEVEL_PULL:
+		g_tWork.reps_num = 0;
+		g_tWork.pulls_num = 0;
+		g_tWork.cal_num = 0;
+
+		LCD_Show_REP_Num(g_tWork.reps_num);
+		LCD_Show_Pulls_Num(g_tWork.pulls_num);
+		LCD_Show_CAL_Num(g_tWork.cal_num);
+
+		break;
+	}
+}
+
+void app_key_set(void) {
 
 	switch (g_tDevice.level) {
 	case E_LEVEL_NONE:
@@ -373,13 +404,49 @@ void app_key_add(void) {
 		case E_Simple_metering_mode:
 			g_tDevice.mode = E_Quick_start_mode;
 
+			LCD_Show_REP_Num(0);
+			LCD_Show_REP_ICO();
+			LCD_Show_Line_up();
+
+			LCD_Show_ABCD('A');
+			LCD_Show_ABCD('B');
+			LCD_Show_ABCD('C');
+			LCD_Show_ABCD('D');
+
+			LCD_Show_CAL_ICO();
+
+			LCD_Clear_COACH_ICO();
+
 			break;
 		case E_Quick_start_mode:
 			g_tDevice.mode = E_Coach_mode;
 
+			LCD_Show_REP_Num(0);
+			LCD_Show_REP_ICO();
+			LCD_Show_Line_up();
+
+			LCD_Show_ABCD('A');
+			LCD_Show_ABCD('B');
+			LCD_Show_ABCD('C');
+			LCD_Show_ABCD('D');
+
+			LCD_Show_CAL_ICO();
+
+			LCD_Clear_COACH_ICO();
 			break;
 		case E_Coach_mode:
 			g_tDevice.mode = E_Simple_metering_mode;
+
+			LCD_Show_Line_up();
+			LCD_Clear_REP_ICO();
+
+			LCD_Clear_ABCD();
+
+			LCD_Show_CAL_ICO();
+			LCD_Clear_QS_ICO();
+			LCD_Clear_COACH_ICO();
+
+			LCD_Clear_REP_Num();
 
 			break;
 		}
@@ -422,7 +489,33 @@ void app_key_add(void) {
 
 		break;
 	}
-	app_UI_init();
+}
+
+static void app_key_set_long(void) {
+
+	switch (g_tDevice.level) {
+	case E_LEVEL_NONE:
+
+		break;
+	case E_LEVEL_MODE:
+
+		break;
+	case E_LEVEL_REP:
+
+		break;
+	case E_LEVEL_READY:
+
+		break;
+	case E_LEVEL_PULL:
+		if (g_tDevice.mode == E_Simple_metering_mode) {
+			g_tDevice.level = E_LEVEL_MODE;
+		} else {
+			g_tDevice.level = E_LEVEL_REP;
+		}
+
+		break;
+	}
+
 }
 
 void app_key_ok(void) {
@@ -443,24 +536,18 @@ void app_key_ok(void) {
 		case E_Quick_start_mode:
 			g_tDevice.level = E_LEVEL_REP;
 
+			LCD_Show_REP_ICO();
 			LCD_Show_QS_ICO();
 			LCD_Clear_COACH_ICO();
-
-//			Repeat_Stop();
-//			Repeat_SetStart(app_flash_Show);
-//			Repeat_SetStop(app_flash_Clear);
-//			Repeat_Start(BLINK_FLASH_TIME, BLINK_FLASH_TIME, 0);
 
 			break;
 		case E_Coach_mode:
 			g_tDevice.level = E_LEVEL_REP;
+
+			LCD_Show_REP_ICO();
 			LCD_Clear_QS_ICO();
 			LCD_Show_COACH_ICO();
 
-//			Repeat_Stop();
-//			Repeat_SetStart(app_flash_Show);
-//			Repeat_SetStop(app_flash_Clear);
-//			Repeat_Start(BLINK_FLASH_TIME, BLINK_FLASH_TIME, 0);
 			break;
 		}
 		g_tDevice.letter = g_tWork.reps_mode;
@@ -476,13 +563,11 @@ void app_key_ok(void) {
 			break;
 		case E_Quick_start_mode:
 
-//			Repeat_Stop();
 			LCD_Show_QS_ICO();
 			LCD_Clear_COACH_ICO();
 
 			break;
 		case E_Coach_mode:
-//			Repeat_Stop();
 			LCD_Show_COACH_ICO();
 			LCD_Clear_QS_ICO();
 
@@ -500,7 +585,28 @@ void app_key_ok(void) {
 
 		break;
 	}
-//	app_UI_init();
+}
+
+static void app_key_ok_long(void) {
+
+	switch (g_tDevice.level) {
+	case E_LEVEL_NONE:
+
+		break;
+	case E_LEVEL_MODE:
+
+		break;
+	case E_LEVEL_REP:
+
+		break;
+	case E_LEVEL_READY:
+
+		break;
+	case E_LEVEL_PULL:
+
+		break;
+	}
+	SW_Reset();  //¸´Î»
 }
 
 void app_power_on(void) {
@@ -526,7 +632,11 @@ void app_key_100ms_pro(void) {
 //			keyInvalid_flag = 1;
 			bsp_hallInt_close();
 			app_powerKeyInt_open();
+			printf("power off\n");
 			set_PD;
+
+			printf("power on\n");
+			app_power_on();
 		}
 	} else {
 		cnt = 0;
@@ -536,12 +646,12 @@ void app_key_100ms_pro(void) {
 void app_key_1s_pro(void) {
 
 	noOps_timeoutCnt++;
-	if (noOps_timeoutCnt == 40) {
+	if (noOps_timeoutCnt == 400) {
 		offBight_flag = 1;
 //		keyInvalid_flag = 1;
 		lcd_bright_off();
 		printf("off bright\n");
-	} else if (noOps_timeoutCnt == 50) {
+	} else if (noOps_timeoutCnt == 500) {
 		app_power_off();
 		printf("power off\n");
 		g_tDevice.status = E_PowerDown;
@@ -552,6 +662,7 @@ void app_key_clear_noOps_timeoutCnt(void) {
 	noOps_timeoutCnt = 0;
 }
 void app_key_pro(uint8_t keyCode) {
+	static BIT key_exe_flag = 0;
 
 	app_key_clear_noOps_timeoutCnt();
 
@@ -564,62 +675,70 @@ void app_key_pro(uint8_t keyCode) {
 
 	switch (keyCode) {
 	case KEY_UP_K1:
-#if 0
-		if (g_tDevice.status == E_PowerReady) {
-			app_power_off();
-			printf("power off\n");
-			g_tDevice.status = E_PowerDown;
-		}
-#endif
+
 		break;
 	case KEY_DOWN_K1:
-		BEEP_KeyTone();
-		if (g_tDevice.status == E_PowerOn) {
-			app_key_power_or_return();
-		} else if (g_tDevice.status == E_PowerDown) {
-			g_tDevice.status = E_PowerOn;
-			app_power_on();
-		}
+
 		break;
 	case KEY_LONG_K1:
-		BEEP_KeyTone();
+		printf("POWER long\n");
 		if (g_tDevice.status == E_PowerOn) {
 			g_tDevice.status = E_PowerDown;
+			printf("key power off\n");
 			app_power_off();
-		} else if (g_tDevice.status == E_PowerReady) {
-			g_tDevice.status = E_PowerOn;
-			app_power_on();
 		}
 
 		break;
 	case KEY_UP_K2:
+		if (key_exe_flag) {
+			key_exe_flag = 0;
+		} else {
+			printf("CLEAR click\n");
+			app_key_clear();
+		}
 
 		break;
 	case KEY_DOWN_K2:
-		BEEP_KeyTone();
-		app_key_set();
+
 		break;
 	case KEY_LONG_K2:
+		printf("CLEAR long\n");
+		key_exe_flag = 1;
+		app_key_clear_long();
 
 		break;
 	case KEY_UP_K3:
-
+		if (key_exe_flag) {
+			key_exe_flag = 0;
+		} else {
+			printf("SET click\n");
+			app_key_set();
+		}
 		break;
 	case KEY_DOWN_K3:
-		BEEP_KeyTone();
-		app_key_add();
+
 		break;
 	case KEY_LONG_K3:
+		printf("SET long\n");
+		key_exe_flag = 1;
+		app_key_set_long();
 
 		break;
 	case KEY_UP_K4:
-
+		if (key_exe_flag) {
+			key_exe_flag = 0;
+		} else {
+			printf("OK click\n");
+			app_key_ok();
+		}
 		break;
 	case KEY_DOWN_K4:
-		BEEP_KeyTone();
-		app_key_ok();
+
 		break;
 	case KEY_LONG_K4:
+		printf("OK long\n");
+		key_exe_flag = 1;
+		app_key_ok_long();
 
 		break;
 #if DEBUG_KEY

@@ -8,7 +8,7 @@
 void ADC_ISR(void)
 interrupt 11
 {
-	                             //clear ADC interrupt flag
+	//clear ADC interrupt flag
 	app_battery_voltage_result();
 	clr_ADCF;
 }
@@ -53,6 +53,7 @@ void main(void) {
 
 	/****************/
 //	Show_FW_Version_Number_To_PC();
+	printf("I am resurgence\n");
 
 	while (1) {
 

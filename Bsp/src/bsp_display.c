@@ -103,21 +103,18 @@ void LCD_Show_REP_ICO(void) {
 }
 void LCD_Clear_REP_Num(void) {
 
-	LCDPTR = 18;
+	LCDPTR = 17;
+	LCDDAT = 0;
+
+	LCDPTR = 16;
 	LCDDAT &= ~(COM1 + COM2 + COM3);
+
+	LCDPTR = 15;
+	LCDDAT = 0;
 //	LCDDAT = COM1 + COM2 + COM3;
 
-	LCDPTR = 19;
-	LCDDAT = 0;
-//	LCDDAT = COM0 + COM1 + COM2 + COM3;
-
-	LCDPTR = 20;
+	LCDPTR = 14;
 	LCDDAT &= ~(COM1 + COM2 + COM3);
-//	LCDDAT = COM1 + COM2 + COM3;
-
-	LCDPTR = 21;
-	LCDDAT = 0;
-//	LCDDAT = COM0 + COM1 + COM2 + COM3;
 }
 void LCD_Show_REP_Num(uint8_t num) {
 	uint8_t ge;
@@ -221,7 +218,7 @@ void LCD_Show_REP_Num(uint8_t num) {
 	switch (ge) {
 	case 0:
 		LCDPTR = 16;
-		LCDDAT = COM1 + COM3;
+		LCDDAT |= COM1 + COM3;
 
 		LCDPTR = 17;
 		LCDDAT = COM0 + COM1 + COM2 + COM3;
@@ -231,14 +228,14 @@ void LCD_Show_REP_Num(uint8_t num) {
 		LCDDAT &= ~(COM1 + COM2 + COM3);
 
 		LCDPTR = 17;
-		LCDDAT = COM1 + COM2;
+		LCDDAT |= COM1 + COM2;
 		break;
 	case 2:
 		LCDPTR = 16;
-		LCDDAT = COM2 + COM3;
+		LCDDAT |= COM2 + COM3;
 
 		LCDPTR = 17;
-		LCDDAT = COM0 + COM1 + COM3;
+		LCDDAT |= COM0 + COM1 + COM3;
 		break;
 	case 3:
 		LCDPTR = 16;
@@ -249,45 +246,45 @@ void LCD_Show_REP_Num(uint8_t num) {
 		break;
 	case 4:
 		LCDPTR = 16;
-		LCDDAT = COM1 + COM2;
+		LCDDAT |= COM1 + COM2;
 
 		LCDPTR = 17;
-		LCDDAT = COM1 + COM2;
+		LCDDAT |= COM1 + COM2;
 		break;
 	case 5:
 		LCDPTR = 16;
-		LCDDAT = COM1 + COM2;
+		LCDDAT |= COM1 + COM2;
 
 		LCDPTR = 17;
-		LCDDAT = COM0 + COM2 + COM3;
+		LCDDAT |= COM0 + COM2 + COM3;
 		break;
 	case 6:
 		LCDPTR = 16;
-		LCDDAT = COM1 + COM2 + COM3;
+		LCDDAT |= COM1 + COM2 + COM3;
 
 		LCDPTR = 17;
-		LCDDAT = COM0 + COM2 + COM3;
+		LCDDAT |= COM0 + COM2 + COM3;
 		break;
 	case 7:
 		LCDPTR = 16;
 		LCDDAT &= ~(COM1 + COM2 + COM3);
 
 		LCDPTR = 17;
-		LCDDAT = COM0 + COM1 + COM2;
+		LCDDAT |= COM0 + COM1 + COM2;
 		break;
 	case 8:
 		LCDPTR = 16;
-		LCDDAT = COM1 + COM2 + COM3;
+		LCDDAT |= COM1 + COM2 + COM3;
 
 		LCDPTR = 17;
-		LCDDAT = COM0 + COM1 + COM2 + COM3;
+		LCDDAT |= COM0 + COM1 + COM2 + COM3;
 		break;
 	case 9:
 		LCDPTR = 16;
-		LCDDAT = COM1 + COM2;
+		LCDDAT |= COM1 + COM2;
 
 		LCDPTR = 17;
-		LCDDAT = COM0 + COM1 + COM2 + COM3;
+		LCDDAT |= COM0 + COM1 + COM2 + COM3;
 		break;
 	}
 }
