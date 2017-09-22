@@ -11,7 +11,7 @@
 #define HALL_COUNT   3
 
 typedef struct _HALL_T {
-	int count;
+	int8_t count;
 	uint8_t direction;
 	uint8_t lastPos;
 } HALL_T;

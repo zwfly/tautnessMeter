@@ -351,6 +351,16 @@ void app_key_clear(void) {
 	case E_LEVEL_REP:
 		g_tDevice.level = E_LEVEL_MODE;
 
+		LCD_Show_ABCD('A');
+		LCD_Show_ABCD('B');
+		LCD_Show_ABCD('C');
+		LCD_Show_ABCD('D');
+
+		LCD_Show_REP_Num(0);
+		LCD_Show_Pulls_Num(0);
+		LCD_Show_CAL_Num(0);
+		LCD_Show_CAL_ICO();
+
 		break;
 	case E_LEVEL_READY:
 		g_tDevice.level = E_LEVEL_REP;
@@ -512,7 +522,7 @@ static void app_key_set_long(void) {
 		} else {
 			g_tDevice.level = E_LEVEL_REP;
 		}
-
+		BEEP_Stop();
 		break;
 	}
 

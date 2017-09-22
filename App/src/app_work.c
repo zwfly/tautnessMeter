@@ -6,18 +6,23 @@
  */
 
 #include "app.h"
+#include <string.h>
 
-#define BEEP_SHORT_TIME  10
-#define BEEP_LONG_TIME  30
-#define COACH_DELAY_TIME 200
+#define BEEP_SHORT_TIME   10
+#define BEEP_LONG_TIME    30
+#define COACH_DELAY_TIME  200
+#define COACH_PACE_TIME   400
 #define CAL_a 2
 
 const uint8_t Rep_Pull_num[4][2] = { { 10, 20 }, { 20, 25 }, { 30, 30 }, { 50,
 		40 } };
 
+static idata BEEP_T g_tBeep; /* 定义蜂鸣器全局结构体变量 */
+//static BEEP_T g_tBeep; /* 定义蜂鸣器全局结构体变量 */
 WORK_T g_tWork;
 static uint8_t count_NoAction = 0;
 static BIT pull_once_flag = 0;
+static BIT coach_mode_beep3_flag = 0;
 
 static void app_work_pro(void);
 
@@ -44,6 +49,7 @@ void query_work_sum(void) {
 
 	if (g_tDevice.level == E_LEVEL_READY) {
 		g_tDevice.level = E_LEVEL_PULL;
+
 		g_tWork.sum++;
 		if (g_tWork.sum > 10000) {
 			g_tWork.sum = 0;
@@ -59,20 +65,39 @@ void app_work_1s_pro(void) {
 
 }
 void app_work_100ms_pro(void) {
+	static uint8_t coach_mode_beep3_cnt = 0;
+
 	if (pull_once_flag) {
+		static BIT level_pull_init_flag = 0;
 		pull_once_flag = 0;
 		///////////////////
 		app_key_clear_noOps_timeoutCnt();
 		app_work_pro();
-	}
 
+		if (g_tDevice.level == E_LEVEL_PULL) {
+			if (level_pull_init_flag == 0) {
+				level_pull_init_flag = 1;
+				BEEP_Start(1, BEEP_SHORT_TIME, COACH_PACE_TIME, 0);
+			}
+		} else {
+			level_pull_init_flag = 0;
+		}
+	}
+	if (coach_mode_beep3_flag) {
+		coach_mode_beep3_cnt++;
+		if (coach_mode_beep3_cnt > 6) {
+			coach_mode_beep3_flag = 0;
+			printf("coach set beep\n");
+			BEEP_Start_struct(&g_tBeep);
+		}
+	} else {
+		coach_mode_beep3_cnt = 0;
+	}
 }
 
 static void app_work_pro(void) {
 	static BIT finish_flag = 0;
 	static BIT reps_num_appear_flag = 0;
-
-	Repeat_Stop();
 
 	switch (g_tWork.mode) {
 	case E_TRAINING_NONE:
@@ -156,9 +181,14 @@ static void app_work_pro(void) {
 			} else {
 				if (g_tWork.sum % Rep_Pull_num[g_tWork.reps_mode - 'A'][1]
 						== 0) {
+					BEEP_T* beep_pt = 0;
+					coach_mode_beep3_flag = 1;
+					beep_pt = BEEP_Start_get();
+					memcpy(&g_tBeep, beep_pt, sizeof(BEEP_T));
+					printf("coach get beep\n");
 					BEEP_Start(1, BEEP_SHORT_TIME, BEEP_SHORT_TIME, 3);
 				} else {
-					BEEP_Start(COACH_DELAY_TIME, BEEP_SHORT_TIME, 1, 1);
+//					BEEP_Start(COACH_DELAY_TIME, BEEP_SHORT_TIME, 1, 1);
 				}
 			}
 			reps_num_appear_flag = 1;

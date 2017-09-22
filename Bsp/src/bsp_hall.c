@@ -85,7 +85,7 @@ void Hall_Init(void) {
 
 void bsp_hall_1s_pro(void) {
 
-	printf("meter count %d\r\n", g_tHall.count);
+	printf("meter count %d\n", (int) g_tHall.count);
 
 }
 

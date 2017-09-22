@@ -21,12 +21,15 @@ typedef struct _BEEP_T {
 	uint16_t usCycle;
 	uint16_t usCount;
 	uint16_t usCycleCount;
+	uint8_t delay_flag;
 } BEEP_T;
 
 /* 供外部调用的函数声明 */
 void BEEP_InitHard(void);
 void BEEP_Start(uint16_t _usDelayTime, uint16_t _usBeepTime,
 		uint16_t _usStopTime, uint16_t _usCycle);
+BEEP_T* BEEP_Start_get(void);
+void BEEP_Start_struct(BEEP_T *beep_pt);
 void BEEP_Stop(void);
 void BEEP_KeyTone(void);
 void BEEP_Pro(void);

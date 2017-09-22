@@ -1,7 +1,9 @@
 #include "bsp.h"
+#include <string.h>
 
 static idata BEEP_T g_tBeep; /* 定义蜂鸣器全局结构体变量 */
-static BIT delay_flag = 0;
+//static BEEP_T g_tBeep; /* 定义蜂鸣器全局结构体变量 */
+//static BIT delay_flag = 0;
 /*
  *********************************************************************************************************
  *	函 数 名: BEEP_InitHard
@@ -85,10 +87,16 @@ void BEEP_Start(uint16_t _usDelayTime, uint16_t _usBeepTime,
 	g_tBeep.ucState = 0;
 	g_tBeep.ucEnalbe = 1; /* 设置完全局参数后再使能发声标志 */
 
-	delay_flag = 1;
+	g_tBeep.delay_flag = 1;
+
 //	BEEP_ENABLE(); /* 开始发声 */
 }
-
+BEEP_T* BEEP_Start_get(void) {
+	return &g_tBeep;
+}
+void BEEP_Start_struct(BEEP_T *beep_pt) {
+	memcpy((uint8_t*) &g_tBeep, (uint8_t*) beep_pt, sizeof(BEEP_T));
+}
 /*
  *********************************************************************************************************
  *	函 数 名: BEEP_Stop
@@ -131,8 +139,8 @@ void BEEP_Pro(void) {
 		g_tBeep.usDelayTime--;
 		return;
 	}
-	if (delay_flag) {
-		delay_flag = 0;
+	if (g_tBeep.delay_flag) {
+		g_tBeep.delay_flag = 0;
 		BEEP_ENABLE();
 	}
 
@@ -155,7 +163,6 @@ void BEEP_Pro(void) {
 					/* 循环次数到，停止发声 */
 					g_tBeep.ucEnalbe = 0;
 				}
-
 				if (g_tBeep.ucEnalbe == 0) {
 					g_tBeep.usStopTime = 0;
 					return;

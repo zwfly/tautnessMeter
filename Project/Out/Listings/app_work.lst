@@ -1,4 +1,4 @@
-C51 COMPILER V9.56.0.0   APP_WORK                                                          09/21/2017 22:58:23 PAGE 1   
+C51 COMPILER V9.56.0.0   APP_WORK                                                          09/22/2017 22:48:12 PAGE 1   
 
 
 C51 COMPILER V9.56.0.0, COMPILATION OF MODULE APP_WORK
@@ -17,191 +17,221 @@ line level    source
    6           */
    7          
    8          #include "app.h"
-   9          
-  10          #define BEEP_SHORT_TIME  10
-  11          #define BEEP_LONG_TIME  30
-  12          #define COACH_DELAY_TIME 200
-  13          #define CAL_a 2
-  14          
-  15          const uint8_t Rep_Pull_num[4][2] = { { 10, 20 }, { 20, 25 }, { 30, 30 }, { 50,
-  16                          40 } };
-  17          
-  18          WORK_T g_tWork;
-  19          static uint8_t count_NoAction = 0;
-  20          static BIT pull_once_flag = 0;
-  21          
-  22          static void app_work_pro(void);
-  23          
-  24          void work_Init(void) {
-  25   1              g_tWork.mode = E_Simple_metering_mode;
-  26   1              g_tWork.reps_mode = 'A';
-  27   1              g_tWork.sum = 0;
-  28   1              g_tWork.reps_num = 0;
-  29   1              g_tWork.pulls_num = 0;
-  30   1              g_tWork.cal_num = 0;
-  31   1      
-  32   1              count_NoAction = 0;
-  33   1      }
-  34          
-  35          void query_work_sum(void) {
+   9          #include <string.h>
+  10          
+  11          #define BEEP_SHORT_TIME   10
+  12          #define BEEP_LONG_TIME    30
+  13          #define COACH_DELAY_TIME  200
+  14          #define COACH_PACE_TIME   400
+  15          #define CAL_a 2
+  16          
+  17          const uint8_t Rep_Pull_num[4][2] = { { 10, 20 }, { 20, 25 }, { 30, 30 }, { 50,
+  18                          40 } };
+  19          
+  20          static idata BEEP_T g_tBeep; /* 定义蜂鸣器全局结构体变量 */
+  21          //static BEEP_T g_tBeep; /* 定义蜂鸣器全局结构体变量 */
+  22          WORK_T g_tWork;
+  23          static uint8_t count_NoAction = 0;
+  24          static BIT pull_once_flag = 0;
+  25          static BIT coach_mode_beep3_flag = 0;
+  26          
+  27          static void app_work_pro(void);
+  28          
+  29          void work_Init(void) {
+  30   1              g_tWork.mode = E_Simple_metering_mode;
+  31   1              g_tWork.reps_mode = 'A';
+  32   1              g_tWork.sum = 0;
+  33   1              g_tWork.reps_num = 0;
+  34   1              g_tWork.pulls_num = 0;
+  35   1              g_tWork.cal_num = 0;
   36   1      
-  37   1              if (g_tDevice.level == E_LEVEL_PULL) {
-  38   2                      g_tWork.sum++;
-  39   2                      if (g_tWork.sum > 10000) {
-  40   3                              g_tWork.sum = 0;
-  41   3                      }
-  42   2                      pull_once_flag = 1;
-  43   2              }
-  44   1      
-  45   1              if (g_tDevice.level == E_LEVEL_READY) {
-  46   2                      g_tDevice.level = E_LEVEL_PULL;
-  47   2                      g_tWork.sum++;
-  48   2                      if (g_tWork.sum > 10000) {
-  49   3                              g_tWork.sum = 0;
-  50   3                      }
-  51   2                      pull_once_flag = 1;
-  52   2              }
-  53   1      }
-C51 COMPILER V9.56.0.0   APP_WORK                                                          09/21/2017 22:58:23 PAGE 2   
+  37   1              count_NoAction = 0;
+  38   1      }
+  39          
+  40          void query_work_sum(void) {
+  41   1      
+  42   1              if (g_tDevice.level == E_LEVEL_PULL) {
+  43   2                      g_tWork.sum++;
+  44   2                      if (g_tWork.sum > 10000) {
+  45   3                              g_tWork.sum = 0;
+  46   3                      }
+  47   2                      pull_once_flag = 1;
+  48   2              }
+  49   1      
+  50   1              if (g_tDevice.level == E_LEVEL_READY) {
+  51   2                      g_tDevice.level = E_LEVEL_PULL;
+  52   2      
+  53   2                      g_tWork.sum++;
+C51 COMPILER V9.56.0.0   APP_WORK                                                          09/22/2017 22:48:12 PAGE 2   
 
-  54          
-  55          void app_work_1s_pro(void) {
-  56   1              if (count_NoAction < 255) {
-  57   2                      count_NoAction++;
+  54   2                      if (g_tWork.sum > 10000) {
+  55   3                              g_tWork.sum = 0;
+  56   3                      }
+  57   2                      pull_once_flag = 1;
   58   2              }
-  59   1      
-  60   1      }
-  61          void app_work_100ms_pro(void) {
-  62   1              if (pull_once_flag) {
-  63   2                      pull_once_flag = 0;
-  64   2                      ///////////////////
-  65   2                      app_key_clear_noOps_timeoutCnt();
-  66   2                      app_work_pro();
-  67   2              }
-  68   1      
-  69   1      }
-  70          
-  71          static void app_work_pro(void) {
-  72   1              static BIT finish_flag = 0;
-  73   1              static BIT reps_num_appear_flag = 0;
-  74   1      
-  75   1              Repeat_Stop();
-  76   1      
-  77   1              switch (g_tWork.mode) {
-  78   2              case E_TRAINING_NONE:
-  79   2      
-  80   2                      break;
-  81   2              case E_Simple_metering_mode:
-  82   2      
-  83   2                      if (g_tWork.sum % 10 == 0) {
-  84   3                              BEEP_Start(1, BEEP_LONG_TIME, 1, 1);
-  85   3                      } else {
-  86   3                              BEEP_Start(1, BEEP_SHORT_TIME, 1, 1);
-  87   3                      }
-  88   2                      g_tWork.pulls_num = g_tWork.sum;
-  89   2                      g_tWork.cal_num = g_tWork.sum * CAL_a;
-  90   2      
-  91   2                      /********************/
-  92   2                      LCD_Show_Pulls_Num(g_tWork.pulls_num);
-  93   2                      LCD_Show_CAL_Num(g_tWork.cal_num);
-  94   2      
-  95   2                      LCD_Clear_REP_Num();
-  96   2                      LCD_Clear_REP_ICO();
-  97   2                      LCD_Clear_ABCD();
-  98   2                      LCD_Clear_QS_ICO();
-  99   2                      LCD_Clear_COACH_ICO();
- 100   2      
- 101   2                      LCD_Show_CAL_ICO();
- 102   2                      LCD_Show_Line_up();
- 103   2                      break;
- 104   2              case E_Quick_start_mode:
- 105   2      
- 106   2                      if (finish_flag) {
- 107   3                              BEEP_Start(1, BEEP_SHORT_TIME, 1, 1);
- 108   3                              g_tWork.sum = Rep_Pull_num[g_tWork.reps_mode - 'A'][0]
- 109   3                                              * Rep_Pull_num[g_tWork.reps_mode - 'A'][1];
+  59   1      }
+  60          
+  61          void app_work_1s_pro(void) {
+  62   1              if (count_NoAction < 255) {
+  63   2                      count_NoAction++;
+  64   2              }
+  65   1      
+  66   1      }
+  67          void app_work_100ms_pro(void) {
+  68   1              static uint8_t coach_mode_beep3_cnt = 0;
+  69   1      
+  70   1              if (pull_once_flag) {
+  71   2                      static BIT level_pull_init_flag = 0;
+  72   2                      pull_once_flag = 0;
+  73   2                      ///////////////////
+  74   2                      app_key_clear_noOps_timeoutCnt();
+  75   2                      app_work_pro();
+  76   2      
+  77   2                      if (g_tDevice.level == E_LEVEL_PULL) {
+  78   3                              if (level_pull_init_flag == 0) {
+  79   4                                      level_pull_init_flag = 1;
+  80   4                                      BEEP_Start(1, BEEP_SHORT_TIME, COACH_PACE_TIME, 0);
+  81   4                              }
+  82   3                      } else {
+  83   3                              level_pull_init_flag = 0;
+  84   3                      }
+  85   2              }
+  86   1              if (coach_mode_beep3_flag) {
+  87   2                      coach_mode_beep3_cnt++;
+  88   2                      if (coach_mode_beep3_cnt > 6) {
+  89   3                              coach_mode_beep3_flag = 0;
+  90   3                              printf("coach set beep\n");
+  91   3                              BEEP_Start_struct(&g_tBeep);
+  92   3                      }
+  93   2              } else {
+  94   2                      coach_mode_beep3_cnt = 0;
+  95   2              }
+  96   1      }
+  97          
+  98          static void app_work_pro(void) {
+  99   1              static BIT finish_flag = 0;
+ 100   1              static BIT reps_num_appear_flag = 0;
+ 101   1      
+ 102   1              switch (g_tWork.mode) {
+ 103   2              case E_TRAINING_NONE:
+ 104   2      
+ 105   2                      break;
+ 106   2              case E_Simple_metering_mode:
+ 107   2      
+ 108   2                      if (g_tWork.sum % 10 == 0) {
+ 109   3                              BEEP_Start(1, BEEP_LONG_TIME, 1, 1);
  110   3                      } else {
- 111   3                              if (g_tWork.sum
- 112   3                                              == Rep_Pull_num[g_tWork.reps_mode - 'A'][0]
- 113   3                                                              * Rep_Pull_num[g_tWork.reps_mode - 'A'][1]) {
- 114   4                                      finish_flag = 1;
- 115   4                                      BEEP_Start(1, 3 * BEEP_SHORT_TIME, 1, 1);
-C51 COMPILER V9.56.0.0   APP_WORK                                                          09/21/2017 22:58:23 PAGE 3   
+ 111   3                              BEEP_Start(1, BEEP_SHORT_TIME, 1, 1);
+ 112   3                      }
+ 113   2                      g_tWork.pulls_num = g_tWork.sum;
+ 114   2                      g_tWork.cal_num = g_tWork.sum * CAL_a;
+ 115   2      
+C51 COMPILER V9.56.0.0   APP_WORK                                                          09/22/2017 22:48:12 PAGE 3   
 
- 116   4                              } else {
- 117   4                                      if (g_tWork.sum % Rep_Pull_num[g_tWork.reps_mode - 'A'][1]
- 118   4                                                      == 0) {
- 119   5                                              BEEP_Start(1, BEEP_SHORT_TIME, BEEP_SHORT_TIME, 3);
- 120   5                                      } else {
- 121   5                                              BEEP_Start(1, BEEP_SHORT_TIME, 1, 1);
- 122   5                                      }
- 123   4                              }
- 124   3                              reps_num_appear_flag = 1;
- 125   3                              g_tWork.reps_num = g_tWork.sum
- 126   3                                              / Rep_Pull_num[g_tWork.reps_mode - 'A'][1];
- 127   3                              g_tWork.pulls_num = g_tWork.sum
- 128   3                                              % Rep_Pull_num[g_tWork.reps_mode - 'A'][1];
- 129   3                              g_tWork.cal_num = g_tWork.sum * CAL_a;
- 130   3                      }
- 131   2                      LCD_Show_REP_Num(g_tWork.reps_num);
- 132   2                      LCD_Show_Pulls_Num(g_tWork.pulls_num);
- 133   2                      LCD_Show_CAL_Num(g_tWork.cal_num);
- 134   2      
- 135   2                      LCD_Show_REP_ICO();
- 136   2                      LCD_Show_ABCD(g_tWork.reps_mode);
- 137   2      
- 138   2                      LCD_Show_QS_ICO();
- 139   2                      LCD_Clear_COACH_ICO();
- 140   2      
- 141   2                      LCD_Show_CAL_ICO();
- 142   2                      LCD_Show_Line_up();
- 143   2      
- 144   2                      break;
- 145   2              case E_Coach_mode:
- 146   2                      if (finish_flag) {
- 147   3                              BEEP_Start(COACH_DELAY_TIME, BEEP_SHORT_TIME, 1, 1);
- 148   3                              g_tWork.sum = Rep_Pull_num[g_tWork.reps_mode - 'A'][0]
- 149   3                                              * Rep_Pull_num[g_tWork.reps_mode - 'A'][1];
- 150   3                      } else {
- 151   3                              if (g_tWork.sum
- 152   3                                              == Rep_Pull_num[g_tWork.reps_mode - 'A'][0]
- 153   3                                                              * Rep_Pull_num[g_tWork.reps_mode - 'A'][1]) {
- 154   4                                      finish_flag = 1;
- 155   4                                      BEEP_Start(1, 3 * BEEP_SHORT_TIME, 1, 1);
- 156   4                              } else {
- 157   4                                      if (g_tWork.sum % Rep_Pull_num[g_tWork.reps_mode - 'A'][1]
- 158   4                                                      == 0) {
- 159   5                                              BEEP_Start(1, BEEP_SHORT_TIME, BEEP_SHORT_TIME, 3);
- 160   5                                      } else {
- 161   5                                              BEEP_Start(COACH_DELAY_TIME, BEEP_SHORT_TIME, 1, 1);
- 162   5                                      }
- 163   4                              }
- 164   3                              reps_num_appear_flag = 1;
- 165   3                              g_tWork.reps_num = g_tWork.sum
- 166   3                                              / Rep_Pull_num[g_tWork.reps_mode - 'A'][1];
- 167   3                              g_tWork.pulls_num = g_tWork.sum
- 168   3                                              % Rep_Pull_num[g_tWork.reps_mode - 'A'][1];
- 169   3                              g_tWork.cal_num = g_tWork.sum * CAL_a;
- 170   3                      }
- 171   2                      LCD_Show_REP_Num(g_tWork.reps_num);
- 172   2                      LCD_Show_Pulls_Num(g_tWork.pulls_num);
- 173   2                      LCD_Show_CAL_Num(g_tWork.cal_num);
- 174   2      
- 175   2                      LCD_Show_REP_ICO();
- 176   2                      LCD_Show_ABCD(g_tWork.reps_mode);
- 177   2      
-C51 COMPILER V9.56.0.0   APP_WORK                                                          09/21/2017 22:58:23 PAGE 4   
+ 116   2                      /********************/
+ 117   2                      LCD_Show_Pulls_Num(g_tWork.pulls_num);
+ 118   2                      LCD_Show_CAL_Num(g_tWork.cal_num);
+ 119   2      
+ 120   2                      LCD_Clear_REP_Num();
+ 121   2                      LCD_Clear_REP_ICO();
+ 122   2                      LCD_Clear_ABCD();
+ 123   2                      LCD_Clear_QS_ICO();
+ 124   2                      LCD_Clear_COACH_ICO();
+ 125   2      
+ 126   2                      LCD_Show_CAL_ICO();
+ 127   2                      LCD_Show_Line_up();
+ 128   2                      break;
+ 129   2              case E_Quick_start_mode:
+ 130   2      
+ 131   2                      if (finish_flag) {
+ 132   3                              BEEP_Start(1, BEEP_SHORT_TIME, 1, 1);
+ 133   3                              g_tWork.sum = Rep_Pull_num[g_tWork.reps_mode - 'A'][0]
+ 134   3                                              * Rep_Pull_num[g_tWork.reps_mode - 'A'][1];
+ 135   3                      } else {
+ 136   3                              if (g_tWork.sum
+ 137   3                                              == Rep_Pull_num[g_tWork.reps_mode - 'A'][0]
+ 138   3                                                              * Rep_Pull_num[g_tWork.reps_mode - 'A'][1]) {
+ 139   4                                      finish_flag = 1;
+ 140   4                                      BEEP_Start(1, 3 * BEEP_SHORT_TIME, 1, 1);
+ 141   4                              } else {
+ 142   4                                      if (g_tWork.sum % Rep_Pull_num[g_tWork.reps_mode - 'A'][1]
+ 143   4                                                      == 0) {
+ 144   5                                              BEEP_Start(1, BEEP_SHORT_TIME, BEEP_SHORT_TIME, 3);
+ 145   5                                      } else {
+ 146   5                                              BEEP_Start(1, BEEP_SHORT_TIME, 1, 1);
+ 147   5                                      }
+ 148   4                              }
+ 149   3                              reps_num_appear_flag = 1;
+ 150   3                              g_tWork.reps_num = g_tWork.sum
+ 151   3                                              / Rep_Pull_num[g_tWork.reps_mode - 'A'][1];
+ 152   3                              g_tWork.pulls_num = g_tWork.sum
+ 153   3                                              % Rep_Pull_num[g_tWork.reps_mode - 'A'][1];
+ 154   3                              g_tWork.cal_num = g_tWork.sum * CAL_a;
+ 155   3                      }
+ 156   2                      LCD_Show_REP_Num(g_tWork.reps_num);
+ 157   2                      LCD_Show_Pulls_Num(g_tWork.pulls_num);
+ 158   2                      LCD_Show_CAL_Num(g_tWork.cal_num);
+ 159   2      
+ 160   2                      LCD_Show_REP_ICO();
+ 161   2                      LCD_Show_ABCD(g_tWork.reps_mode);
+ 162   2      
+ 163   2                      LCD_Show_QS_ICO();
+ 164   2                      LCD_Clear_COACH_ICO();
+ 165   2      
+ 166   2                      LCD_Show_CAL_ICO();
+ 167   2                      LCD_Show_Line_up();
+ 168   2      
+ 169   2                      break;
+ 170   2              case E_Coach_mode:
+ 171   2                      if (finish_flag) {
+ 172   3                              BEEP_Start(COACH_DELAY_TIME, BEEP_SHORT_TIME, 1, 1);
+ 173   3                              g_tWork.sum = Rep_Pull_num[g_tWork.reps_mode - 'A'][0]
+ 174   3                                              * Rep_Pull_num[g_tWork.reps_mode - 'A'][1];
+ 175   3                      } else {
+ 176   3                              if (g_tWork.sum
+ 177   3                                              == Rep_Pull_num[g_tWork.reps_mode - 'A'][0]
+C51 COMPILER V9.56.0.0   APP_WORK                                                          09/22/2017 22:48:12 PAGE 4   
 
- 178   2                      LCD_Clear_QS_ICO();
- 179   2                      LCD_Show_COACH_ICO();
- 180   2      
- 181   2                      LCD_Show_CAL_ICO();
- 182   2                      LCD_Show_Line_up();
- 183   2      
- 184   2                      break;
- 185   2              }
- 186   1      
- 187   1      #if 0
+ 178   3                                                              * Rep_Pull_num[g_tWork.reps_mode - 'A'][1]) {
+ 179   4                                      finish_flag = 1;
+ 180   4                                      BEEP_Start(1, 3 * BEEP_SHORT_TIME, 1, 1);
+ 181   4                              } else {
+ 182   4                                      if (g_tWork.sum % Rep_Pull_num[g_tWork.reps_mode - 'A'][1]
+ 183   4                                                      == 0) {
+ 184   5                                              BEEP_T* beep_pt = 0;
+ 185   5                                              coach_mode_beep3_flag = 1;
+ 186   5                                              beep_pt = BEEP_Start_get();
+ 187   5                                              memcpy(&g_tBeep, beep_pt, sizeof(BEEP_T));
+ 188   5                                              printf("coach get beep\n");
+ 189   5                                              BEEP_Start(1, BEEP_SHORT_TIME, BEEP_SHORT_TIME, 3);
+ 190   5                                      } else {
+ 191   5      //                                      BEEP_Start(COACH_DELAY_TIME, BEEP_SHORT_TIME, 1, 1);
+ 192   5                                      }
+ 193   4                              }
+ 194   3                              reps_num_appear_flag = 1;
+ 195   3                              g_tWork.reps_num = g_tWork.sum
+ 196   3                                              / Rep_Pull_num[g_tWork.reps_mode - 'A'][1];
+ 197   3                              g_tWork.pulls_num = g_tWork.sum
+ 198   3                                              % Rep_Pull_num[g_tWork.reps_mode - 'A'][1];
+ 199   3                              g_tWork.cal_num = g_tWork.sum * CAL_a;
+ 200   3                      }
+ 201   2                      LCD_Show_REP_Num(g_tWork.reps_num);
+ 202   2                      LCD_Show_Pulls_Num(g_tWork.pulls_num);
+ 203   2                      LCD_Show_CAL_Num(g_tWork.cal_num);
+ 204   2      
+ 205   2                      LCD_Show_REP_ICO();
+ 206   2                      LCD_Show_ABCD(g_tWork.reps_mode);
+ 207   2      
+ 208   2                      LCD_Clear_QS_ICO();
+ 209   2                      LCD_Show_COACH_ICO();
+ 210   2      
+ 211   2                      LCD_Show_CAL_ICO();
+ 212   2                      LCD_Show_Line_up();
+ 213   2      
+ 214   2                      break;
+ 215   2              }
+ 216   1      
+ 217   1      #if 0
                       LCD_Show_Pulls_Num(g_tWork.pulls_num);
                       LCD_Show_CAL_Num(g_tWork.cal_num);
                       if (reps_num_appear_flag) {
@@ -210,18 +240,18 @@ line level    source
                               LCD_Clear_REP_Num();
                       }
               #endif
- 196   1      }
- 197          
+ 226   1      }
+ 227          
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =   1101    ----
-   CONSTANT SIZE    =   ----    ----
-   XDATA SIZE       =     18    ----
+   CODE SIZE        =   1219    ----
+   CONSTANT SIZE    =     32    ----
+   XDATA SIZE       =     19       3
    PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----    ----
-   IDATA SIZE       =   ----    ----
-   BIT SIZE         =      3    ----
+   IDATA SIZE       =     15    ----
+   BIT SIZE         =      5    ----
 END OF MODULE INFORMATION.
 
 
