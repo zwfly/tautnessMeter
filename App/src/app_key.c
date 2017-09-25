@@ -391,10 +391,14 @@ static void app_key_clear_long(void) {
 		g_tWork.reps_num = 0;
 		g_tWork.pulls_num = 0;
 		g_tWork.cal_num = 0;
+		g_tWork.sum = 0;
 
 		LCD_Show_REP_Num(g_tWork.reps_num);
 		LCD_Show_Pulls_Num(g_tWork.pulls_num);
 		LCD_Show_CAL_Num(g_tWork.cal_num);
+
+		BEEP_Stop();
+		g_tDevice.level = E_LEVEL_READY;
 
 		break;
 	}
@@ -518,10 +522,31 @@ static void app_key_set_long(void) {
 		break;
 	case E_LEVEL_PULL:
 		if (g_tDevice.mode == E_Simple_metering_mode) {
+			g_tDevice.mode = E_Quick_start_mode;
 			g_tDevice.level = E_LEVEL_MODE;
 		} else {
+			g_tDevice.mode = g_tWork.mode;
 			g_tDevice.level = E_LEVEL_REP;
 		}
+
+		g_tWork.reps_num = 0;
+		g_tWork.pulls_num = 0;
+		g_tWork.cal_num = 0;
+		g_tWork.sum = 0;
+
+		LCD_Show_REP_Num(g_tWork.reps_num);
+		LCD_Show_Pulls_Num(g_tWork.pulls_num);
+		LCD_Show_CAL_Num(g_tWork.cal_num);
+
+		LCD_Show_CAL_ICO();
+		LCD_Show_REP_ICO();
+		LCD_Show_Line_up();
+
+		LCD_Show_ABCD('A');
+		LCD_Show_ABCD('B');
+		LCD_Show_ABCD('C');
+		LCD_Show_ABCD('D');
+
 		BEEP_Stop();
 		break;
 	}
@@ -587,6 +612,10 @@ void app_key_ok(void) {
 		g_tWork.reps_mode = g_tDevice.letter;
 		g_tWork.sum = 0;
 		g_tDevice.level = E_LEVEL_READY;
+
+		LCD_Clear_ABCD();
+		LCD_Show_ABCD(g_tDevice.letter);
+
 		break;
 	case E_LEVEL_READY:
 
@@ -635,14 +664,14 @@ void app_key_100ms_pro(void) {
 
 	if (g_tDevice.status == E_PowerDown) {
 		cnt++;
-		if (cnt >= 3) {
+		if (cnt >= 2) {
 			cnt = 0;
 
 			app_key_clear_noOps_timeoutCnt();
 //			keyInvalid_flag = 1;
 			bsp_hallInt_close();
 			app_powerKeyInt_open();
-			printf("power off\n");
+//			printf("power off\n");
 			set_PD;
 
 			printf("power on\n");

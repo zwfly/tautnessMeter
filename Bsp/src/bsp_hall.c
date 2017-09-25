@@ -31,7 +31,6 @@ static void Hall_InitVar(void) {
 	g_tHall.count = 0;
 	g_tHall.direction = 0;
 	g_tHall.lastPos = 0;
-
 }
 
 void bsp_hallInt_open(void) {

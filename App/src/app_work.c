@@ -23,6 +23,7 @@ WORK_T g_tWork;
 static uint8_t count_NoAction = 0;
 static BIT pull_once_flag = 0;
 static BIT coach_mode_beep3_flag = 0;
+static BIT level_pull_init_flag = 0;
 
 static void app_work_pro(void);
 
@@ -54,6 +55,7 @@ void query_work_sum(void) {
 		if (g_tWork.sum > 10000) {
 			g_tWork.sum = 0;
 		}
+		level_pull_init_flag = 0;
 		pull_once_flag = 1;
 	}
 }
@@ -68,17 +70,31 @@ void app_work_100ms_pro(void) {
 	static uint8_t coach_mode_beep3_cnt = 0;
 
 	if (pull_once_flag) {
-		static BIT level_pull_init_flag = 0;
 		pull_once_flag = 0;
 		///////////////////
 		app_key_clear_noOps_timeoutCnt();
-		app_work_pro();
 
 		if (g_tDevice.level == E_LEVEL_PULL) {
 			if (level_pull_init_flag == 0) {
 				level_pull_init_flag = 1;
-				BEEP_Start(1, BEEP_SHORT_TIME, COACH_PACE_TIME, 0);
+
+				switch (g_tWork.mode) {
+				case E_TRAINING_NONE:
+
+					break;
+				case E_Simple_metering_mode:
+
+					break;
+				case E_Quick_start_mode:
+
+					break;
+				case E_Coach_mode:
+					BEEP_Start(1, BEEP_SHORT_TIME, COACH_PACE_TIME, 0);
+
+					break;
+				}
 			}
+			app_work_pro();
 		} else {
 			level_pull_init_flag = 0;
 		}

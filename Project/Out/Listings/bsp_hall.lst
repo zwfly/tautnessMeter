@@ -1,4 +1,4 @@
-C51 COMPILER V9.56.0.0   BSP_HALL                                                          09/22/2017 22:48:13 PAGE 1   
+C51 COMPILER V9.56.0.0   BSP_HALL                                                          09/25/2017 23:21:03 PAGE 1   
 
 
 C51 COMPILER V9.56.0.0, COMPILATION OF MODULE BSP_HALL
@@ -42,147 +42,146 @@ line level    source
   31   1              g_tHall.count = 0;
   32   1              g_tHall.direction = 0;
   33   1              g_tHall.lastPos = 0;
-  34   1      
-  35   1      }
-  36          
-  37          void bsp_hallInt_open(void) {
-  38   1      
-  39   1              P54 = 0;
-  40   1      
-  41   1              set_PIPS2;
-  42   1              clr_PIPS1;
-  43   1              set_PIPS0;
-  44   1      
-  45   1              clr_PIT0;
-  46   1              set_PIT1;
-  47   1              set_PIT2;
-  48   1              set_PIT3;
-  49   1              clr_PIT4;
-  50   1              clr_PIT5;
-  51   1              clr_PIT6;
-  52   1              clr_PIT7;
-  53   1      
-C51 COMPILER V9.56.0.0   BSP_HALL                                                          09/22/2017 22:48:13 PAGE 2   
+  34   1      }
+  35          
+  36          void bsp_hallInt_open(void) {
+  37   1      
+  38   1              P54 = 0;
+  39   1      
+  40   1              set_PIPS2;
+  41   1              clr_PIPS1;
+  42   1              set_PIPS0;
+  43   1      
+  44   1              clr_PIT0;
+  45   1              set_PIT1;
+  46   1              set_PIT2;
+  47   1              set_PIT3;
+  48   1              clr_PIT4;
+  49   1              clr_PIT5;
+  50   1              clr_PIT6;
+  51   1              clr_PIT7;
+  52   1      
+  53   1              clr_PINEN0;
+C51 COMPILER V9.56.0.0   BSP_HALL                                                          09/25/2017 23:21:03 PAGE 2   
 
-  54   1              clr_PINEN0;
-  55   1              set_PINEN1;
-  56   1              set_PINEN2;
-  57   1              set_PINEN3;
-  58   1              clr_PINEN4;
-  59   1              clr_PINEN5;
-  60   1              clr_PINEN6;
-  61   1              clr_PINEN7;
-  62   1      
-  63   1              PIPEN = 0x00;
-  64   1              clr_PIPEN1;
-  65   1              clr_PIPEN2;
-  66   1              clr_PIPEN3;
-  67   1      
-  68   1      }
-  69          void bsp_hallInt_close(void) {
-  70   1      
-  71   1              P54 = 1;
-  72   1      
-  73   1              clr_PIT1;
-  74   1              clr_PIT2;
-  75   1              clr_PIT3;
-  76   1      
-  77   1              clr_PINEN1;
-  78   1              clr_PINEN2;
-  79   1              clr_PINEN3;
-  80   1      }
-  81          void Hall_Init(void) {
-  82   1              Hall_InitHard();
-  83   1              Hall_InitVar();
-  84   1      }
-  85          
-  86          void bsp_hall_1s_pro(void) {
-  87   1      
-  88   1              printf("meter count %d\n", (int) g_tHall.count);
-  89   1      
-  90   1      }
-  91          
-  92          //123 拉长
-  93          void hall_pro(uint8_t n) {
-  94   1              static BIT valid_flag = 0;
-  95   1      
-  96   1              noOps_timeoutCnt = 0;
-  97   1              lcd_bright_on();
-  98   1      
-  99   1              switch (n) {
- 100   2              case 0:
- 101   2                      if (g_tHall.lastPos == 0) {
- 102   3                              if (g_tHall.direction) {
- 103   4                                      g_tHall.direction = 0;
- 104   4                              } else {
- 105   4                                      g_tHall.direction = 1;
- 106   4                              }
- 107   3                      } else if (g_tHall.lastPos == 1) {
- 108   3                              g_tHall.direction = 0;
- 109   3                      } else if (g_tHall.lastPos == 2) {
- 110   3                              g_tHall.direction = 1;  //拉长
- 111   3                      }
- 112   2                      break;
- 113   2              case 1:
- 114   2                      if (g_tHall.lastPos == 1) {
- 115   3                              if (g_tHall.direction) {
-C51 COMPILER V9.56.0.0   BSP_HALL                                                          09/22/2017 22:48:13 PAGE 3   
+  54   1              set_PINEN1;
+  55   1              set_PINEN2;
+  56   1              set_PINEN3;
+  57   1              clr_PINEN4;
+  58   1              clr_PINEN5;
+  59   1              clr_PINEN6;
+  60   1              clr_PINEN7;
+  61   1      
+  62   1              PIPEN = 0x00;
+  63   1              clr_PIPEN1;
+  64   1              clr_PIPEN2;
+  65   1              clr_PIPEN3;
+  66   1      
+  67   1      }
+  68          void bsp_hallInt_close(void) {
+  69   1      
+  70   1              P54 = 1;
+  71   1      
+  72   1              clr_PIT1;
+  73   1              clr_PIT2;
+  74   1              clr_PIT3;
+  75   1      
+  76   1              clr_PINEN1;
+  77   1              clr_PINEN2;
+  78   1              clr_PINEN3;
+  79   1      }
+  80          void Hall_Init(void) {
+  81   1              Hall_InitHard();
+  82   1              Hall_InitVar();
+  83   1      }
+  84          
+  85          void bsp_hall_1s_pro(void) {
+  86   1      
+  87   1              printf("meter count %d\n", (int) g_tHall.count);
+  88   1      
+  89   1      }
+  90          
+  91          //123 拉长
+  92          void hall_pro(uint8_t n) {
+  93   1              static BIT valid_flag = 0;
+  94   1      
+  95   1              noOps_timeoutCnt = 0;
+  96   1              lcd_bright_on();
+  97   1      
+  98   1              switch (n) {
+  99   2              case 0:
+ 100   2                      if (g_tHall.lastPos == 0) {
+ 101   3                              if (g_tHall.direction) {
+ 102   4                                      g_tHall.direction = 0;
+ 103   4                              } else {
+ 104   4                                      g_tHall.direction = 1;
+ 105   4                              }
+ 106   3                      } else if (g_tHall.lastPos == 1) {
+ 107   3                              g_tHall.direction = 0;
+ 108   3                      } else if (g_tHall.lastPos == 2) {
+ 109   3                              g_tHall.direction = 1;  //拉长
+ 110   3                      }
+ 111   2                      break;
+ 112   2              case 1:
+ 113   2                      if (g_tHall.lastPos == 1) {
+ 114   3                              if (g_tHall.direction) {
+ 115   4                                      g_tHall.direction = 0;
+C51 COMPILER V9.56.0.0   BSP_HALL                                                          09/25/2017 23:21:03 PAGE 3   
 
- 116   4                                      g_tHall.direction = 0;
- 117   4                              } else {
- 118   4                                      g_tHall.direction = 1;
- 119   4                              }
- 120   3                      } else if (g_tHall.lastPos == 2) {
- 121   3                              g_tHall.direction = 0;
- 122   3                      } else if (g_tHall.lastPos == 0) {
- 123   3                              g_tHall.direction = 1;  //拉长
- 124   3                      }
- 125   2                      break;
- 126   2              case 2:
- 127   2                      if (g_tHall.lastPos == 2) {
- 128   3                              if (g_tHall.direction) {
- 129   4                                      g_tHall.direction = 0;
- 130   4                              } else {
- 131   4                                      g_tHall.direction = 1;
- 132   4                              }
- 133   3                      } else if (g_tHall.lastPos == 0) {
- 134   3                              g_tHall.direction = 0;
- 135   3                      } else if (g_tHall.lastPos == 1) {
- 136   3                              g_tHall.direction = 1;  //拉长
- 137   3                      }
- 138   2                      break;
- 139   2              }
- 140   1              g_tHall.lastPos = n;
- 141   1              if (g_tHall.direction) {
- 142   2                      g_tHall.count++;
- 143   2              } else {
- 144   2                      g_tHall.count--;
- 145   2              }
- 146   1              if (valid_flag) {
- 147   2                      if (g_tHall.count < HALL_CNT_DOWN) {
- 148   3                              valid_flag = 0;
- 149   3                      }
- 150   2              } else {
- 151   2                      if (g_tHall.count > HALL_CNT_UP) {
- 152   3                              valid_flag = 1;
- 153   3                              /* your code   --start */
- 154   3                              // 拉一次计数一次，计数一次调用一次
- 155   3                              query_work_sum();
- 156   3                              /* your code   --end */
- 157   3                      }
- 158   2              }
- 159   1      
- 160   1      }
- 161          
- 162          void hall_1_interrupt(void) {
- 163   1              hall_pro(0);
- 164   1      }
- 165          void hall_2_interrupt(void) {
- 166   1              hall_pro(1);
- 167   1      }
- 168          void hall_3_interrupt(void) {
- 169   1              hall_pro(2);
- 170   1      }
+ 116   4                              } else {
+ 117   4                                      g_tHall.direction = 1;
+ 118   4                              }
+ 119   3                      } else if (g_tHall.lastPos == 2) {
+ 120   3                              g_tHall.direction = 0;
+ 121   3                      } else if (g_tHall.lastPos == 0) {
+ 122   3                              g_tHall.direction = 1;  //拉长
+ 123   3                      }
+ 124   2                      break;
+ 125   2              case 2:
+ 126   2                      if (g_tHall.lastPos == 2) {
+ 127   3                              if (g_tHall.direction) {
+ 128   4                                      g_tHall.direction = 0;
+ 129   4                              } else {
+ 130   4                                      g_tHall.direction = 1;
+ 131   4                              }
+ 132   3                      } else if (g_tHall.lastPos == 0) {
+ 133   3                              g_tHall.direction = 0;
+ 134   3                      } else if (g_tHall.lastPos == 1) {
+ 135   3                              g_tHall.direction = 1;  //拉长
+ 136   3                      }
+ 137   2                      break;
+ 138   2              }
+ 139   1              g_tHall.lastPos = n;
+ 140   1              if (g_tHall.direction) {
+ 141   2                      g_tHall.count++;
+ 142   2              } else {
+ 143   2                      g_tHall.count--;
+ 144   2              }
+ 145   1              if (valid_flag) {
+ 146   2                      if (g_tHall.count < HALL_CNT_DOWN) {
+ 147   3                              valid_flag = 0;
+ 148   3                      }
+ 149   2              } else {
+ 150   2                      if (g_tHall.count > HALL_CNT_UP) {
+ 151   3                              valid_flag = 1;
+ 152   3                              /* your code   --start */
+ 153   3                              // 拉一次计数一次，计数一次调用一次
+ 154   3                              query_work_sum();
+ 155   3                              /* your code   --end */
+ 156   3                      }
+ 157   2              }
+ 158   1      
+ 159   1      }
+ 160          
+ 161          void hall_1_interrupt(void) {
+ 162   1              hall_pro(0);
+ 163   1      }
+ 164          void hall_2_interrupt(void) {
+ 165   1              hall_pro(1);
+ 166   1      }
+ 167          void hall_3_interrupt(void) {
+ 168   1              hall_pro(2);
+ 169   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
@@ -190,9 +189,9 @@ MODULE INFORMATION:   STATIC OVERLAYABLE
    CONSTANT SIZE    =     16    ----
    XDATA SIZE       =      3       1
    PDATA SIZE       =   ----    ----
-C51 COMPILER V9.56.0.0   BSP_HALL                                                          09/22/2017 22:48:13 PAGE 4   
-
    DATA SIZE        =   ----    ----
+C51 COMPILER V9.56.0.0   BSP_HALL                                                          09/25/2017 23:21:03 PAGE 4   
+
    IDATA SIZE       =   ----    ----
    BIT SIZE         =      1    ----
 END OF MODULE INFORMATION.
