@@ -11,7 +11,7 @@
 #define BEEP_SHORT_TIME   10
 #define BEEP_LONG_TIME    30
 #define COACH_DELAY_TIME  200
-#define COACH_PACE_TIME   400
+#define COACH_PACE_TIME   300
 #define CAL_a 2
 
 const uint8_t Rep_Pull_num[4][2] = { { 10, 20 }, { 20, 25 }, { 30, 30 }, { 50,

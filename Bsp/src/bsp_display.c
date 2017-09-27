@@ -482,7 +482,7 @@ void LCD_Show_Pulls_Num(uint16_t num) {
 
 			LCDPTR = 11;
 			LCDDAT |= COM0 + COM1 + COM3;
-			LCDDAT &= ~(COM2 + COM3);
+			LCDDAT &= ~COM2;
 			break;
 		case 3:
 			LCDPTR = 10;
