@@ -1,4 +1,4 @@
-C51 COMPILER V9.56.0.0   BSP_BEEP                                                          09/27/2017 22:45:16 PAGE 1   
+C51 COMPILER V9.56.0.0   BSP_BEEP                                                          09/30/2017 23:19:46 PAGE 1   
 
 
 C51 COMPILER V9.56.0.0, COMPILATION OF MODULE BSP_BEEP
@@ -62,7 +62,7 @@ line level    source
   51   1      
   52   1      }
   53          
-C51 COMPILER V9.56.0.0   BSP_BEEP                                                          09/27/2017 22:45:16 PAGE 2   
+C51 COMPILER V9.56.0.0   BSP_BEEP                                                          09/30/2017 23:19:46 PAGE 2   
 
   54          void BEEP_ENABLE() {
   55   1              set_T2DOE1;
@@ -126,7 +126,7 @@ line level    source
  113          
  114          /*
  115           *********************************************************************************************************
-C51 COMPILER V9.56.0.0   BSP_BEEP                                                          09/27/2017 22:45:16 PAGE 3   
+C51 COMPILER V9.56.0.0   BSP_BEEP                                                          09/30/2017 23:19:46 PAGE 3   
 
  116           *      函 数 名: BEEP_KeyTone
  117           *      功能说明: 发送按键音
@@ -190,7 +190,7 @@ line level    source
  175   3                              BEEP_ENABLE(); /* 开始发声 */
  176   3                      }
  177   2              }
-C51 COMPILER V9.56.0.0   BSP_BEEP                                                          09/27/2017 22:45:16 PAGE 4   
+C51 COMPILER V9.56.0.0   BSP_BEEP                                                          09/30/2017 23:19:46 PAGE 4   
 
  178   1      }
  179          

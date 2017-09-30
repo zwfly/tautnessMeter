@@ -9,13 +9,20 @@
 #include "app_work.h"
 #include "bsp_beep.h"
 #include "app_key.h"
+#include <string.h>
 
 #define HALL_NUM  3
 #define HALL_CNT_UP  12
 #define HALL_CNT_DOWN  5
 
-static HALL_T g_tHall;
+static uint8_t i = 0;
 
+static HALL_T g_tHall;
+#if 0
+static idata uint8_t fifoBuf[8] = {0};
+#else
+static uint8_t fifoBuf[8] = { 0 };
+#endif
 static void Hall_InitHard(void) {
 
 	P5M1 &= ~ SET_BIT4;
@@ -31,6 +38,8 @@ static void Hall_InitVar(void) {
 	g_tHall.count = 0;
 	g_tHall.direction = 0;
 	g_tHall.lastPos = 0;
+
+	memset(fifoBuf, 0, sizeof(fifoBuf));
 }
 
 void bsp_hallInt_open(void) {
@@ -91,10 +100,19 @@ void bsp_hall_1s_pro(void) {
 //123 À­³¤
 void hall_pro(uint8_t n) {
 	static BIT valid_flag = 0;
+	static uint8_t hall_init_cnt = 0;
 
 	noOps_timeoutCnt = 0;
 	lcd_bright_on();
 
+	if (hall_init_cnt < 7) {
+		hall_init_cnt++;
+	}
+
+	for (i = (sizeof(fifoBuf) - 2); i >= 0; i--) {
+		fifoBuf[i + 1] = fifoBuf[i];
+	}
+	fifoBuf[0] = n;
 	switch (n) {
 	case 0:
 		if (g_tHall.lastPos == 0) {
@@ -136,6 +154,11 @@ void hall_pro(uint8_t n) {
 		}
 		break;
 	}
+#if 1
+	if ((fifoBuf[0] == 2) && (fifoBuf[0] == 0) && (fifoBuf[0] == 2)) {
+
+	}
+#endif
 	g_tHall.lastPos = n;
 	if (g_tHall.direction) {
 		g_tHall.count++;

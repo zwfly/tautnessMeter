@@ -649,7 +649,7 @@ void LCD_Clear_COACH_ICO(void) {
 }
 void LCD_Show_COACH_ICO(void) {
 	LCDPTR = 4;
-	LCDDAT = COM0;
+	LCDDAT |= COM0;
 }
 void LCD_Clear_Line_down(void) {
 	LCDPTR = 8;
@@ -709,53 +709,53 @@ void LCD_Show_CAL_Num(uint16_t num) {
 		switch (qian) {
 		case 0:
 			LCDPTR = 0;
-			LCDDAT = COM1 + COM3;
+			LCDDAT |= COM1 + COM3;
 			LCDDAT &= ~COM2;
 
 			LCDPTR = 1;
-			LCDDAT = COM0 + COM1 + COM2 + COM3;
+			LCDDAT |= COM0 + COM1 + COM2 + COM3;
 			break;
 		case 1:
 			LCDPTR = 0;
 			LCDDAT &= ~(COM1 + COM2 + COM3);
 
 			LCDPTR = 1;
-			LCDDAT = COM1 + COM2;
+			LCDDAT |= COM1 + COM2;
 			LCDDAT &= ~(COM0 + COM3);
 			break;
 		case 2:
 			LCDPTR = 0;
-			LCDDAT = COM2 + COM3;
+			LCDDAT |= COM2 + COM3;
 			LCDDAT &= ~COM1;
 
 			LCDPTR = 1;
-			LCDDAT = COM0 + COM1 + COM3;
+			LCDDAT |= COM0 + COM1 + COM3;
 			LCDDAT &= ~COM2;
 			break;
 		case 3:
 			LCDPTR = 0;
-			LCDDAT = COM2;
+			LCDDAT |= COM2;
 			LCDDAT &= ~(COM1 + COM3);
 
 			LCDPTR = 1;
-			LCDDAT = COM0 + COM1 + COM2 + COM3;
+			LCDDAT |= COM0 + COM1 + COM2 + COM3;
 			break;
 		case 4:
 			LCDPTR = 0;
-			LCDDAT = COM1 + COM2;
+			LCDDAT |= COM1 + COM2;
 			LCDDAT &= ~ COM3;
 
 			LCDPTR = 1;
-			LCDDAT = COM1 + COM2;
+			LCDDAT |= COM1 + COM2;
 			LCDDAT &= ~(COM0 + COM3);
 			break;
 		case 5:
 			LCDPTR = 0;
-			LCDDAT = COM1 + COM2;
+			LCDDAT |= COM1 + COM2;
 			LCDDAT &= ~ COM3;
 
 			LCDPTR = 1;
-			LCDDAT = COM0 + COM2 + COM3;
+			LCDDAT |= COM0 + COM2 + COM3;
 			LCDDAT &= ~COM1;
 			break;
 		case 6:
@@ -763,7 +763,7 @@ void LCD_Show_CAL_Num(uint16_t num) {
 			LCDDAT = COM1 + COM2 + COM3;
 
 			LCDPTR = 1;
-			LCDDAT = COM0 + COM2 + COM3;
+			LCDDAT |= COM0 + COM2 + COM3;
 			LCDDAT &= ~COM1;
 			break;
 		case 7:
@@ -771,23 +771,23 @@ void LCD_Show_CAL_Num(uint16_t num) {
 			LCDDAT &= ~(COM1 + COM2 + COM3);
 
 			LCDPTR = 1;
-			LCDDAT = COM0 + COM1 + COM2;
+			LCDDAT |= COM0 + COM1 + COM2;
 			LCDDAT &= ~ COM3;
 			break;
 		case 8:
 			LCDPTR = 0;
-			LCDDAT = COM1 + COM2 + COM3;
+			LCDDAT |= COM1 + COM2 + COM3;
 
 			LCDPTR = 1;
-			LCDDAT = COM0 + COM1 + COM2 + COM3;
+			LCDDAT |= COM0 + COM1 + COM2 + COM3;
 			break;
 		case 9:
 			LCDPTR = 0;
-			LCDDAT = COM1 + COM2;
+			LCDDAT |= COM1 + COM2;
 			LCDDAT &= ~ COM3;
 
 			LCDPTR = 1;
-			LCDDAT = COM0 + COM1 + COM2 + COM3;
+			LCDDAT |= COM0 + COM1 + COM2 + COM3;
 			break;
 		}
 	} else {
@@ -802,23 +802,23 @@ void LCD_Show_CAL_Num(uint16_t num) {
 		switch (bai) {
 		case 0:
 			LCDPTR = 2;
-			LCDDAT = COM1 + COM3;
+			LCDDAT |= COM1 + COM3;
 			LCDDAT &= ~COM2;
 
 			LCDPTR = 3;
-			LCDDAT = COM0 + COM1 + COM2 + COM3;
+			LCDDAT |= COM0 + COM1 + COM2 + COM3;
 			break;
 		case 1:
 			LCDPTR = 2;
 			LCDDAT &= ~(COM1 + COM2 + COM3);
 
 			LCDPTR = 3;
-			LCDDAT = COM1 + COM2;
+			LCDDAT |= COM1 + COM2;
 			LCDDAT &= ~(COM0 + COM3);
 			break;
 		case 2:
 			LCDPTR = 2;
-			LCDDAT = COM2 + COM3;
+			LCDDAT |= COM2 + COM3;
 			LCDDAT &= ~COM1;
 
 			LCDPTR = 3;
@@ -835,28 +835,28 @@ void LCD_Show_CAL_Num(uint16_t num) {
 			break;
 		case 4:
 			LCDPTR = 2;
-			LCDDAT = COM1 + COM2;
+			LCDDAT |= COM1 + COM2;
 			LCDDAT &= ~ COM3;
 
 			LCDPTR = 3;
-			LCDDAT = COM1 + COM2;
+			LCDDAT |= COM1 + COM2;
 			LCDDAT &= ~(COM0 + COM3);
 			break;
 		case 5:
 			LCDPTR = 2;
-			LCDDAT = COM1 + COM2;
+			LCDDAT |= COM1 + COM2;
 			LCDDAT &= ~ COM3;
 
 			LCDPTR = 3;
-			LCDDAT = COM0 + COM2 + COM3;
+			LCDDAT |= COM0 + COM2 + COM3;
 			LCDDAT &= ~COM1;
 			break;
 		case 6:
 			LCDPTR = 2;
-			LCDDAT = COM1 + COM2 + COM3;
+			LCDDAT |= COM1 + COM2 + COM3;
 
 			LCDPTR = 3;
-			LCDDAT = COM0 + COM2 + COM3;
+			LCDDAT |= COM0 + COM2 + COM3;
 			LCDDAT &= ~COM1;
 			break;
 		case 7:
@@ -864,23 +864,23 @@ void LCD_Show_CAL_Num(uint16_t num) {
 			LCDDAT &= ~(COM1 + COM2 + COM3);
 
 			LCDPTR = 3;
-			LCDDAT = COM0 + COM1 + COM2;
+			LCDDAT |= COM0 + COM1 + COM2;
 			LCDDAT &= ~ COM3;
 			break;
 		case 8:
 			LCDPTR = 2;
-			LCDDAT = COM1 + COM2 + COM3;
+			LCDDAT |= COM1 + COM2 + COM3;
 
 			LCDPTR = 3;
-			LCDDAT = COM0 + COM1 + COM2 + COM3;
+			LCDDAT |= COM0 + COM1 + COM2 + COM3;
 			break;
 		case 9:
 			LCDPTR = 2;
-			LCDDAT = COM1 + COM2;
+			LCDDAT |= COM1 + COM2;
 			LCDDAT &= ~ COM3;
 
 			LCDPTR = 3;
-			LCDDAT = COM0 + COM1 + COM2 + COM3;
+			LCDDAT |= COM0 + COM1 + COM2 + COM3;
 			break;
 		}
 	} else {
@@ -891,65 +891,64 @@ void LCD_Show_CAL_Num(uint16_t num) {
 		LCDDAT = 0;
 	}
 	if (num > 9) {
-
 		switch (shi) {
 		case 0:
 			LCDPTR = 4;
-			LCDDAT = COM1 + COM3;
+			LCDDAT |= COM1 + COM3;
 			LCDDAT &= ~COM2;
 
 			LCDPTR = 5;
-			LCDDAT = COM0 + COM1 + COM2 + COM3;
+			LCDDAT |= COM0 + COM1 + COM2 + COM3;
 			break;
 		case 1:
 			LCDPTR = 4;
 			LCDDAT &= ~(COM1 + COM2 + COM3);
 
 			LCDPTR = 5;
-			LCDDAT = COM1 + COM2;
+			LCDDAT |= COM1 + COM2;
 			LCDDAT &= ~(COM0 + COM3);
 			break;
 		case 2:
 			LCDPTR = 4;
-			LCDDAT = COM2 + COM3;
+			LCDDAT |= COM2 + COM3;
 			LCDDAT &= ~COM1;
 
 			LCDPTR = 5;
-			LCDDAT = COM0 + COM1 + COM3;
+			LCDDAT |= COM0 + COM1 + COM3;
 			LCDDAT &= ~COM2;
 			break;
 		case 3:
 			LCDPTR = 4;
-			LCDDAT = COM2;
+			LCDDAT |= COM2;
 			LCDDAT &= ~(COM1 + COM3);
 
 			LCDPTR = 5;
-			LCDDAT = COM0 + COM1 + COM2 + COM3;
+			LCDDAT |= COM0 + COM1 + COM2 + COM3;
 			break;
 		case 4:
 			LCDPTR = 4;
-			LCDDAT = COM1 + COM2;
+			LCDDAT |= COM1 + COM2;
 			LCDDAT &= ~ COM3;
 
 			LCDPTR = 5;
-			LCDDAT = COM1 + COM2;
+			LCDDAT |= COM1 + COM2;
 			LCDDAT &= ~(COM0 + COM3);
 			break;
 		case 5:
 			LCDPTR = 4;
-			LCDDAT = COM1 + COM2;
+			LCDDAT |= COM1 + COM2;
 			LCDDAT &= ~COM3;
 
 			LCDPTR = 5;
-			LCDDAT = COM0 + COM2 + COM3;
+			LCDDAT |= COM0 + COM2 + COM3;
 			LCDDAT &= ~COM1;
 			break;
 		case 6:
 			LCDPTR = 4;
-			LCDDAT = COM1 + COM2 + COM3;
+			LCDDAT |= COM1 + COM2 + COM3;
 
 			LCDPTR = 5;
-			LCDDAT = COM0 + COM2 + COM3;
+			LCDDAT |= COM0 + COM2 + COM3;
 			LCDDAT &= ~COM1;
 			break;
 		case 7:
@@ -957,23 +956,23 @@ void LCD_Show_CAL_Num(uint16_t num) {
 			LCDDAT &= ~(COM1 + COM2 + COM3);
 
 			LCDPTR = 5;
-			LCDDAT = COM0 + COM1 + COM2;
+			LCDDAT |= COM0 + COM1 + COM2;
 			LCDDAT &= ~ COM3;
 			break;
 		case 8:
 			LCDPTR = 4;
-			LCDDAT = COM1 + COM2 + COM3;
+			LCDDAT |= COM1 + COM2 + COM3;
 
 			LCDPTR = 5;
-			LCDDAT = COM0 + COM1 + COM2 + COM3;
+			LCDDAT |= COM0 + COM1 + COM2 + COM3;
 			break;
 		case 9:
 			LCDPTR = 4;
-			LCDDAT = COM1 + COM2;
+			LCDDAT |= COM1 + COM2;
 			LCDDAT &= ~ COM3;
 
 			LCDPTR = 5;
-			LCDDAT = COM0 + COM1 + COM2 + COM3;
+			LCDDAT |= COM0 + COM1 + COM2 + COM3;
 			break;
 		}
 	} else {
@@ -986,61 +985,61 @@ void LCD_Show_CAL_Num(uint16_t num) {
 	switch (ge) {
 	case 0:
 		LCDPTR = 6;
-		LCDDAT = COM1 + COM3;
+		LCDDAT |= COM1 + COM3;
 		LCDDAT &= ~COM2;
 
 		LCDPTR = 7;
-		LCDDAT = COM0 + COM1 + COM2 + COM3;
+		LCDDAT |= COM0 + COM1 + COM2 + COM3;
 		break;
 	case 1:
 		LCDPTR = 6;
 		LCDDAT &= ~(COM1 + COM2 + COM3);
 
 		LCDPTR = 7;
-		LCDDAT = COM1 + COM2;
+		LCDDAT |= COM1 + COM2;
 		LCDDAT &= ~(COM0 + COM3);
 		break;
 	case 2:
 		LCDPTR = 6;
-		LCDDAT = COM2 + COM3;
+		LCDDAT |= COM2 + COM3;
 		LCDDAT &= ~COM1;
 
 		LCDPTR = 7;
-		LCDDAT = COM0 + COM1 + COM3;
+		LCDDAT |= COM0 + COM1 + COM3;
 		LCDDAT &= ~COM2;
 		break;
 	case 3:
 		LCDPTR = 6;
-		LCDDAT = COM2;
+		LCDDAT |= COM2;
 		LCDDAT &= ~(COM1 + COM3);
 
 		LCDPTR = 7;
-		LCDDAT = COM0 + COM1 + COM2 + COM3;
+		LCDDAT |= COM0 + COM1 + COM2 + COM3;
 		break;
 	case 4:
 		LCDPTR = 6;
-		LCDDAT = COM1 + COM2;
+		LCDDAT |= COM1 + COM2;
 		LCDDAT &= ~ COM3;
 
 		LCDPTR = 7;
-		LCDDAT = COM1 + COM2;
+		LCDDAT |= COM1 + COM2;
 		LCDDAT &= ~(COM0 + COM3);
 		break;
 	case 5:
 		LCDPTR = 6;
-		LCDDAT = COM1 + COM2;
+		LCDDAT |= COM1 + COM2;
 		LCDDAT &= ~ COM3;
 
 		LCDPTR = 7;
-		LCDDAT = COM0 + COM2 + COM3;
+		LCDDAT |= COM0 + COM2 + COM3;
 		LCDDAT &= ~COM1;
 		break;
 	case 6:
 		LCDPTR = 6;
-		LCDDAT = COM1 + COM2 + COM3;
+		LCDDAT |= COM1 + COM2 + COM3;
 
 		LCDPTR = 7;
-		LCDDAT = COM0 + COM2 + COM3;
+		LCDDAT |= COM0 + COM2 + COM3;
 		LCDDAT &= ~COM1;
 		break;
 	case 7:
@@ -1048,23 +1047,23 @@ void LCD_Show_CAL_Num(uint16_t num) {
 		LCDDAT &= ~(COM1 + COM2 + COM3);
 
 		LCDPTR = 7;
-		LCDDAT = COM0 + COM1 + COM2;
+		LCDDAT |= COM0 + COM1 + COM2;
 		LCDDAT &= ~ COM3;
 		break;
 	case 8:
 		LCDPTR = 6;
-		LCDDAT = COM1 + COM2 + COM3;
+		LCDDAT |= COM1 + COM2 + COM3;
 
 		LCDPTR = 7;
-		LCDDAT = COM0 + COM1 + COM2 + COM3;
+		LCDDAT |= COM0 + COM1 + COM2 + COM3;
 		break;
 	case 9:
 		LCDPTR = 6;
-		LCDDAT = COM1 + COM2;
+		LCDDAT |= COM1 + COM2;
 		LCDDAT &= ~ COM3;
 
 		LCDPTR = 7;
-		LCDDAT = COM0 + COM1 + COM2 + COM3;
+		LCDDAT |= COM0 + COM1 + COM2 + COM3;
 		break;
 	}
 }

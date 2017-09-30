@@ -364,7 +364,17 @@ void app_key_clear(void) {
 		break;
 	case E_LEVEL_READY:
 		g_tDevice.level = E_LEVEL_REP;
+		switch (g_tWork.mode) {
+		case E_Simple_metering_mode:
+			g_tDevice.level = E_LEVEL_MODE;
+			break;
+		case E_Quick_start_mode:
 
+			break;
+		case E_Coach_mode:
+
+			break;
+		}
 		break;
 	case E_LEVEL_PULL:
 
@@ -393,11 +403,17 @@ static void app_key_clear_long(void) {
 		g_tWork.cal_num = 0;
 		g_tWork.sum = 0;
 
-		LCD_Show_REP_Num(g_tWork.reps_num);
+		if (g_tDevice.mode != E_Simple_metering_mode) {
+			LCD_Show_REP_Num(g_tWork.reps_num);
+		} else {
+			LCD_Clear_REP_Num();
+		}
+
 		LCD_Show_Pulls_Num(g_tWork.pulls_num);
 		LCD_Show_CAL_Num(g_tWork.cal_num);
 
 		BEEP_Stop();
+
 		g_tDevice.level = E_LEVEL_READY;
 
 		break;
