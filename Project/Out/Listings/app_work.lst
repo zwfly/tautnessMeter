@@ -1,4 +1,4 @@
-C51 COMPILER V9.56.0.0   APP_WORK                                                          09/30/2017 23:19:46 PAGE 1   
+C51 COMPILER V9.56.0.0   APP_WORK                                                          10/13/2017 21:21:42 PAGE 1   
 
 
 C51 COMPILER V9.56.0.0, COMPILATION OF MODULE APP_WORK
@@ -62,7 +62,7 @@ line level    source
   51   1              if (g_tDevice.level == E_LEVEL_READY) {
   52   2                      g_tDevice.level = E_LEVEL_PULL;
   53   2      
-C51 COMPILER V9.56.0.0   APP_WORK                                                          09/30/2017 23:19:46 PAGE 2   
+C51 COMPILER V9.56.0.0   APP_WORK                                                          10/13/2017 21:21:42 PAGE 2   
 
   54   2                      g_tWork.sum++;
   55   2                      if (g_tWork.sum > 10000) {
@@ -126,7 +126,7 @@ line level    source
  113          
  114          static void app_work_pro(void) {
  115   1              static BIT finish_flag = 0;
-C51 COMPILER V9.56.0.0   APP_WORK                                                          09/30/2017 23:19:46 PAGE 3   
+C51 COMPILER V9.56.0.0   APP_WORK                                                          10/13/2017 21:21:42 PAGE 3   
 
  116   1              static BIT reps_num_appear_flag = 0;
  117   1      
@@ -190,7 +190,7 @@ line level    source
  175   2      
  176   2                      LCD_Show_REP_ICO();
  177   2                      LCD_Show_ABCD(g_tWork.reps_mode);
-C51 COMPILER V9.56.0.0   APP_WORK                                                          09/30/2017 23:19:46 PAGE 4   
+C51 COMPILER V9.56.0.0   APP_WORK                                                          10/13/2017 21:21:42 PAGE 4   
 
  178   2      
  179   2                      LCD_Show_QS_ICO();
@@ -254,7 +254,7 @@ line level    source
                               LCD_Show_REP_Num(g_tWork.reps_num);
                       } else {
                               LCD_Clear_REP_Num();
-C51 COMPILER V9.56.0.0   APP_WORK                                                          09/30/2017 23:19:46 PAGE 5   
+C51 COMPILER V9.56.0.0   APP_WORK                                                          10/13/2017 21:21:42 PAGE 5   
 
                       }
               #endif

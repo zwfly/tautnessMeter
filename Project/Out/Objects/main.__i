@@ -1,0 +1,1 @@
+"..\App\src\main.c" LARGE OPTIMIZE (8,SPEED) BROWSE INCDIR(..\Common\inc;..\App\inc;..\Bsp\inc;..\Startup;..\Bsp) DEFINE (FOSC_110592) DEBUG OBJECTEXTEND PRINT(.\Out\Listings\main.lst) TABS (2) OBJECT(.\Out\Objects\main.obj)

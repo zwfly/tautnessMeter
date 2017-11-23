@@ -1,4 +1,4 @@
-C51 COMPILER V9.56.0.0   APP_KEY                                                           09/30/2017 23:19:46 PAGE 1   
+C51 COMPILER V9.56.0.0   APP_KEY                                                           10/13/2017 21:21:42 PAGE 1   
 
 
 C51 COMPILER V9.56.0.0, COMPILATION OF MODULE APP_KEY
@@ -62,7 +62,7 @@ line level    source
   51   1      }
   52          void app_powerKeyInt_close(void) {
   53   1              clr_PIPS2;
-C51 COMPILER V9.56.0.0   APP_KEY                                                           09/30/2017 23:19:46 PAGE 2   
+C51 COMPILER V9.56.0.0   APP_KEY                                                           10/13/2017 21:21:42 PAGE 2   
 
   54   1              clr_PIPS1;
   55   1              clr_PIPS0;
@@ -126,7 +126,7 @@ line level    source
  113   1      }
  114          
  115          void app_flash_Show(void) {
-C51 COMPILER V9.56.0.0   APP_KEY                                                           09/30/2017 23:19:46 PAGE 3   
+C51 COMPILER V9.56.0.0   APP_KEY                                                           10/13/2017 21:21:42 PAGE 3   
 
  116   1      
  117   1              LCD_Show_Line_up();
@@ -190,7 +190,7 @@ line level    source
  175   2                      break;
  176   2              case E_LEVEL_PULL:
  177   2      
-C51 COMPILER V9.56.0.0   APP_KEY                                                           09/30/2017 23:19:46 PAGE 4   
+C51 COMPILER V9.56.0.0   APP_KEY                                                           10/13/2017 21:21:42 PAGE 4   
 
  178   2                      break;
  179   2              }
@@ -254,7 +254,7 @@ line level    source
  237   2      
  238   2                      LCD_Show_ABCD('A');
  239   2                      LCD_Show_ABCD('B');
-C51 COMPILER V9.56.0.0   APP_KEY                                                           09/30/2017 23:19:46 PAGE 5   
+C51 COMPILER V9.56.0.0   APP_KEY                                                           10/13/2017 21:21:42 PAGE 5   
 
  240   2                      LCD_Show_ABCD('C');
  241   2                      LCD_Show_ABCD('D');
@@ -318,7 +318,7 @@ line level    source
  299   3                              LCD_Show_REP_ICO();
  300   3                              LCD_Show_REP_Num(0);
  301   3                              LCD_Show_ABCD(g_tWork.reps_mode);
-C51 COMPILER V9.56.0.0   APP_KEY                                                           09/30/2017 23:19:46 PAGE 6   
+C51 COMPILER V9.56.0.0   APP_KEY                                                           10/13/2017 21:21:42 PAGE 6   
 
  302   3      
  303   3                              LCD_Show_CAL_ICO();
@@ -382,7 +382,7 @@ line level    source
  361   2                      LCD_Show_CAL_Num(0);
  362   2                      LCD_Show_CAL_ICO();
  363   2      
-C51 COMPILER V9.56.0.0   APP_KEY                                                           09/30/2017 23:19:46 PAGE 7   
+C51 COMPILER V9.56.0.0   APP_KEY                                                           10/13/2017 21:21:42 PAGE 7   
 
  364   2                      break;
  365   2              case E_LEVEL_READY:
@@ -446,7 +446,7 @@ line level    source
  423          void app_key_set(void) {
  424   1      
  425   1              switch (g_tDevice.level) {
-C51 COMPILER V9.56.0.0   APP_KEY                                                           09/30/2017 23:19:46 PAGE 8   
+C51 COMPILER V9.56.0.0   APP_KEY                                                           10/13/2017 21:21:42 PAGE 8   
 
  426   2              case E_LEVEL_NONE:
  427   2      
@@ -510,7 +510,7 @@ line level    source
  485   2                      switch (g_tDevice.mode) {
  486   3                      case E_TRAINING_NONE:
  487   3      
-C51 COMPILER V9.56.0.0   APP_KEY                                                           09/30/2017 23:19:46 PAGE 9   
+C51 COMPILER V9.56.0.0   APP_KEY                                                           10/13/2017 21:21:42 PAGE 9   
 
  488   3                              break;
  489   3                      case E_Simple_metering_mode:
@@ -574,7 +574,7 @@ line level    source
  547   2      
  548   2                      g_tWork.reps_num = 0;
  549   2                      g_tWork.pulls_num = 0;
-C51 COMPILER V9.56.0.0   APP_KEY                                                           09/30/2017 23:19:46 PAGE 10  
+C51 COMPILER V9.56.0.0   APP_KEY                                                           10/13/2017 21:21:42 PAGE 10  
 
  550   2                      g_tWork.cal_num = 0;
  551   2                      g_tWork.sum = 0;
@@ -638,7 +638,7 @@ line level    source
  609   3                      case E_TRAINING_NONE:
  610   3      
  611   3                              break;
-C51 COMPILER V9.56.0.0   APP_KEY                                                           09/30/2017 23:19:46 PAGE 11  
+C51 COMPILER V9.56.0.0   APP_KEY                                                           10/13/2017 21:21:42 PAGE 11  
 
  612   3                      case E_Simple_metering_mode:
  613   3      
@@ -702,7 +702,7 @@ line level    source
  671   1              lcd_bright_off();
  672   1              LCD_Clear_All();
  673   1      }
-C51 COMPILER V9.56.0.0   APP_KEY                                                           09/30/2017 23:19:46 PAGE 12  
+C51 COMPILER V9.56.0.0   APP_KEY                                                           10/13/2017 21:21:42 PAGE 12  
 
  674          
  675          uint8_t noOps_timeoutCnt = 0;
@@ -766,7 +766,7 @@ line level    source
  733   2      
  734   2                      break;
  735   2              case KEY_DOWN_K1:
-C51 COMPILER V9.56.0.0   APP_KEY                                                           09/30/2017 23:19:46 PAGE 13  
+C51 COMPILER V9.56.0.0   APP_KEY                                                           10/13/2017 21:21:42 PAGE 13  
 
  736   2      
  737   2                      break;
@@ -830,7 +830,7 @@ line level    source
  795   2                      key_exe_flag = 1;
  796   2                      app_key_ok_long();
  797   2      
-C51 COMPILER V9.56.0.0   APP_KEY                                                           09/30/2017 23:19:46 PAGE 14  
+C51 COMPILER V9.56.0.0   APP_KEY                                                           10/13/2017 21:21:42 PAGE 14  
 
  798   2                      break;
  799   2      #if DEBUG_KEY
