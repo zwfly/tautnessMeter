@@ -1,7 +1,7 @@
-C51 COMPILER V9.56.0.0   BSP_BRIGHT                                                        10/13/2017 21:21:43 PAGE 1   
+C51 COMPILER V9.52.0.0   BSP_BRIGHT                                                        09/09/2018 09:19:46 PAGE 1   
 
 
-C51 COMPILER V9.56.0.0, COMPILATION OF MODULE BSP_BRIGHT
+C51 COMPILER V9.52.0.0, COMPILATION OF MODULE BSP_BRIGHT
 OBJECT MODULE PLACED IN .\Out\Objects\bsp_bright.obj
 COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE ..\Bsp\src\bsp_bright.c LARGE OPTIMIZE(8,SPEED) BROWSE INCDIR(..\Common\
                     -inc;..\App\inc;..\Bsp\inc;..\Startup;..\Bsp) DEFINE(FOSC_110592) DEBUG OBJECTEXTEND PRINT(.\Out\Listings\bsp_bright.lst)
@@ -28,10 +28,10 @@ line level    source
   17   1      #endif
   18   1      
   19   1      }
-  20          void lcd_bright_off(void) {
+  20          void lcd_bright_on(void) {
   21   1              clr_P32;
   22   1      }
-  23          void lcd_bright_on() {
+  23          void lcd_bright_off() {
   24   1              set_P32;
   25   1      }
 

@@ -1,0 +1,1 @@
+"..\Bsp\src\bsp_bright.c" LARGE OPTIMIZE (8,SPEED) BROWSE INCDIR(..\Common\inc;..\App\inc;..\Bsp\inc;..\Startup;..\Bsp) DEFINE (FOSC_110592) DEBUG OBJECTEXTEND PRINT(.\Out\Listings\bsp_bright.lst) OBJECT(.\Out\Objects\bsp_bright.obj)

@@ -39,7 +39,7 @@ static void Hall_InitVar(void) {
 	g_tHall.direction = 0;
 	g_tHall.lastPos = 0;
 
-	memset(fifoBuf, 0, sizeof(fifoBuf));
+//	memset(fifoBuf, 0, sizeof(fifoBuf));
 }
 
 void bsp_hallInt_open(void) {
@@ -100,11 +100,11 @@ void bsp_hall_1s_pro(void) {
 //123 À­³¤
 void hall_pro(uint8_t n) {
 	static BIT valid_flag = 0;
-	static uint8_t hall_init_cnt = 0;
+//	static uint8_t hall_init_cnt = 0;
 
 	noOps_timeoutCnt = 0;
 	lcd_bright_on();
-
+#if 0
 	if (hall_init_cnt < 7) {
 		hall_init_cnt++;
 	}
@@ -113,6 +113,8 @@ void hall_pro(uint8_t n) {
 		fifoBuf[i + 1] = fifoBuf[i];
 	}
 	fifoBuf[0] = n;
+#endif
+
 	switch (n) {
 	case 0:
 		if (g_tHall.lastPos == 0) {

@@ -1,7 +1,7 @@
-C51 COMPILER V9.56.0.0   DELAY                                                             10/13/2017 21:21:43 PAGE 1   
+C51 COMPILER V9.52.0.0   DELAY                                                             09/09/2018 09:18:09 PAGE 1   
 
 
-C51 COMPILER V9.56.0.0, COMPILATION OF MODULE DELAY
+C51 COMPILER V9.52.0.0, COMPILATION OF MODULE DELAY
 OBJECT MODULE PLACED IN .\Out\Objects\Delay.obj
 COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE ..\Common\src\Delay.c LARGE OPTIMIZE(8,SPEED) BROWSE INCDIR(..\Common\in
                     -c;..\App\inc;..\Bsp\inc;..\Startup;..\Bsp) DEFINE(FOSC_110592) DEBUG OBJECTEXTEND PRINT(.\Out\Listings\Delay.lst) OBJECT
@@ -62,7 +62,7 @@ line level    source
   44   2              }
   45   1      }
   46          //-------------------------------------------------------------------------
-C51 COMPILER V9.56.0.0   DELAY                                                             10/13/2017 21:21:43 PAGE 2   
+C51 COMPILER V9.52.0.0   DELAY                                                             09/09/2018 09:18:09 PAGE 2   
 
   47          void Delay10us(UINT16 u16CNT) {
   48   1              clr_T0M;                                //T0M=0, Timer0 Clock = Fsys/12
@@ -126,7 +126,7 @@ line level    source
  106          void WakeUp_Timer_Delay25ms(UINT32 u32CNT)  //Clock source is 10KHz
  107          {
  108   1              clr_WKPS2;                              //Clock Divider Scale is 1
-C51 COMPILER V9.56.0.0   DELAY                                                             10/13/2017 21:21:43 PAGE 3   
+C51 COMPILER V9.52.0.0   DELAY                                                             09/09/2018 09:18:09 PAGE 3   
 
  109   1              clr_WKPS1;
  110   1              clr_WKPS0;

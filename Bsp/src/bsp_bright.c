@@ -17,9 +17,9 @@ void Bright_InitHard(void) {
 #endif
 
 }
-void lcd_bright_off(void) {
+void lcd_bright_on(void) {
 	clr_P32;
 }
-void lcd_bright_on() {
+void lcd_bright_off() {
 	set_P32;
 }
